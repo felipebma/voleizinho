@@ -54,7 +54,7 @@ class _PlayerViewState extends State<PlayerView> {
           Row(
             children: [
               Text(
-                player.getAverage().toString(),
+                player.getAverage().toStringAsFixed(1),
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 20,

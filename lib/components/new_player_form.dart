@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:voleizinho/components/player_view.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
@@ -6,22 +7,37 @@ import 'package:voleizinho/model/skills.dart';
 class NewPlayerForm extends StatefulWidget {
   NewPlayerForm({
     super.key,
+    required this.onNewPlayer,
+    required this.onCancel,
+    required this.onSave,
   });
 
-  Player player;
+  final void Function(Player player) onNewPlayer;
+  final void Function() onCancel;
+  final void Function(Player player) onSave;
+
+  final Player player = Player(
+    name: "Jogador",
+    skills: {
+      Skill.spike: 2,
+      Skill.agility: 2,
+      Skill.block: 2,
+      Skill.receive: 2,
+      Skill.serve: 2,
+      Skill.set: 2,
+    },
+  );
 
   void resetNewPlayer() {
-    player = Player(
-      name: "Jogador",
-      skills: {
-        Skill.spike: 2,
-        Skill.agility: 2,
-        Skill.block: 2,
-        Skill.receive: 2,
-        Skill.serve: 2,
-        Skill.set: 2,
-      },
-    );
+    player.name = "Jogador";
+    player.skills = {
+      Skill.spike: 2,
+      Skill.agility: 2,
+      Skill.block: 2,
+      Skill.receive: 2,
+      Skill.serve: 2,
+      Skill.set: 2,
+    };
   }
 
   @override
@@ -37,24 +53,43 @@ class _NewPlayerFormState extends State<NewPlayerForm> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child: Row(
+            textBaseline: TextBaseline.alphabetic,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 skill.toShortString(),
                 style: const TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
+                  textBaseline: TextBaseline.alphabetic,
                 ),
               ),
-              Text(
-                player.skills[skill].toString(),
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              RatingBar(
+                itemSize: 30,
+                glowColor: Colors.amber,
+                initialRating: player.skills[skill]!.toDouble(),
+                ratingWidget: RatingWidget(
+                  full: const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  half: const Icon(
+                    Icons.star_half,
+                    color: Colors.amber,
+                  ),
+                  empty: const Icon(
+                    Icons.star_border,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
+                onRatingUpdate: (rating) {
+                  setState(() {
+                    player.skills[skill] = rating.toInt();
+                  });
+                },
+              )
             ],
           ),
         ),
@@ -66,24 +101,12 @@ class _NewPlayerFormState extends State<NewPlayerForm> {
 
   @override
   Widget build(BuildContext context) {
-    Player player = Player(
-      name: "Jogador",
-      skills: {
-        Skill.spike: 2,
-        Skill.agility: 2,
-        Skill.block: 2,
-        Skill.receive: 2,
-        Skill.serve: 2,
-        Skill.set: 2,
-      },
-    );
-
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           PlayerView(
-            player: player,
+            player: widget.player,
             editable: true,
           ),
           Material(
@@ -98,7 +121,7 @@ class _NewPlayerFormState extends State<NewPlayerForm> {
                 ),
                 child: Column(
                   children: [
-                    ...playerDetails(player),
+                    ...playerDetails(widget.player),
                     const Divider(),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -112,7 +135,12 @@ class _NewPlayerFormState extends State<NewPlayerForm> {
                             backgroundColor: Colors.red,
                             foregroundColor: Colors.black,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              widget.resetNewPlayer();
+                              widget.onCancel();
+                            });
+                          },
                           child: const Text(
                             "Cancelar",
                             style: TextStyle(
@@ -128,7 +156,17 @@ class _NewPlayerFormState extends State<NewPlayerForm> {
                             backgroundColor: Colors.green,
                             foregroundColor: Colors.black,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              widget.onSave(
+                                Player(
+                                  name: widget.player.name,
+                                  skills: {...widget.player.skills},
+                                ),
+                              );
+                              widget.resetNewPlayer();
+                            });
+                          },
                           child: const Text(
                             "Salvar",
                             style: TextStyle(

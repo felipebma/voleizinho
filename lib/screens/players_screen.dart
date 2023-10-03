@@ -6,7 +6,7 @@ import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 
 class PlayersScreen extends StatefulWidget {
-  PlayersScreen({super.key, this.newPlayer = true});
+  PlayersScreen({super.key, this.newPlayer = false});
 
   bool newPlayer;
 
@@ -36,9 +36,6 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < 10; i++) {
-      players.add(players[0]);
-    }
     players.sort((a, b) => a.name.compareTo(b.name));
     return Scaffold(
       appBar: AppBar(),
@@ -68,7 +65,25 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       ),
                     )),
               ),
-              if (widget.newPlayer) NewPlayerForm(),
+              if (widget.newPlayer)
+                NewPlayerForm(
+                    onCancel: () => setState(
+                          () {
+                            widget.newPlayer = false;
+                          },
+                        ),
+                    onNewPlayer: (player) => setState(
+                          () {
+                            players.add(player);
+                            widget.newPlayer = false;
+                          },
+                        ),
+                    onSave: (player) => setState(
+                          () {
+                            widget.newPlayer = false;
+                            players.add(player);
+                          },
+                        )),
               Expanded(
                 child: ListView.builder(
                   itemCount: players.length,
