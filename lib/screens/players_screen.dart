@@ -21,13 +21,13 @@ class _PlayersScreenState extends State<PlayersScreen> {
       Skill.serve: 5,
       Skill.set: 4,
     }),
-    Player(name: "Felipe", skills: {
-      Skill.spike: 4,
-      Skill.agility: 2,
+    Player(name: "Clara", skills: {
+      Skill.spike: 2,
+      Skill.agility: 4,
       Skill.block: 3,
       Skill.receive: 3,
-      Skill.serve: 5,
-      Skill.set: 4,
+      Skill.serve: 3,
+      Skill.set: 3,
     }),
   ];
 
@@ -63,7 +63,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       children: [
                         PlayerView(player: players[index]),
                         const Divider(
-                          height: 2,
+                          height: 1,
                         )
                       ],
                     );
