@@ -33,6 +33,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    players.sort((a, b) => a.name.compareTo(b.name));
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -40,32 +41,37 @@ class _PlayersScreenState extends State<PlayersScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              MenuButton(
-                  text: "NOVO JOGADOR",
-                  onPressed: () {},
-                  leftWidget: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.green,
-                    ),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 56,
-                    ),
-                  )),
-              const Text("Jogadores"),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: MenuButton(
+                    text: "NOVO JOGADOR",
+                    onPressed: () {},
+                    leftWidget: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.green,
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    )),
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: players.length,
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        PlayerView(player: players[index]),
-                        const Divider(
-                          height: 1,
-                        )
-                      ],
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          PlayerView(player: players[index]),
+                          const Divider(
+                            height: 1,
+                          )
+                        ],
+                      ),
                     );
                   },
                 ),
