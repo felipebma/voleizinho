@@ -25,7 +25,7 @@ class MainApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => const HomeScreen(),
-        "/players": (context) => const PlayersScreen(),
+        "/players": (context) => PlayersScreen(),
       },
       initialRoute: "/",
     );

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/menu_button.dart';
+import 'package:voleizinho/components/new_player_form.dart';
 import 'package:voleizinho/components/player_view.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 
 class PlayersScreen extends StatefulWidget {
-  const PlayersScreen({super.key});
+  PlayersScreen({super.key, this.newPlayer = true});
+
+  bool newPlayer;
 
   @override
   State<PlayersScreen> createState() => _PlayersScreenState();
@@ -33,6 +36,9 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    for (int i = 0; i < 10; i++) {
+      players.add(players[0]);
+    }
     players.sort((a, b) => a.name.compareTo(b.name));
     return Scaffold(
       appBar: AppBar(),
@@ -45,7 +51,11 @@ class _PlayersScreenState extends State<PlayersScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: MenuButton(
                     text: "NOVO JOGADOR",
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        widget.newPlayer = true;
+                      });
+                    },
                     leftWidget: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
@@ -58,6 +68,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       ),
                     )),
               ),
+              if (widget.newPlayer) NewPlayerForm(),
               Expanded(
                 child: ListView.builder(
                   itemCount: players.length,

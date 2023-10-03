@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:voleizinho/model/player.dart';
 
 class PlayerView extends StatefulWidget {
-  const PlayerView({super.key, required this.player});
+  const PlayerView({super.key, required this.player, this.editable = false});
 
   final Player player;
+  final bool editable;
 
   @override
   State<PlayerView> createState() => _PlayerViewState();
@@ -13,6 +14,28 @@ class PlayerView extends StatefulWidget {
 class _PlayerViewState extends State<PlayerView> {
   @override
   Widget build(BuildContext context) {
+    Widget textField = widget.editable
+        ? SizedBox(
+            width: 250,
+            child: TextField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Jogador',
+              ),
+              onChanged: (text) {
+                widget.player.name = text;
+              },
+            ),
+          )
+        : Text(
+            widget.player.name,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          );
+
     Player player = widget.player;
     return Material(
       elevation: 3,
@@ -27,14 +50,7 @@ class _PlayerViewState extends State<PlayerView> {
         ),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            player.name,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          textField,
           Row(
             children: [
               Text(
