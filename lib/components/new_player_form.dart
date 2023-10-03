@@ -8,17 +8,7 @@ class NewPlayerForm extends StatefulWidget {
     super.key,
   });
 
-  Player player = Player(
-    name: "Jogador",
-    skills: {
-      Skill.spike: 2,
-      Skill.agility: 2,
-      Skill.block: 2,
-      Skill.receive: 2,
-      Skill.serve: 2,
-      Skill.set: 2,
-    },
-  );
+  Player player;
 
   void resetNewPlayer() {
     player = Player(
