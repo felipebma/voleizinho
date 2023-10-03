@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/screens/home_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +10,22 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp(
+      theme: ThemeData.light().copyWith(
+        primaryColor: Colors.blue,
+        scaffoldBackgroundColor: const Color(0xFFCDE8DE),
+        primaryTextTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            fontFamily: "poller_one",
+          ),
         ),
       ),
+      routes: {
+        "/": (context) => const HomeScreen(),
+      },
+      initialRoute: "/",
     );
   }
 }
