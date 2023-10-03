@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/screens/home_screen.dart';
+import 'package:voleizinho/screens/players_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -24,6 +25,7 @@ class MainApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => const HomeScreen(),
+        "/players": (context) => const PlayersScreen(),
       },
       initialRoute: "/",
     );

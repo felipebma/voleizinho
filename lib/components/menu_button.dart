@@ -5,11 +5,11 @@ class MenuButton extends StatelessWidget {
       {super.key,
       required this.text,
       required this.onPressed,
-      required this.iconData});
+      required this.leftWidget});
 
   final String text;
   final void Function() onPressed;
-  final IconData iconData;
+  final Widget leftWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +22,12 @@ class MenuButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             elevation: 6.0,
-            padding: const EdgeInsets.all(20)),
+            padding: const EdgeInsets.all(10)),
         onPressed: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(
-              iconData,
-              color: Colors.black,
-              size: 56,
-            ),
+            leftWidget,
             Expanded(
               child: Text(
                 text,
@@ -39,7 +35,7 @@ class MenuButton extends StatelessWidget {
                 style: const TextStyle(
                   textBaseline: TextBaseline.alphabetic,
                   fontFamily: "poller_one",
-                  fontSize: 30,
+                  fontSize: 20,
                   color: Colors.black,
                 ),
               ),

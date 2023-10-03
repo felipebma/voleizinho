@@ -26,15 +26,30 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   MenuButton(
-                      iconData: Icons.man,
-                      text: "Jogadores",
-                      onPressed: () => {}),
+                    leftWidget: const Icon(
+                      Icons.man,
+                      color: Colors.black,
+                      size: 56,
+                    ),
+                    text: "Jogadores",
+                    onPressed: () => {
+                      Navigator.pushNamed(context, "/players"),
+                    },
+                  ),
                   MenuButton(
-                      iconData: Icons.settings,
+                      leftWidget: const Icon(
+                        Icons.settings,
+                        color: Colors.black,
+                        size: 56,
+                      ),
                       text: "Configurações",
                       onPressed: () => {}),
                   MenuButton(
-                      iconData: Icons.people,
+                      leftWidget: const Icon(
+                        Icons.people,
+                        color: Colors.black,
+                        size: 56,
+                      ),
                       text: "Criar Times",
                       onPressed: () => {}),
                 ],
