@@ -9,22 +9,13 @@ class EditPlayerCard extends StatefulWidget {
     super.key,
     required this.onCancel,
     required this.onSave,
+    required this.player,
   });
 
   final void Function() onCancel;
   final void Function(Player player) onSave;
 
-  final Player player = Player(
-    name: "Jogador",
-    skills: {
-      Skill.spike: 2,
-      Skill.agility: 2,
-      Skill.block: 2,
-      Skill.receive: 2,
-      Skill.serve: 2,
-      Skill.set: 2,
-    },
-  );
+  final Player player;
 
   void resetNewPlayer() {
     player.name = "Jogador";
@@ -100,7 +91,6 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           PlayerCard(

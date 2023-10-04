@@ -18,9 +18,9 @@ class _PlayerCardState extends State<PlayerCard> {
         ? SizedBox(
             width: 250,
             child: TextField(
+              controller: TextEditingController(text: widget.player.name),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Jogador',
               ),
               onChanged: (text) {
                 widget.player.name = text;

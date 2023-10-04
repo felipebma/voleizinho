@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:voleizinho/components/edit_player_card.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_card.dart';
+import 'package:voleizinho/constants.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 
@@ -33,6 +34,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
       Skill.set: 3,
     }),
   ];
+
+  int editingPlayerIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -67,18 +70,22 @@ class _PlayersScreenState extends State<PlayersScreen> {
                     )),
               ),
               if (newPlayer)
-                EditPlayerCard(
-                    onCancel: () => setState(
-                          () {
-                            newPlayer = false;
-                          },
-                        ),
-                    onSave: (player) => setState(
-                          () {
-                            newPlayer = false;
-                            players.add(player);
-                          },
-                        )),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: EditPlayerCard(
+                      player: kDefaultPlayer,
+                      onCancel: () => setState(
+                            () {
+                              newPlayer = false;
+                            },
+                          ),
+                      onSave: (player) => setState(
+                            () {
+                              newPlayer = false;
+                              players.add(player);
+                            },
+                          )),
+                ),
               Expanded(
                 child: ListView.builder(
                   itemCount: players.length,
@@ -87,7 +94,34 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
                         children: [
-                          PlayerCard(player: players[index]),
+                          editingPlayerIndex != index
+                              ? GestureDetector(
+                                  onTap: () => setState(
+                                    () {
+                                      editingPlayerIndex = index;
+                                    },
+                                  ),
+                                  child: PlayerCard(
+                                    player: players[index],
+                                  ),
+                                )
+                              : EditPlayerCard(
+                                  player: kDefaultPlayer.copyWith(
+                                    name: players[index].name,
+                                    skills: players[index].skills,
+                                  ),
+                                  onCancel: () => setState(
+                                    () {
+                                      editingPlayerIndex = -1;
+                                    },
+                                  ),
+                                  onSave: (player) => setState(
+                                    () {
+                                      editingPlayerIndex = -1;
+                                      players[index] = player;
+                                    },
+                                  ),
+                                ),
                           const Divider(
                             height: 1,
                           )
