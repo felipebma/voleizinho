@@ -73,12 +73,6 @@ class _PlayersScreenState extends State<PlayersScreen> {
                             newPlayer = false;
                           },
                         ),
-                    onNewPlayer: (player) => setState(
-                          () {
-                            players.add(player);
-                            newPlayer = false;
-                          },
-                        ),
                     onSave: (player) => setState(
                           () {
                             newPlayer = false;

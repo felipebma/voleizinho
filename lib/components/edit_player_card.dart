@@ -7,12 +7,10 @@ import 'package:voleizinho/model/skills.dart';
 class EditPlayerCard extends StatefulWidget {
   EditPlayerCard({
     super.key,
-    required this.onNewPlayer,
     required this.onCancel,
     required this.onSave,
   });
 
-  final void Function(Player player) onNewPlayer;
   final void Function() onCancel;
   final void Function(Player player) onSave;
 
