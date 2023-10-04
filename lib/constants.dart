@@ -22,14 +22,14 @@ List<Player> playersDB = [
     Skill.serve: 4,
     Skill.set: 4,
   }),
-  Player(name: "Clara", skills: {
-    Skill.spike: 2,
-    Skill.agility: 4,
-    Skill.block: 3,
-    Skill.receive: 3,
-    Skill.serve: 3,
-    Skill.set: 3,
-  }),
+  // Player(name: "Clara", skills: {
+  //   Skill.spike: 2,
+  //   Skill.agility: 4,
+  //   Skill.block: 3,
+  //   Skill.receive: 3,
+  //   Skill.serve: 3,
+  //   Skill.set: 3,
+  // }),
   Player(name: "Maria", skills: {
     Skill.spike: 2,
     Skill.agility: 5,

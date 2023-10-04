@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => const HomeScreen(),
-        "/players": (context) => PlayersScreen(),
+        "/players": (context) => const PlayersScreen(),
         "/team_creation": (context) => const TeamCreationScreen(),
         "/teams_view": (context) => const TeamsViewScreen(),
       },

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:voleizinho/model/skills.dart';
 
 class Player {
@@ -22,5 +24,24 @@ class Player {
       name: name ?? this.name,
       skills: skills ?? {...this.skills},
     );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'skills': json.encode({
+          for (var entry in skills.entries) entry.key.name: entry.value,
+        }),
+      };
+
+  factory Player.fromJson(Map<String, dynamic> jsonObject) {
+    Map<String, dynamic> decoded = json.decode(jsonObject['skills']);
+    Map<Skill, int> skills = {};
+    for (var entry in decoded.entries) {
+      Skill skill =
+          Skill.values.firstWhere((e) => e.toString() == "Skill.${entry.key}");
+      skills[skill] = entry.value;
+    }
+
+    return Player(name: jsonObject['name'], skills: skills);
   }
 }

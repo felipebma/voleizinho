@@ -4,6 +4,8 @@ import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/constants.dart';
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/repositories/player_repository.dart';
+import 'package:voleizinho/shared_pref.dart';
 
 class PlayersScreen extends StatefulWidget {
   const PlayersScreen({super.key});
@@ -13,10 +15,26 @@ class PlayersScreen extends StatefulWidget {
 }
 
 class _PlayersScreenState extends State<PlayersScreen> {
-  List<Player> players = playersDB;
+  late List<Player> players = [];
+
+  SharedPref pref = SharedPref();
+
+  @override
+  void initState() {
+    super.initState();
+    refreshPlayers();
+  }
+
+  void refreshPlayers() {
+    // PlayerRepository.resetDB();
+    pref.read("players").then((value) {
+      setState(() {
+        players = SharedPref.decode(value);
+      });
+    });
+  }
 
   int? editingPlayerIndex;
-
   @override
   Widget build(BuildContext context) {
     players
@@ -66,6 +84,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       onSave: (player) => setState(
                             () {
                               editingPlayerIndex = null;
+                              PlayerRepository.addPlayer(player);
                               players.add(player);
                             },
                           )),
@@ -105,6 +124,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                   onSave: (player) => setState(
                                     () {
                                       editingPlayerIndex = null;
+                                      PlayerRepository.updatePlayer(
+                                          players[index], player);
                                       players[index] = player;
                                     },
                                   ),
