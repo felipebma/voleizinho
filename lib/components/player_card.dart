@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:voleizinho/model/player.dart';
 
 class PlayerCard extends StatefulWidget {
-  const PlayerCard({super.key, required this.player, this.editable = false});
+  const PlayerCard(
+      {super.key,
+      required this.player,
+      this.editable = false,
+      this.color = Colors.white});
 
   final Player player;
   final bool editable;
+  final Color color;
 
   @override
   State<PlayerCard> createState() => _PlayerCardState();
@@ -49,7 +54,7 @@ class _PlayerCardState extends State<PlayerCard> {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: Colors.white,
+          color: widget.color,
           shape: BoxShape.rectangle,
         ),
         child:
