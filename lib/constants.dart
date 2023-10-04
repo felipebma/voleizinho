@@ -16,10 +16,10 @@ Player kDefaultPlayer = Player(
 List<Player> playersDB = [
   Player(name: "Felipe", skills: {
     Skill.spike: 4,
-    Skill.agility: 2,
+    Skill.agility: 1,
     Skill.block: 3,
     Skill.receive: 3,
-    Skill.serve: 5,
+    Skill.serve: 4,
     Skill.set: 4,
   }),
   Player(name: "Clara", skills: {

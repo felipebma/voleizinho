@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:voleizinho/screens/home_screen.dart';
 import 'package:voleizinho/screens/players_screen.dart';
+import 'package:voleizinho/screens/team_creation_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ class MainApp extends StatelessWidget {
       routes: {
         "/": (context) => const HomeScreen(),
         "/players": (context) => PlayersScreen(),
+        "/team_creation": (context) => const TeamCreationScreen(),
       },
       initialRoute: "/",
     );

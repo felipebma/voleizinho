@@ -45,13 +45,16 @@ class HomeScreen extends StatelessWidget {
                       text: "Configurações",
                       onPressed: () => {}),
                   MenuButton(
-                      leftWidget: const Icon(
-                        Icons.people,
-                        color: Colors.black,
-                        size: 56,
-                      ),
-                      text: "Criar Times",
-                      onPressed: () => {}),
+                    leftWidget: const Icon(
+                      Icons.people,
+                      color: Colors.black,
+                      size: 56,
+                    ),
+                    text: "Criar Times",
+                    onPressed: () => {
+                      Navigator.pushNamed(context, "/team_creation"),
+                    },
+                  ),
                 ],
               )
             ],
