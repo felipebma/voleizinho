@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/model/player.dart';
 
-class PlayerView extends StatefulWidget {
-  const PlayerView({super.key, required this.player, this.editable = false});
+class PlayerCard extends StatefulWidget {
+  const PlayerCard({super.key, required this.player, this.editable = false});
 
   final Player player;
   final bool editable;
 
   @override
-  State<PlayerView> createState() => _PlayerViewState();
+  State<PlayerCard> createState() => _PlayerCardState();
 }
 
-class _PlayerViewState extends State<PlayerView> {
+class _PlayerCardState extends State<PlayerCard> {
   @override
   Widget build(BuildContext context) {
     Widget textField = widget.editable

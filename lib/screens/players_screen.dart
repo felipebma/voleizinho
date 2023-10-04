@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/components/edit_player_card.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/components/new_player_form.dart';
-import 'package:voleizinho/components/player_view.dart';
+import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 
 class PlayersScreen extends StatefulWidget {
-  PlayersScreen({super.key, this.newPlayer = false});
-
-  bool newPlayer;
+  const PlayersScreen({super.key});
 
   @override
   State<PlayersScreen> createState() => _PlayersScreenState();
 }
 
 class _PlayersScreenState extends State<PlayersScreen> {
+  bool newPlayer = false;
+
   List<Player> players = [
     Player(name: "Felipe", skills: {
       Skill.spike: 4,
@@ -36,7 +36,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    players.sort((a, b) => a.name.compareTo(b.name));
+    players
+        .sort((a, b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -50,7 +51,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                     text: "NOVO JOGADOR",
                     onPressed: () {
                       setState(() {
-                        widget.newPlayer = true;
+                        newPlayer = true;
                       });
                     },
                     leftWidget: Container(
@@ -65,22 +66,22 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       ),
                     )),
               ),
-              if (widget.newPlayer)
-                NewPlayerForm(
+              if (newPlayer)
+                EditPlayerCard(
                     onCancel: () => setState(
                           () {
-                            widget.newPlayer = false;
+                            newPlayer = false;
                           },
                         ),
                     onNewPlayer: (player) => setState(
                           () {
                             players.add(player);
-                            widget.newPlayer = false;
+                            newPlayer = false;
                           },
                         ),
                     onSave: (player) => setState(
                           () {
-                            widget.newPlayer = false;
+                            newPlayer = false;
                             players.add(player);
                           },
                         )),
@@ -92,7 +93,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
                         children: [
-                          PlayerView(player: players[index]),
+                          PlayerCard(player: players[index]),
                           const Divider(
                             height: 1,
                           )

@@ -21,7 +21,7 @@ extension ParseToString on Skill {
       case Skill.receive:
         return "RECEPÇÃO";
       case Skill.agility:
-        return "AGILIDADE";
+        return "MOVIMENTAÇÃO";
     }
   }
 }

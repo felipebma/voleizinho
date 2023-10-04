@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:voleizinho/components/player_view.dart';
+import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 
-class NewPlayerForm extends StatefulWidget {
-  NewPlayerForm({
+class EditPlayerCard extends StatefulWidget {
+  EditPlayerCard({
     super.key,
     required this.onNewPlayer,
     required this.onCancel,
@@ -41,10 +41,10 @@ class NewPlayerForm extends StatefulWidget {
   }
 
   @override
-  State<NewPlayerForm> createState() => _NewPlayerFormState();
+  State<EditPlayerCard> createState() => _EditPlayerCardState();
 }
 
-class _NewPlayerFormState extends State<NewPlayerForm> {
+class _EditPlayerCardState extends State<EditPlayerCard> {
   List<Widget> playerDetails(Player player) {
     List<Widget> widgets = [];
 
@@ -105,7 +105,7 @@ class _NewPlayerFormState extends State<NewPlayerForm> {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          PlayerView(
+          PlayerCard(
             player: widget.player,
             editable: true,
           ),
