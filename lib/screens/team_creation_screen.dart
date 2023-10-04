@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/constants.dart';
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/screens/teams_view_screen.dart';
+import 'package:voleizinho/services/team_match_service.dart';
 
 class TeamCreationScreen extends StatefulWidget {
   const TeamCreationScreen({super.key});
@@ -55,7 +57,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
                 Row(
                   children: [
                     DropdownMenu<int>(
-                      menuStyle: MenuStyle(alignment: Alignment.center),
+                      menuStyle: const MenuStyle(alignment: Alignment.center),
                       onSelected: (value) => setState(() {
                         playersPerTeam = value!;
                       }),
@@ -76,9 +78,12 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
                     backgroundColor: Colors.green,
                   ),
                   onPressed: () {
-                    print(playersPerTeam);
+                    Navigator.pushNamed(context, "/teams_view",
+                        arguments: TeamsViewScreenArguments(
+                            teams: TeamMatchService.createTeams(
+                                selectedPlayers, playersPerTeam)));
                   },
-                  child: Text(
+                  child: const Text(
                     "Criar Times",
                     style: TextStyle(
                       color: Colors.white,
