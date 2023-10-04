@@ -13,11 +13,9 @@ class PlayersScreen extends StatefulWidget {
 }
 
 class _PlayersScreenState extends State<PlayersScreen> {
-  bool newPlayer = false;
-
   List<Player> players = playersDB;
 
-  int editingPlayerIndex = -1;
+  int? editingPlayerIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                     text: "NOVO JOGADOR",
                     onPressed: () {
                       setState(() {
-                        newPlayer = true;
+                        editingPlayerIndex = -1;
                       });
                     },
                     leftWidget: Container(
@@ -55,23 +53,26 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       ),
                     )),
               ),
-              if (newPlayer)
+              if (editingPlayerIndex == -1)
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: EditPlayerCard(
-                      player: kDefaultPlayer,
+                      player: kDefaultPlayer.copyWith(),
                       onCancel: () => setState(
                             () {
-                              newPlayer = false;
+                              editingPlayerIndex = null;
                             },
                           ),
                       onSave: (player) => setState(
                             () {
-                              newPlayer = false;
+                              editingPlayerIndex = null;
                               players.add(player);
                             },
                           )),
                 ),
+              const SizedBox(
+                height: 30,
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: players.length,
@@ -92,24 +93,24 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                   ),
                                 )
                               : EditPlayerCard(
-                                  player: kDefaultPlayer.copyWith(
+                                  player: Player(
                                     name: players[index].name,
-                                    skills: players[index].skills,
+                                    skills: {...players[index].skills},
                                   ),
                                   onCancel: () => setState(
                                     () {
-                                      editingPlayerIndex = -1;
+                                      editingPlayerIndex = null;
                                     },
                                   ),
                                   onSave: (player) => setState(
                                     () {
-                                      editingPlayerIndex = -1;
+                                      editingPlayerIndex = null;
                                       players[index] = player;
                                     },
                                   ),
                                 ),
                           const Divider(
-                            height: 1,
+                            height: 5,
                           )
                         ],
                       ),

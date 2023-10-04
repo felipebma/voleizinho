@@ -22,6 +22,10 @@ class _PlayerCardState extends State<PlayerCard> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
+              style: const TextStyle(
+                color: Colors.grey,
+                fontFamily: "poller_one",
+              ),
               onChanged: (text) {
                 widget.player.name = text;
               },
@@ -30,9 +34,9 @@ class _PlayerCardState extends State<PlayerCard> {
         : Text(
             widget.player.name,
             style: const TextStyle(
+              fontFamily: "poller_one",
               color: Colors.black,
               fontSize: 20,
-              fontWeight: FontWeight.bold,
             ),
           );
 
@@ -56,9 +60,9 @@ class _PlayerCardState extends State<PlayerCard> {
               Text(
                 player.getAverage().toStringAsFixed(1),
                 style: const TextStyle(
+                  fontFamily: "poller_one",
                   color: Colors.black,
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
               const Icon(

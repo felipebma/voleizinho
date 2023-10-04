@@ -20,7 +20,7 @@ class Player {
   copyWith({String? name, Map<Skill, int>? skills}) {
     return Player(
       name: name ?? this.name,
-      skills: skills ?? this.skills,
+      skills: skills ?? {...this.skills},
     );
   }
 }

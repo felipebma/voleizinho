@@ -17,18 +17,6 @@ class EditPlayerCard extends StatefulWidget {
 
   final Player player;
 
-  void resetNewPlayer() {
-    player.name = "Jogador";
-    player.skills = {
-      Skill.spike: 2,
-      Skill.agility: 2,
-      Skill.block: 2,
-      Skill.receive: 2,
-      Skill.serve: 2,
-      Skill.set: 2,
-    };
-  }
-
   @override
   State<EditPlayerCard> createState() => _EditPlayerCardState();
 }
@@ -51,6 +39,7 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 15,
+                  fontFamily: "poller_one",
                   fontWeight: FontWeight.bold,
                   textBaseline: TextBaseline.alphabetic,
                 ),
@@ -125,14 +114,13 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
                           ),
                           onPressed: () {
                             setState(() {
-                              widget.resetNewPlayer();
                               widget.onCancel();
                             });
                           },
                           child: const Text(
                             "Cancelar",
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontFamily: "poller_one",
                             ),
                           ),
                         ),
@@ -152,13 +140,12 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
                                   skills: {...widget.player.skills},
                                 ),
                               );
-                              widget.resetNewPlayer();
                             });
                           },
                           child: const Text(
                             "Salvar",
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontFamily: "poller_one",
                             ),
                           ),
                         )
