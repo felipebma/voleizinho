@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/constants.dart';
@@ -14,7 +16,27 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
   List<Player> players = playersDB;
   List<Player> selectedPlayers = [];
 
-  int playersPerTeam = 6;
+  int playersPerTeam = 0;
+  int minPlayersPerTeam = 0;
+  int maxPlayersPerTeam = 0;
+
+  void selectPlayer(Player player) {
+    setState(() {
+      if (selectedPlayers.contains(player)) {
+        selectedPlayers.remove(player);
+      } else {
+        selectedPlayers.add(player);
+      }
+      minPlayersPerTeam = min(selectedPlayers.length ~/ 2, 2);
+      maxPlayersPerTeam = selectedPlayers.length ~/ 2;
+      if (playersPerTeam < minPlayersPerTeam) {
+        playersPerTeam = min(selectedPlayers.length ~/ 2, 2);
+      }
+      if (playersPerTeam > maxPlayersPerTeam) {
+        playersPerTeam = maxPlayersPerTeam;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +49,47 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
       body: Center(
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  children: [
+                    DropdownMenu<int>(
+                      menuStyle: MenuStyle(alignment: Alignment.center),
+                      onSelected: (value) => setState(() {
+                        playersPerTeam = value!;
+                      }),
+                      initialSelection: playersPerTeam,
+                      dropdownMenuEntries: List.generate(
+                        maxPlayersPerTeam - minPlayersPerTeam + 1,
+                        (index) => DropdownMenuEntry(
+                          label:
+                              "${index + minPlayersPerTeam} jogadores por time",
+                          value: index + minPlayersPerTeam,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                  onPressed: () {
+                    print(playersPerTeam);
+                  },
+                  child: Text(
+                    "Criar Times",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: players.length,
@@ -37,13 +100,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              if (selectedPlayers.contains(players[index])) {
-                                selectedPlayers.remove(players[index]);
-                              } else {
-                                selectedPlayers.add(players[index]);
-                              }
-                            });
+                            setState(() => selectPlayer(players[index]));
                           },
                           child: PlayerCard(
                             player: players[index],
