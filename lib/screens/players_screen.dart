@@ -4,7 +4,6 @@ import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/constants.dart';
 import 'package:voleizinho/model/player.dart';
-import 'package:voleizinho/model/skills.dart';
 
 class PlayersScreen extends StatefulWidget {
   const PlayersScreen({super.key});
@@ -16,24 +15,7 @@ class PlayersScreen extends StatefulWidget {
 class _PlayersScreenState extends State<PlayersScreen> {
   bool newPlayer = false;
 
-  List<Player> players = [
-    Player(name: "Felipe", skills: {
-      Skill.spike: 4,
-      Skill.agility: 2,
-      Skill.block: 3,
-      Skill.receive: 3,
-      Skill.serve: 5,
-      Skill.set: 4,
-    }),
-    Player(name: "Clara", skills: {
-      Skill.spike: 2,
-      Skill.agility: 4,
-      Skill.block: 3,
-      Skill.receive: 3,
-      Skill.serve: 3,
-      Skill.set: 3,
-    }),
-  ];
+  List<Player> players = playersDB;
 
   int editingPlayerIndex = -1;
 
@@ -42,7 +24,11 @@ class _PlayersScreenState extends State<PlayersScreen> {
     players
         .sort((a, b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFCDE8DE),
+        elevation: 0,
+        foregroundColor: Colors.black,
+      ),
       body: SafeArea(
         child: Center(
           child: Column(
