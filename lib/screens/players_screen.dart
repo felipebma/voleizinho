@@ -5,7 +5,6 @@ import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/constants.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
-import 'package:voleizinho/shared_pref.dart';
 
 class PlayersScreen extends StatefulWidget {
   const PlayersScreen({super.key});
@@ -15,9 +14,8 @@ class PlayersScreen extends StatefulWidget {
 }
 
 class _PlayersScreenState extends State<PlayersScreen> {
-  late List<Player> players = [];
-
-  SharedPref pref = SharedPref();
+  late PlayerRepository playerRepository = PlayerRepository();
+  late List<Player> players = PlayerRepository.getPlayers();
 
   @override
   void initState() {
@@ -26,11 +24,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
   }
 
   void refreshPlayers() {
-    // PlayerRepository.resetDB();
-    pref.read("players").then((value) {
-      setState(() {
-        players = SharedPref.decode(value);
-      });
+    setState(() {
+      players = PlayerRepository.getPlayers();
     });
   }
 
@@ -38,7 +33,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
   @override
   Widget build(BuildContext context) {
     players
-        .sort((a, b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
+        .sort((a, b) => a.name!.toUpperCase().compareTo(b.name!.toUpperCase()));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFCDE8DE),
@@ -85,7 +80,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                             () {
                               editingPlayerIndex = null;
                               PlayerRepository.addPlayer(player);
-                              players.add(player);
+                              refreshPlayers();
                             },
                           )),
                 ),
@@ -112,7 +107,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                   ),
                                 )
                               : EditPlayerCard(
-                                  player: Player(
+                                  player: Player.withArgs(
                                     name: players[index].name,
                                     skills: {...players[index].skills},
                                   ),

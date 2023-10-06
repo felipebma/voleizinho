@@ -135,7 +135,7 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
                           onPressed: () {
                             setState(() {
                               widget.onSave(
-                                Player(
+                                Player.withArgs(
                                   name: widget.player.name,
                                   skills: {...widget.player.skills},
                                 ),

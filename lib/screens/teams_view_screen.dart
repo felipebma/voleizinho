@@ -63,7 +63,7 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
                   ),
                   for (Player player in team.getPlayers())
                     Text(
-                      player.name,
+                      player.name!,
                       style: const TextStyle(
                         fontFamily: "poller_one",
                         color: Colors.black,

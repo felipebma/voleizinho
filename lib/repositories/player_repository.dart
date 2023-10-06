@@ -1,37 +1,31 @@
-import "package:voleizinho/constants.dart";
 import "package:voleizinho/model/player.dart";
-import "package:voleizinho/shared_pref.dart";
+import "package:voleizinho/objectbox.g.dart";
 
 class PlayerRepository {
-  static SharedPref prefs = SharedPref();
+  static Box<Player>? playerBox;
+
+  static void init(Box<Player> box) {
+    playerBox = box;
+  }
 
   static void addPlayer(Player player) async {
-    List<Player> players = SharedPref.decode(await prefs.read("players"));
+    List<Player> players = playerBox!.getAll();
     players.add(player);
-    await prefs.save("players", SharedPref.encode(players));
+    playerBox!.put(player);
   }
 
   static void updatePlayer(Player oldPlayer, Player newPlayer) async {
-    List<Player> players = SharedPref.decode(await prefs.read("players"));
+    List<Player> players = playerBox!.getAll();
     players[players.indexWhere((element) => element.name == oldPlayer.name)] =
         newPlayer;
-    prefs.save("players", SharedPref.encode(players));
+    playerBox!.put(newPlayer);
   }
 
-  static void removePlayer(Player player) async {
-    List<Player> players = SharedPref.decode(await prefs.read("players"));
-    players.remove(player);
-    await prefs.save("players", SharedPref.encode(players));
+  void removePlayer(Player player) async {
+    playerBox!.remove(player.id);
   }
 
   static List<Player> getPlayers() {
-    return prefs.read("players");
-  }
-
-  static void resetDB() async {
-    prefs
-        .save("test", playersDB[0].toJson())
-        .then((value) => print("saved: $value"));
-    prefs.save("players", SharedPref.encode(playersDB));
+    return playerBox!.getAll();
   }
 }

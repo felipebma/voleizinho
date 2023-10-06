@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/screens/teams_view_screen.dart';
 import 'package:voleizinho/services/team_match_service.dart';
-import 'package:voleizinho/shared_pref.dart';
 
 class TeamCreationScreen extends StatefulWidget {
   const TeamCreationScreen({super.key});
@@ -15,14 +15,10 @@ class TeamCreationScreen extends StatefulWidget {
 }
 
 class _TeamCreationScreenState extends State<TeamCreationScreen> {
-  List<Player> players = [];
+  late PlayerRepository playerRepository = PlayerRepository();
+  late List<Player> players = PlayerRepository.getPlayers();
+
   List<Player> selectedPlayers = [];
-
-  SharedPref pref = SharedPref();
-
-  int playersPerTeam = 0;
-  int minPlayersPerTeam = 0;
-  int maxPlayersPerTeam = 0;
 
   @override
   void initState() {
@@ -31,13 +27,14 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
   }
 
   void refreshPlayers() {
-    // PlayerRepository.resetDB();
-    pref.read("players").then((value) {
-      setState(() {
-        players = SharedPref.decode(value);
-      });
+    setState(() {
+      players = PlayerRepository.getPlayers();
     });
   }
+
+  int playersPerTeam = 0;
+  int minPlayersPerTeam = 0;
+  int maxPlayersPerTeam = 0;
 
   void selectPlayer(Player player) {
     setState(() {

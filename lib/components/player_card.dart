@@ -37,7 +37,7 @@ class _PlayerCardState extends State<PlayerCard> {
             ),
           )
         : Text(
-            widget.player.name,
+            widget.player.name!,
             style: const TextStyle(
               fontFamily: "poller_one",
               color: Colors.black,

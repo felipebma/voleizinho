@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/object_box.dart';
+import 'package:voleizinho/objectbox.g.dart';
+import 'package:voleizinho/repositories/player_repository.dart';
+import 'package:voleizinho/repositories/store_repository.dart';
 import 'package:voleizinho/screens/home_screen.dart';
 import 'package:voleizinho/screens/players_screen.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
 import 'package:voleizinho/screens/teams_view_screen.dart';
 
+late ObjectBox objectBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  StoreRepository storeRepository = StoreRepository();
+  await storeRepository.initStore();
+  objectBox = await ObjectBox.create();
+  Box<Player> playerBox = objectBox.store.box<Player>();
+  PlayerRepository.init(playerBox);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const MainApp());
+  runApp(MainApp(storeRepository: storeRepository));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  const MainApp({super.key, required this.storeRepository});
+
+  final StoreRepository storeRepository;
 
   @override
   Widget build(BuildContext context) {
