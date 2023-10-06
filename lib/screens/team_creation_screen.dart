@@ -92,6 +92,18 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
                     backgroundColor: Colors.green,
                   ),
                   onPressed: () {
+                    if (playersPerTeam < 2) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red[700],
+                          content: const Text(
+                            "Você deve selecionar pelo menos 2 jogadores por time!",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      );
+                      return;
+                    }
                     Navigator.pushNamed(context, "/teams_view",
                         arguments: TeamsViewScreenArguments(
                             teams: TeamMatchService.createTeams(

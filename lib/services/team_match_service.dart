@@ -24,17 +24,13 @@ class TeamMatchService {
       }
     }
 
-    if (undraftedPlayers.length > 0) {
+    if (undraftedPlayers.isNotEmpty) {
       Team undraftedTeam = Team();
       for (var player in undraftedPlayers) {
         undraftedTeam.addPlayer(player);
       }
       teams.add(undraftedTeam);
     }
-
-    print(
-        teams.map((e) => e.getPlayers().map((e) => e.name).toList()).toList());
-    print(teams.map((e) => e.getAverage()));
 
     return teams;
   }
