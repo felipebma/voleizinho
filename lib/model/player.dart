@@ -54,7 +54,7 @@ class Player {
     int sumWeights = 0;
     skills.forEach((key, value) {
       sum += ((value - player.skills[key]!).abs()) * (weights[key] ?? 1);
-      sumWeights += 50;
+      sumWeights += (weights[key] ?? 1) * 5;
     });
     return 1 - sum / sumWeights;
   }

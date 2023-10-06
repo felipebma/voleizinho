@@ -6,11 +6,13 @@ class PlayerCard extends StatefulWidget {
       {super.key,
       required this.player,
       this.editable = false,
-      this.color = Colors.white});
+      this.color = Colors.white,
+      this.hideAverage = false});
 
   final Player player;
   final bool editable;
   final Color color;
+  final bool hideAverage;
 
   @override
   State<PlayerCard> createState() => _PlayerCardState();
@@ -60,22 +62,23 @@ class _PlayerCardState extends State<PlayerCard> {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           textField,
-          Row(
-            children: [
-              Text(
-                player.getAverage().toStringAsFixed(1),
-                style: const TextStyle(
-                  fontFamily: "poller_one",
-                  color: Colors.black,
-                  fontSize: 20,
+          if (!widget.hideAverage)
+            Row(
+              children: [
+                Text(
+                  player.getAverage().toStringAsFixed(1),
+                  style: const TextStyle(
+                    fontFamily: "poller_one",
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
                 ),
-              ),
-              const Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-            ],
-          )
+                const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+              ],
+            )
         ]),
       ),
     );
