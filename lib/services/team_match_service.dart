@@ -31,6 +31,7 @@ class TeamMatchService {
         teams[j].addPlayer(undraftedPlayers.removeAt(0));
       }
     }
+    shuffleTeams();
 
     if (undraftedPlayers.isNotEmpty) {
       Team undraftedTeam = Team();
@@ -39,8 +40,45 @@ class TeamMatchService {
       }
       teams.add(undraftedTeam);
     }
-    shuffleTeams();
+    for (int i = 0; i < 6; i++) {
+      for (int i = 0; i < teams.length; i++) {
+        for (int j = i + 1; j < teams.length; j++) {
+          balanceTeams(teams[i], teams[j]);
+        }
+      }
+    }
     return teams;
+  }
+
+  static void balanceTeams(Team team1, Team team2) {
+    List<Player> bestPair = [];
+    double bestDiff = (team1.getAverage() - team2.getAverage()).abs();
+    for (Player p1 in [...team1.players]) {
+      for (Player p2 in [...team2.players]) {
+        double avg1 = p2.getAverage();
+        for (Player p in team1.players) {
+          if (p != p1) {
+            avg1 += p.getAverage();
+          }
+        }
+        avg1 /= team1.players.length;
+        double avg2 = p1.getAverage();
+        for (Player p in team2.players) {
+          if (p != p2) {
+            avg2 += p.getAverage();
+          }
+        }
+        avg2 /= team1.players.length;
+        double diff = (avg1 - avg2).abs();
+        if (diff < bestDiff) {
+          bestDiff = diff;
+          bestPair = [p1, p2];
+        }
+      }
+    }
+    if (bestPair.isNotEmpty) {
+      swapPlayers(bestPair[0], bestPair[1]);
+    }
   }
 
   static void shuffleTeams() {
@@ -53,15 +91,21 @@ class TeamMatchService {
   static List<Player> getSimilarPlayers(Player player) {
     List<Player> players = [];
     for (var team in teams) {
-      print("entrou");
       if (!team.players.contains(player)) {
         players.addAll(team.players);
       }
     }
-    print(players.length);
     players
         .sort((a, b) => player.similarity(b).compareTo(player.similarity(a)));
     return players;
+  }
+
+  static void swapPlayersInTeams(
+      Team team1, Player player1, Team team2, Player player2) {
+    team1.players.remove(player1);
+    team1.players.add(player2);
+    team2.players.remove(player2);
+    team2.players.add(player1);
   }
 
   static void swapPlayers(Player player1, Player player2) {

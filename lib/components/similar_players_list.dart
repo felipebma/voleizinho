@@ -14,7 +14,7 @@ class SimilarPlayersList extends StatelessWidget {
     return Column(
       children: [
         for (Player similarPlayer
-            in TeamMatchService.getSimilarPlayers(player).take(3))
+            in TeamMatchService.getSimilarPlayers(player).take(5))
           Material(
             elevation: 3,
             child: Container(
