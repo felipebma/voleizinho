@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:objectbox/objectbox.dart';
 import 'package:voleizinho/model/skills.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 @Entity()
 class Player {
@@ -38,10 +39,13 @@ class Player {
 
   double getAverage() {
     double sum = 0;
+    var weights = UserPreferences.skillWeights;
+    int sumWeights = 0;
     skills.forEach((key, value) {
-      sum += value;
+      sum += value * (weights[key] ?? 1);
+      sumWeights += weights[key] ?? 1;
     });
-    return sum / skills.length;
+    return sum / sumWeights;
   }
 
   copyWith({String? name, Map<Skill, int>? skills}) {

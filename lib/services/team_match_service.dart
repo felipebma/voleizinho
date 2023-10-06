@@ -1,7 +1,10 @@
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/model/team.dart';
 
 class TeamMatchService {
+  static Map<Skill, int> skillWeights = {};
+
   static List<Team> createTeams(List<Player> players, int playersPerTeam) {
     List<Team> teams = [];
     List<Player> undraftedPlayers = [...players];

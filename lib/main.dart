@@ -11,9 +11,13 @@ import 'package:voleizinho/screens/players_screen.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
 import 'package:voleizinho/screens/teams_view_screen.dart';
 
+import 'package:voleizinho/services/user_preferences.dart';
+
 late ObjectBox objectBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await UserPreferences.init_user_preferences();
 
   StoreRepository storeRepository = StoreRepository();
   await storeRepository.initStore();

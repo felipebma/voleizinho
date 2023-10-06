@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/model/skills.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -14,6 +16,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int receiveWeight = 0;
   int setterWeight = 0;
   int agilityWeight = 0;
+
+  Map<Skill, int> weights = UserPreferences.skillWeights;
+
+  List<SkillGauge> skillGauges() {
+    List<SkillGauge> skillGauges = [];
+    for (Skill skill in Skill.values) {
+      skillGauges.add(SkillGauge(
+        label: skill.toShortString(),
+        onChanged: (double value) {
+          setState(() {
+            weights[skill] = value.toInt();
+          });
+        },
+        value: weights[skill] ?? 1,
+      ));
+    }
+    skillGauges.sort((a, b) => a.label.compareTo(b.label));
+    return skillGauges;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,70 +60,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           fontFamily: "poller_one",
                           fontWeight: FontWeight.bold),
                     ),
-                    SkillGauge(
-                      label: "Ataque",
-                      onChanged: (double value) {
-                        setState(() {
-                          spikeWeight = value.toInt();
-                        });
-                      },
-                      value: spikeWeight,
-                    ),
-                    SkillGauge(
-                      label: "Bloqueio",
-                      onChanged: (double value) {
-                        setState(() {
-                          blockWeight = value.toInt();
-                        });
-                      },
-                      value: blockWeight,
-                    ),
-                    SkillGauge(
-                      label: "Saque",
-                      onChanged: (double value) {
-                        setState(() {
-                          serveWeight = value.toInt();
-                        });
-                      },
-                      value: serveWeight,
-                    ),
-                    SkillGauge(
-                      label: "Recepção",
-                      onChanged: (double value) {
-                        setState(() {
-                          receiveWeight = value.toInt();
-                        });
-                      },
-                      value: receiveWeight,
-                    ),
-                    SkillGauge(
-                      label: "Levantamento",
-                      onChanged: (double value) {
-                        setState(() {
-                          setterWeight = value.toInt();
-                        });
-                      },
-                      value: setterWeight,
-                    ),
-                    SkillGauge(
-                      label: "Movimentação",
-                      onChanged: (double value) {
-                        setState(() {
-                          agilityWeight = value.toInt();
-                        });
-                      },
-                      value: agilityWeight,
-                    ),
+                    ...skillGauges(),
                   ],
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    UserPreferences.update_skill_weight(weights);
+                    Navigator.pop(context);
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.green,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                     padding: const EdgeInsets.all(20),
+                    elevation: 6,
                   ),
                   child: const Text(
                     "Salvar",
@@ -137,7 +109,8 @@ class SkillGauge extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: const TextStyle(fontFamily: "poller_one")),
+        Text(label,
+            style: const TextStyle(fontSize: 10, fontFamily: "poller_one")),
         Slider(
           value: value.toDouble(),
           min: 0,
