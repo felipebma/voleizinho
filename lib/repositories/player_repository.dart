@@ -15,13 +15,10 @@ class PlayerRepository {
   }
 
   static void updatePlayer(Player oldPlayer, Player newPlayer) async {
-    List<Player> players = playerBox!.getAll();
-    players[players.indexWhere((element) => element.name == oldPlayer.name)] =
-        newPlayer;
     playerBox!.put(newPlayer);
   }
 
-  void removePlayer(Player player) async {
+  static void removePlayer(Player player) async {
     playerBox!.remove(player.id);
   }
 

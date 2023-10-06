@@ -43,7 +43,9 @@ class HomeScreen extends StatelessWidget {
                         size: 56,
                       ),
                       text: "Configurações",
-                      onPressed: () => {}),
+                      onPressed: () => {
+                            Navigator.pushNamed(context, "/settings"),
+                          }),
                   MenuButton(
                     leftWidget: const Icon(
                       Icons.people,

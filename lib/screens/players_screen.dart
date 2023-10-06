@@ -97,6 +97,15 @@ class _PlayersScreenState extends State<PlayersScreen> {
                         children: [
                           editingPlayerIndex != index
                               ? GestureDetector(
+                                  onHorizontalDragEnd: (details) => setState(
+                                    () {
+                                      if (details.primaryVelocity! < 0) {
+                                        PlayerRepository.removePlayer(
+                                            players[index]);
+                                        refreshPlayers();
+                                      }
+                                    },
+                                  ),
                                   onTap: () => setState(
                                     () {
                                       editingPlayerIndex = index;
@@ -119,9 +128,11 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                   onSave: (player) => setState(
                                     () {
                                       editingPlayerIndex = null;
+                                      player.id = players[index].id;
                                       PlayerRepository.updatePlayer(
                                           players[index], player);
                                       players[index] = player;
+                                      refreshPlayers();
                                     },
                                   ),
                                 ),
