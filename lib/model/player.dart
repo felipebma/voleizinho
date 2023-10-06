@@ -48,6 +48,17 @@ class Player {
     return sum / sumWeights;
   }
 
+  double similarity(Player player) {
+    double sum = 0;
+    var weights = UserPreferences.skillWeights;
+    int sumWeights = 0;
+    skills.forEach((key, value) {
+      sum += ((value - player.skills[key]!).abs()) * (weights[key] ?? 1);
+      sumWeights += 50;
+    });
+    return 1 - sum / sumWeights;
+  }
+
   copyWith({String? name, Map<Skill, int>? skills}) {
     return Player.withArgs(
       name: name ?? this.name,
