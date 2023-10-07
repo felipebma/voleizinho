@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/components/similar_players_list.dart';
 import 'package:voleizinho/model/player.dart';
@@ -35,6 +36,18 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
       body: Center(
           child: Column(
         children: [
+          MenuButton(
+            text: "Selecionar Jogadores",
+            onPressed: () {
+              setState(() {
+                Navigator.pushReplacementNamed(context, '/team_creation');
+              });
+            },
+            leftWidget: Container(
+              child: const Icon(
+                  color: Colors.black, Icons.keyboard_backspace_sharp),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: teams.length,

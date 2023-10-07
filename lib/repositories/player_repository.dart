@@ -8,21 +8,21 @@ class PlayerRepository {
     playerBox = box;
   }
 
-  static void addPlayer(Player player) async {
+  void addPlayer(Player player) async {
     List<Player> players = playerBox!.getAll();
     players.add(player);
     playerBox!.put(player);
   }
 
-  static void updatePlayer(Player oldPlayer, Player newPlayer) async {
+  void updatePlayer(Player oldPlayer, Player newPlayer) async {
     playerBox!.put(newPlayer);
   }
 
-  static void removePlayer(Player player) async {
+  void removePlayer(Player player) async {
     playerBox!.remove(player.id);
   }
 
-  static List<Player> getPlayers() {
+  List<Player> getPlayers() {
     return playerBox!.getAll();
   }
 }

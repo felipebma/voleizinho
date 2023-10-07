@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/menu_button.dart';
+import 'package:voleizinho/screens/teams_view_screen.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -52,9 +54,19 @@ class HomeScreen extends StatelessWidget {
                       color: Colors.black,
                       size: 56,
                     ),
-                    text: "Criar Times",
-                    onPressed: () => {
-                      Navigator.pushNamed(context, "/team_creation"),
+                    text: "Times",
+                    onPressed: () async {
+                      UserPreferences.getTeams().then(
+                        (value) {
+                          if (value.isNotEmpty) {
+                            Navigator.pushNamed(context, "/teams_view",
+                                arguments:
+                                    TeamsViewScreenArguments(teams: value));
+                          } else {
+                            Navigator.pushNamed(context, "/team_creation");
+                          }
+                        },
+                      );
                     },
                   ),
                 ],

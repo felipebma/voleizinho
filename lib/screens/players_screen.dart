@@ -15,7 +15,7 @@ class PlayersScreen extends StatefulWidget {
 
 class _PlayersScreenState extends State<PlayersScreen> {
   late PlayerRepository playerRepository = PlayerRepository();
-  late List<Player> players = PlayerRepository.getPlayers();
+  late List<Player> players = playerRepository.getPlayers();
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   void refreshPlayers() {
     setState(() {
-      players = PlayerRepository.getPlayers();
+      players = playerRepository.getPlayers();
     });
   }
 
@@ -45,26 +45,39 @@ class _PlayersScreenState extends State<PlayersScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: MenuButton(
-                    text: "NOVO JOGADOR",
-                    onPressed: () {
-                      setState(() {
-                        editingPlayerIndex = -1;
-                      });
-                    },
-                    leftWidget: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.green,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    )),
+              MenuButton(
+                text: "NOVO JOGADOR",
+                onPressed: () {
+                  setState(() {
+                    editingPlayerIndex = -1;
+                  });
+                },
+                leftWidget: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.green,
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+              ),
+              MenuButton(
+                text: "CRIAR TIMES",
+                onPressed: () {
+                  setState(() {
+                    Navigator.pushNamed(context, '/team_creation');
+                  });
+                },
+                leftWidget: Container(
+                  child: const Icon(
+                    color: Colors.black,
+                    Icons.group_rounded,
+                    size: 30,
+                  ),
+                ),
               ),
               if (editingPlayerIndex == -1)
                 Padding(
@@ -79,7 +92,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       onSave: (player) => setState(
                             () {
                               editingPlayerIndex = null;
-                              PlayerRepository.addPlayer(player);
+                              playerRepository.addPlayer(player);
                               refreshPlayers();
                             },
                           )),
@@ -100,8 +113,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                   onHorizontalDragEnd: (details) => setState(
                                     () {
                                       if (details.primaryVelocity! < 0) {
-                                        PlayerRepository.removePlayer(
-                                            players[index]);
+                                        playerRepository
+                                            .removePlayer(players[index]);
                                         refreshPlayers();
                                       }
                                     },
@@ -129,7 +142,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                     () {
                                       editingPlayerIndex = null;
                                       player.id = players[index].id;
-                                      PlayerRepository.updatePlayer(
+                                      playerRepository.updatePlayer(
                                           players[index], player);
                                       players[index] = player;
                                       refreshPlayers();

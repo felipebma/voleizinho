@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/model/team.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/screens/teams_view_screen.dart';
 import 'package:voleizinho/services/team_match_service.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class TeamCreationScreen extends StatefulWidget {
   const TeamCreationScreen({super.key});
@@ -16,7 +18,7 @@ class TeamCreationScreen extends StatefulWidget {
 
 class _TeamCreationScreenState extends State<TeamCreationScreen> {
   late PlayerRepository playerRepository = PlayerRepository();
-  late List<Player> players = PlayerRepository.getPlayers();
+  late List<Player> players = playerRepository.getPlayers();
 
   List<Player> selectedPlayers = [];
 
@@ -26,9 +28,31 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
     refreshPlayers();
   }
 
+  void createTeams() async {
+    if (playersPerTeam < 2) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red[700],
+          content: const Text(
+            "Você deve selecionar pelo menos 2 jogadores por time!",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+      return;
+    }
+    List<Team> teams =
+        TeamMatchService.createTeams(selectedPlayers, playersPerTeam);
+    await UserPreferences.setTeams(teams);
+
+    if (!context.mounted) return;
+    Navigator.pushReplacementNamed(context, "/teams_view",
+        arguments: TeamsViewScreenArguments(teams: teams));
+  }
+
   void refreshPlayers() {
     setState(() {
-      players = PlayerRepository.getPlayers();
+      players = playerRepository.getPlayers();
       players.sort(
           (a, b) => a.name!.toUpperCase().compareTo(b.name!.toUpperCase()));
     });
@@ -93,24 +117,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
-                  onPressed: () {
-                    if (playersPerTeam < 2) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.red[700],
-                          content: const Text(
-                            "Você deve selecionar pelo menos 2 jogadores por time!",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      );
-                      return;
-                    }
-                    Navigator.pushNamed(context, "/teams_view",
-                        arguments: TeamsViewScreenArguments(
-                            teams: TeamMatchService.createTeams(
-                                selectedPlayers, playersPerTeam)));
-                  },
+                  onPressed: () => createTeams(),
                   child: const Text(
                     "Criar Times",
                     style: TextStyle(
