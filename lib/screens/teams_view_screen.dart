@@ -35,71 +35,77 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
       body: Center(
           child: Column(
         children: [
-          for (Team team in teams)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    color: Colors.red,
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Time ${teams.indexOf(team) + 1}',
-                          style: const TextStyle(
-                            fontFamily: "poller_one",
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: teams.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        color: Colors.red,
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Time ${index + 1}',
+                              style: const TextStyle(
+                                fontFamily: "poller_one",
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(teams[index].getAverage().toStringAsFixed(2),
+                                style: const TextStyle(
+                                  fontFamily: "poller_one",
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                )),
+                          ],
                         ),
-                        Text(team.getAverage().toStringAsFixed(2),
-                            style: const TextStyle(
-                              fontFamily: "poller_one",
-                              color: Colors.black,
-                              fontSize: 20,
-                            )),
-                      ],
-                    ),
+                      ),
+                      for (Player player in teams[index].getPlayers())
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (switchingPlayer == player) {
+                                    switchingPlayer = null;
+                                  } else {
+                                    switchingPlayer = player;
+                                  }
+                                });
+                              },
+                              child: PlayerCard(
+                                player: player,
+                                hideAverage: true,
+                              ),
+                            ),
+                            if (switchingPlayer == player)
+                              SimilarPlayersList(
+                                player: player,
+                                onPlayerSwitch: (Player similarPlayer) => {
+                                  TeamMatchService.swapPlayers(
+                                      player, similarPlayer),
+                                  setState(() {
+                                    switchingPlayer = null;
+                                    teams = TeamMatchService.teams;
+                                  })
+                                },
+                              ),
+                          ],
+                        )
+                    ],
                   ),
-                  for (Player player in team.getPlayers())
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (switchingPlayer == player) {
-                                switchingPlayer = null;
-                              } else {
-                                switchingPlayer = player;
-                              }
-                            });
-                          },
-                          child: PlayerCard(
-                            player: player,
-                            hideAverage: true,
-                          ),
-                        ),
-                        if (switchingPlayer == player)
-                          SimilarPlayersList(
-                            player: player,
-                            onPlayerSwitch: (Player similarPlayer) => {
-                              TeamMatchService.swapPlayers(
-                                  player, similarPlayer),
-                              setState(() {
-                                switchingPlayer = null;
-                                teams = TeamMatchService.teams;
-                              })
-                            },
-                          ),
-                      ],
-                    )
-                ],
-              ),
+                );
+              },
             ),
+          ),
         ],
       )),
     );

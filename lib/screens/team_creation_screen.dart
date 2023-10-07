@@ -29,6 +29,8 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
   void refreshPlayers() {
     setState(() {
       players = PlayerRepository.getPlayers();
+      players.sort(
+          (a, b) => a.name!.toUpperCase().compareTo(b.name!.toUpperCase()));
     });
   }
 
