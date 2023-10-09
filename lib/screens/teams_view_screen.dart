@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/components/player_team_view_card.dart';
-import 'package:voleizinho/components/similar_players_list.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
 import 'package:voleizinho/services/team_match_service.dart';
@@ -50,10 +48,8 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
                 Navigator.pushReplacementNamed(context, '/team_creation');
               });
             },
-            leftWidget: Container(
-              child: const Icon(
-                  color: Colors.black, Icons.keyboard_backspace_sharp),
-            ),
+            leftWidget:
+                const Icon(color: Colors.black, Icons.keyboard_backspace_sharp),
           ),
           Expanded(
             child: ListView.builder(

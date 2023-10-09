@@ -84,78 +84,81 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
         elevation: 0,
         foregroundColor: Colors.black,
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(
-                  children: [
-                    DropdownMenu<int>(
-                      menuStyle: const MenuStyle(alignment: Alignment.center),
-                      onSelected: (value) => setState(() {
-                        playersPerTeam = value!;
-                      }),
-                      initialSelection: playersPerTeam,
-                      dropdownMenuEntries: List.generate(
-                        maxPlayersPerTeam - minPlayersPerTeam + 1,
-                        (index) => DropdownMenuEntry(
-                          label:
-                              "${index + minPlayersPerTeam} jogadores por time",
-                          value: index + minPlayersPerTeam,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.green,
-                  ),
-                  onPressed: () => createTeams(),
-                  child: const Text(
-                    "Criar Times",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: players.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() => selectPlayer(players[index]));
-                          },
-                          child: PlayerCard(
-                            player: players[index],
-                            color: selectedPlayers.contains(players[index])
-                                ? Colors.green
-                                : Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Center(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    children: [
+                      DropdownMenu<int>(
+                        menuStyle: const MenuStyle(alignment: Alignment.center),
+                        onSelected: (value) => setState(() {
+                          playersPerTeam = value!;
+                        }),
+                        initialSelection: playersPerTeam,
+                        dropdownMenuEntries: List.generate(
+                          maxPlayersPerTeam - minPlayersPerTeam + 1,
+                          (index) => DropdownMenuEntry(
+                            label:
+                                "${index + minPlayersPerTeam} jogadores por time",
+                            value: index + minPlayersPerTeam,
                           ),
                         ),
-                        const Divider(
-                          color: Colors.black,
-                          height: 1,
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.green,
                     ),
-                  );
-                },
+                    onPressed: () => createTeams(),
+                    child: const Text(
+                      "Criar Times",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 30,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: players.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() => selectPlayer(players[index]));
+                            },
+                            child: PlayerCard(
+                              player: players[index],
+                              color: selectedPlayers.contains(players[index])
+                                  ? Colors.green
+                                  : Colors.white,
+                            ),
+                          ),
+                          const Divider(
+                            color: Colors.black,
+                            height: 1,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
