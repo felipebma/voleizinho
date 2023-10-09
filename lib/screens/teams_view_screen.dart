@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_card.dart';
+import 'package:voleizinho/components/player_team_view_card.dart';
 import 'package:voleizinho/components/similar_players_list.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
@@ -15,11 +16,24 @@ class TeamsViewScreen extends StatefulWidget {
 
 class _TeamsViewScreenState extends State<TeamsViewScreen> {
   Player? switchingPlayer;
+
+  void onPlayerSwitch(Player similarPlayer) {
+    TeamMatchService.swapPlayers(switchingPlayer!, similarPlayer);
+    setState(() {
+      switchingPlayer = null;
+    });
+  }
+
+  void onPlayerTap(Player player) {
+    setState(() {
+      switchingPlayer = switchingPlayer == player ? null : player;
+    });
+  }
+
+  List<Team> teams = TeamMatchService.teams;
+
   @override
   Widget build(BuildContext context) {
-    List<Team> teams = TeamMatchService.teams;
-    print(
-        teams.map((e) => e.getPlayers().map((e) => e.name).toList()).toList());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFCDE8DE),
@@ -77,33 +91,11 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
                       for (Player player in teams[index].getPlayers())
                         Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (switchingPlayer == player) {
-                                    switchingPlayer = null;
-                                  } else {
-                                    switchingPlayer = player;
-                                  }
-                                });
-                              },
-                              child: PlayerCard(
+                            PlayerTeamViewCard(
                                 player: player,
-                                hideAverage: true,
-                              ),
-                            ),
-                            if (switchingPlayer == player)
-                              SimilarPlayersList(
-                                player: player,
-                                onPlayerSwitch: (Player similarPlayer) => {
-                                  TeamMatchService.swapPlayers(
-                                      player, similarPlayer),
-                                  setState(() {
-                                    switchingPlayer = null;
-                                    teams = TeamMatchService.teams;
-                                  })
-                                },
-                              ),
+                                onPlayerSwitch: onPlayerSwitch,
+                                onPlayerTap: onPlayerTap,
+                                showDetails: switchingPlayer == player),
                           ],
                         )
                     ],
