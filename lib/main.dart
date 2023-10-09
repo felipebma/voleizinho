@@ -26,11 +26,11 @@ Future<void> main() async {
   objectBox = await ObjectBox.create();
   Box<Player> playerBox = objectBox.store.box<Player>();
   PlayerRepository.init(playerBox);
-  if (PlayerRepository().getPlayers().isEmpty) {
-    for (Player p in playersDB) {
-      PlayerRepository().addPlayer(p);
-    }
-  }
+  // if (PlayerRepository().getPlayers().isEmpty) {
+  //   for (Player p in playersDB) {
+  //     PlayerRepository().addPlayer(p);
+  //   }
+  // }
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MainApp(storeRepository: storeRepository));
 }
