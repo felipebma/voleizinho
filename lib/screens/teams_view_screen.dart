@@ -13,20 +13,13 @@ class TeamsViewScreen extends StatefulWidget {
   State<TeamsViewScreen> createState() => _TeamsViewScreenState();
 }
 
-class TeamsViewScreenArguments {
-  TeamsViewScreenArguments({required this.teams});
-
-  final List<Team> teams;
-}
-
 class _TeamsViewScreenState extends State<TeamsViewScreen> {
   Player? switchingPlayer;
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as TeamsViewScreenArguments;
-
-    List<Team> teams = args.teams;
+    List<Team> teams = TeamMatchService.teams;
+    print(
+        teams.map((e) => e.getPlayers().map((e) => e.name).toList()).toList());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFCDE8DE),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/screens/teams_view_screen.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -59,9 +58,7 @@ class HomeScreen extends StatelessWidget {
                       UserPreferences.getTeams().then(
                         (value) {
                           if (value.isNotEmpty) {
-                            Navigator.pushNamed(context, "/teams_view",
-                                arguments:
-                                    TeamsViewScreenArguments(teams: value));
+                            Navigator.pushNamed(context, "/teams_view");
                           } else {
                             Navigator.pushNamed(context, "/team_creation");
                           }

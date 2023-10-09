@@ -109,15 +109,19 @@ class SkillGauge extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label,
-            style: const TextStyle(fontSize: 10, fontFamily: "poller_one")),
-        Slider(
-          value: value.toDouble(),
-          min: 0,
-          max: 10,
-          divisions: 10,
-          label: value.toString(),
-          onChanged: onChanged,
+        Expanded(
+          child: Text(label,
+              style: const TextStyle(fontSize: 10, fontFamily: "poller_one")),
+        ),
+        Expanded(
+          child: Slider(
+            value: value.toDouble(),
+            min: 0,
+            max: 10,
+            divisions: 10,
+            label: value.toString(),
+            onChanged: onChanged,
+          ),
         ),
       ],
     );

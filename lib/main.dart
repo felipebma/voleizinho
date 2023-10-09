@@ -11,6 +11,7 @@ import 'package:voleizinho/screens/players_screen.dart';
 import 'package:voleizinho/screens/settings_screen.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
 import 'package:voleizinho/screens/teams_view_screen.dart';
+import 'package:voleizinho/services/team_match_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 late ObjectBox objectBox;
@@ -21,6 +22,7 @@ Future<void> main() async {
 
   StoreRepository storeRepository = StoreRepository();
   await storeRepository.initStore();
+  await TeamMatchService.loadStoredTeams();
   objectBox = await ObjectBox.create();
   Box<Player> playerBox = objectBox.store.box<Player>();
   PlayerRepository.init(playerBox);

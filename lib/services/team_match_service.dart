@@ -1,6 +1,7 @@
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/model/team.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class TeamMatchService {
   static Map<Skill, int> skillWeights = {};
@@ -10,7 +11,12 @@ class TeamMatchService {
     return teams;
   }
 
-  static List<Team> createTeams(List<Player> players, int playersPerTeam) {
+  static Future<void> loadStoredTeams() async {
+    teams = await UserPreferences.getTeams();
+  }
+
+  static Future<void> createTeams(
+      List<Player> players, int playersPerTeam) async {
     teams = [];
     List<Player> undraftedPlayers = [...players];
     undraftedPlayers.sort((a, b) => b.getAverage().compareTo(a.getAverage()));
@@ -47,7 +53,7 @@ class TeamMatchService {
         }
       }
     }
-    return teams;
+    await UserPreferences.setTeams(teams);
   }
 
   static void balanceTeams(Team team1, Team team2) {
@@ -123,15 +129,15 @@ class TeamMatchService {
   static double avgDiffOnSwap(Player player1, Player player2) {
     double avgDiff = 0;
     for (var team in teams) {
-      Team team_copy = Team();
-      team_copy.players = [...team.players];
+      Team teamCopy = Team();
+      teamCopy.players = [...team.players];
       if (team.players.contains(player1)) {
-        team_copy.players.remove(player1);
-        team_copy.players.add(player2);
-        avgDiff = team_copy.getAverage();
-        team_copy.players.remove(player2);
-        team_copy.players.add(player1);
-        avgDiff -= team_copy.getAverage();
+        teamCopy.players.remove(player1);
+        teamCopy.players.add(player2);
+        avgDiff = teamCopy.getAverage();
+        teamCopy.players.remove(player2);
+        teamCopy.players.add(player1);
+        avgDiff -= teamCopy.getAverage();
       }
     }
     return avgDiff;

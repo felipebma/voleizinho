@@ -3,11 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
-import 'package:voleizinho/model/team.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
-import 'package:voleizinho/screens/teams_view_screen.dart';
 import 'package:voleizinho/services/team_match_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
 class TeamCreationScreen extends StatefulWidget {
   const TeamCreationScreen({super.key});
@@ -41,13 +38,12 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
       );
       return;
     }
-    List<Team> teams =
-        TeamMatchService.createTeams(selectedPlayers, playersPerTeam);
-    await UserPreferences.setTeams(teams);
+    await TeamMatchService.createTeams(selectedPlayers, playersPerTeam);
 
-    if (!context.mounted) return;
-    Navigator.pushReplacementNamed(context, "/teams_view",
-        arguments: TeamsViewScreenArguments(teams: teams));
+    while (!context.mounted) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    if (context.mounted) Navigator.pushReplacementNamed(context, "/teams_view");
   }
 
   void refreshPlayers() {
