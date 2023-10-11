@@ -1,9 +1,10 @@
 import 'package:objectbox/objectbox.dart' as objectbox;
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:voleizinho/objectbox.g.dart';
 
-/// Repository to initilialize the ObjectBox Store object
+/// Repository to initialize the ObjectBox Store object
 class StoreRepository {
   late final objectbox.Store _store;
 

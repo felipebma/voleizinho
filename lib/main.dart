@@ -19,7 +19,7 @@ late ObjectBox objectBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await UserPreferences.init_user_preferences();
+  await UserPreferences.initUserPreferences();
 
   StoreRepository storeRepository = StoreRepository();
   await storeRepository.initStore();

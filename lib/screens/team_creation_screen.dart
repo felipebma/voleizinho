@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
@@ -111,6 +112,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
         elevation: 0,
         foregroundColor: Colors.black,
       ),
+      drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 16),
         child: Center(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
@@ -44,6 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           elevation: 0,
           foregroundColor: Colors.black,
         ),
+        drawer: const CustomDrawer(),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(50.0),
@@ -65,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    UserPreferences.update_skill_weight(weights);
+                    UserPreferences.updateSkillWeight(weights);
                     Navigator.pop(context);
                   },
                   style: TextButton.styleFrom(

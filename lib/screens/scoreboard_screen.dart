@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:voleizinho/components/drawer.dart';
 
 class ScoreBoardScreen extends StatefulWidget {
   const ScoreBoardScreen({super.key});
@@ -35,37 +36,11 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: const Color(0x0000000),
+        backgroundColor: const Color(0x00000000),
         elevation: 0,
         foregroundColor: Colors.black,
-        title: GestureDetector(
-          onTap: () => {
-            setState(() {
-              time1Score = 0;
-              time2Score = 0;
-            })
-          },
-          child: Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.green,
-            ),
-            // child: const Column(
-            //   children: [
-            //     Text(
-            //       "reset",
-            //       style: TextStyle(
-            //         color: Colors.white,
-            //         fontSize: 30,
-            //         fontFamily: "poller_one",
-            //       ),
-            //     ),
-            //   ],
-            // ),
-          ),
-        ),
       ),
+      drawer: const CustomDrawer(),
       body: Row(
         children: [
           Expanded(
@@ -128,14 +103,12 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
               child: Container(
                 color: Colors.blue,
                 child: Center(
-                  child: Container(
-                    child: Text(
-                      time2Score.toString(),
-                      style: const TextStyle(
-                        fontSize: 300,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                  child: Text(
+                    time2Score.toString(),
+                    style: const TextStyle(
+                      fontSize: 300,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                 ),

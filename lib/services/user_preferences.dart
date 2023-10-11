@@ -5,9 +5,9 @@ import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/model/team.dart';
 
 class UserPreferences {
-  static Map<Skill, int> _skillWeights = Map<Skill, int>();
+  static final Map<Skill, int> _skillWeights = <Skill, int>{};
 
-  static Future<Map<Skill, int>> init_user_preferences() async {
+  static Future<Map<Skill, int>> initUserPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     for (Skill skill in Skill.values) {
       _skillWeights[skill] = prefs.getInt(skill.toString()) ?? 1;
@@ -15,7 +15,7 @@ class UserPreferences {
     return _skillWeights;
   }
 
-  static void update_skill_weight(Map<Skill, int> weights) async {
+  static void updateSkillWeight(Map<Skill, int> weights) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     for (Skill skill in weights.keys) {
       prefs.setInt(skill.toString(), weights[skill] ?? 1);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/edit_player_card.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_card.dart';
@@ -40,6 +41,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
         elevation: 0,
         foregroundColor: Colors.black,
       ),
+      drawer: const CustomDrawer(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(bottom: 16),

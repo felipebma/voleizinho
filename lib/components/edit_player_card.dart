@@ -5,7 +5,7 @@ import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 
 class EditPlayerCard extends StatefulWidget {
-  EditPlayerCard({
+  const EditPlayerCard({
     super.key,
     required this.onCancel,
     required this.onSave,
@@ -79,85 +79,83 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          PlayerCard(
-            player: widget.player,
-            editable: true,
-          ),
-          Material(
-            elevation: 3,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.rectangle,
-                ),
-                child: Column(
-                  children: [
-                    ...playerDetails(widget.player),
-                    const Divider(),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.black,
+    return Column(
+      children: [
+        PlayerCard(
+          player: widget.player,
+          editable: true,
+        ),
+        Material(
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.rectangle,
+              ),
+              child: Column(
+                children: [
+                  ...playerDetails(widget.player),
+                  const Divider(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              widget.onCancel();
-                            });
-                          },
-                          child: const Text(
-                            "Cancelar",
-                            style: TextStyle(
-                              fontFamily: "poller_one",
-                            ),
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            widget.onCancel();
+                          });
+                        },
+                        child: const Text(
+                          "Cancelar",
+                          style: TextStyle(
+                            fontFamily: "poller_one",
                           ),
                         ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            backgroundColor: Colors.green,
-                            foregroundColor: Colors.black,
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              widget.onSave(
-                                Player.withArgs(
-                                  name: widget.player.name,
-                                  skills: {...widget.player.skills},
-                                ),
-                              );
-                            });
-                          },
-                          child: const Text(
-                            "Salvar",
-                            style: TextStyle(
-                              fontFamily: "poller_one",
-                            ),
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            widget.onSave(
+                              Player.withArgs(
+                                name: widget.player.name,
+                                skills: {...widget.player.skills},
+                              ),
+                            );
+                          });
+                        },
+                        child: const Text(
+                          "Salvar",
+                          style: TextStyle(
+                            fontFamily: "poller_one",
                           ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

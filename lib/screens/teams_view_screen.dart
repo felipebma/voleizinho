@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_team_view_card.dart';
 import 'package:voleizinho/model/player.dart';
@@ -39,6 +40,7 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
         elevation: 0,
         foregroundColor: Colors.black,
       ),
+      drawer: const CustomDrawer(),
       body: Center(
           child: Column(
         children: [
