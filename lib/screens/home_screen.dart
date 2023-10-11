@@ -38,15 +38,16 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
                   MenuButton(
-                      leftWidget: const Icon(
-                        Icons.settings,
-                        color: Colors.black,
-                        size: 56,
-                      ),
-                      text: "Configurações",
-                      onPressed: () => {
-                            Navigator.pushNamed(context, "/settings"),
-                          }),
+                    leftWidget: const Icon(
+                      Icons.settings,
+                      color: Colors.black,
+                      size: 56,
+                    ),
+                    text: "Configurações",
+                    onPressed: () => {
+                      Navigator.pushNamed(context, "/settings"),
+                    },
+                  ),
                   MenuButton(
                     leftWidget: const Icon(
                       Icons.people,
@@ -64,6 +65,17 @@ class HomeScreen extends StatelessWidget {
                           }
                         },
                       );
+                    },
+                  ),
+                  MenuButton(
+                    leftWidget: const Icon(
+                      Icons.scoreboard_outlined,
+                      color: Colors.black,
+                      size: 56,
+                    ),
+                    text: "Placar",
+                    onPressed: () => {
+                      Navigator.pushNamed(context, "/scoreboard"),
                     },
                   ),
                 ],

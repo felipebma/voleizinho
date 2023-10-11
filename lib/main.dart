@@ -8,6 +8,7 @@ import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
 import 'package:voleizinho/screens/home_screen.dart';
 import 'package:voleizinho/screens/players_screen.dart';
+import 'package:voleizinho/screens/scoreboard_screen.dart';
 import 'package:voleizinho/screens/settings_screen.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
 import 'package:voleizinho/screens/teams_view_screen.dart';
@@ -60,6 +61,7 @@ class MainApp extends StatelessWidget {
         "/team_creation": (context) => const TeamCreationScreen(),
         "/teams_view": (context) => const TeamsViewScreen(),
         "/settings": (context) => const SettingsScreen(),
+        "/scoreboard": (context) => const ScoreBoardScreen(),
       },
       initialRoute: "/",
     );
