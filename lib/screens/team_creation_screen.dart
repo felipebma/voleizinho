@@ -41,7 +41,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
     final TeamCreationScreenArguments args =
         (ModalRoute.of(context)!.settings.arguments ??
             TeamCreationScreenArguments([], 0)) as TeamCreationScreenArguments;
-
+    if (args.selectedPlayers.isEmpty) return;
     for (var element in args.selectedPlayers) {
       setState(() {
         var player =

@@ -34,6 +34,10 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (teams.isEmpty) {
+      Navigator.pushReplacementNamed(context, '/team_creation');
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFCDE8DE),
