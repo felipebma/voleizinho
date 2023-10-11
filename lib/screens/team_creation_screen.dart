@@ -13,16 +13,45 @@ class TeamCreationScreen extends StatefulWidget {
   State<TeamCreationScreen> createState() => _TeamCreationScreenState();
 }
 
+class TeamCreationScreenArguments {
+  List<Player> selectedPlayers = [];
+  int playersPerTeam = 0;
+
+  TeamCreationScreenArguments(this.selectedPlayers, this.playersPerTeam);
+}
+
 class _TeamCreationScreenState extends State<TeamCreationScreen> {
   late PlayerRepository playerRepository = PlayerRepository();
   late List<Player> players = playerRepository.getPlayers();
 
   List<Player> selectedPlayers = [];
 
+  int playersPerTeam = 0;
+  int minPlayersPerTeam = 0;
+  int maxPlayersPerTeam = 0;
+
   @override
   void initState() {
     super.initState();
     refreshPlayers();
+  }
+
+  void processArguments(context) {
+    final TeamCreationScreenArguments args =
+        (ModalRoute.of(context)!.settings.arguments ??
+            TeamCreationScreenArguments([], 0)) as TeamCreationScreenArguments;
+
+    for (var element in args.selectedPlayers) {
+      setState(() {
+        var player =
+            players.firstWhere((element2) => element2.name == element.name);
+        selectPlayer(player);
+      });
+    }
+    setState(() {
+      playersPerTeam = args.playersPerTeam;
+    });
+    args.selectedPlayers = [];
   }
 
   void createTeams() async {
@@ -54,10 +83,6 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
     });
   }
 
-  int playersPerTeam = 0;
-  int minPlayersPerTeam = 0;
-  int maxPlayersPerTeam = 0;
-
   void selectPlayer(Player player) {
     setState(() {
       if (selectedPlayers.contains(player)) {
@@ -78,6 +103,8 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    processArguments(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFCDE8DE),

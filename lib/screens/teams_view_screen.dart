@@ -3,6 +3,7 @@ import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_team_view_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
+import 'package:voleizinho/screens/team_creation_screen.dart';
 import 'package:voleizinho/services/team_match_service.dart';
 
 class TeamsViewScreen extends StatefulWidget {
@@ -45,7 +46,13 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
             text: "Selecionar Jogadores",
             onPressed: () {
               setState(() {
-                Navigator.pushReplacementNamed(context, '/team_creation');
+                Navigator.pushReplacementNamed(context, '/team_creation',
+                    arguments: TeamCreationScreenArguments(
+                        teams
+                            .map((e) => e.getPlayers())
+                            .expand((element) => element)
+                            .toList(),
+                        teams[0].getPlayers().length));
               });
             },
             leftWidget:
