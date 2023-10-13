@@ -48,8 +48,10 @@ class TeamMatchService {
     }
     for (int i = 0; i < 6; i++) {
       for (int i = 0; i < teams.length; i++) {
-        for (int j = i + 1; j < teams.length; j++) {
-          balanceTeams(teams[i], teams[j]);
+        for (int j = 0; j < teams.length; j++) {
+          if (i != j) {
+            balanceTeams(teams[i], teams[j]);
+          }
         }
       }
     }
@@ -74,7 +76,7 @@ class TeamMatchService {
             avg2 += p.getAverage();
           }
         }
-        avg2 /= team1.players.length;
+        avg2 /= team2.players.length;
         double diff = (avg1 - avg2).abs();
         if (diff < bestDiff) {
           bestDiff = diff;

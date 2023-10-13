@@ -6,6 +6,7 @@ import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/services/team_match_service.dart';
+import 'package:collection/collection.dart';
 
 class TeamCreationScreen extends StatefulWidget {
   const TeamCreationScreen({super.key});
@@ -44,9 +45,11 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
     if (args.selectedPlayers.isEmpty) return;
     for (var element in args.selectedPlayers) {
       setState(() {
-        var player =
-            players.firstWhere((element2) => element2.name == element.name);
-        selectPlayer(player);
+        Player? player = players
+            .firstWhereOrNull((element2) => element2.name == element.name);
+        if (player != null) {
+          selectPlayer(player);
+        }
       });
     }
     setState(() {
@@ -170,6 +173,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
                               setState(() => selectPlayer(players[index]));
                             },
                             child: PlayerCard(
+                              onPlayerTap: () => selectPlayer(players[index]),
                               player: players[index],
                               color: selectedPlayers.contains(players[index])
                                   ? Colors.green
