@@ -31,6 +31,52 @@ class _PlayersScreenState extends State<PlayersScreen> {
   }
 
   int? editingPlayerIndex;
+  int? deletingPlayerIndex;
+
+  void editingPlayer(int? index) {
+    setState(() {
+      editingPlayerIndex = index;
+      deletingPlayerIndex = null;
+    });
+  }
+
+  void createPlayer(Player player) {
+    setState(
+      () {
+        editingPlayer(null);
+        playerRepository.addPlayer(player);
+        refreshPlayers();
+      },
+    );
+  }
+
+  void editPlayer(int index, Player player) {
+    setState(
+      () {
+        editingPlayerIndex = null;
+        player.id = players[index].id;
+        playerRepository.updatePlayer(players[index], player);
+        players[index] = player;
+        refreshPlayers();
+      },
+    );
+  }
+
+  void deletingPlayer(int? index) {
+    setState(() {
+      deletingPlayerIndex = index;
+      editingPlayerIndex = null;
+    });
+  }
+
+  void deletePlayer(int index) {
+    setState(() {
+      playerRepository.removePlayer(players[index]);
+      deletingPlayer(null);
+      refreshPlayers();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     players
@@ -52,9 +98,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                 MenuButton(
                   text: "NOVO JOGADOR",
                   onPressed: () {
-                    setState(() {
-                      editingPlayerIndex = -1;
-                    });
+                    editingPlayer(-1);
                   },
                   leftWidget: Container(
                     decoration: BoxDecoration(
@@ -72,7 +116,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                   text: "CRIAR TIMES",
                   onPressed: () {
                     setState(() {
-                      Navigator.pushNamed(context, '/team_creation');
+                      Navigator.pushReplacementNamed(context, '/team_creation');
                     });
                   },
                   leftWidget: const Icon(
@@ -85,19 +129,10 @@ class _PlayersScreenState extends State<PlayersScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: EditPlayerCard(
-                        player: kDefaultPlayer.copyWith(),
-                        onCancel: () => setState(
-                              () {
-                                editingPlayerIndex = null;
-                              },
-                            ),
-                        onSave: (player) => setState(
-                              () {
-                                editingPlayerIndex = null;
-                                playerRepository.addPlayer(player);
-                                refreshPlayers();
-                              },
-                            )),
+                      player: kDefaultPlayer.copyWith(),
+                      onCancel: () => editingPlayer(null),
+                      onSave: (player) => createPlayer(player),
+                    ),
                   ),
                 const SizedBox(
                   height: 30,
@@ -115,19 +150,17 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                     onHorizontalDragEnd: (details) => setState(
                                       () {
                                         if (details.primaryVelocity! < 0) {
-                                          playerRepository
-                                              .removePlayer(players[index]);
-                                          refreshPlayers();
+                                          deletingPlayer(index);
+                                        } else {
+                                          deletingPlayer(null);
                                         }
-                                      },
-                                    ),
-                                    onTap: () => setState(
-                                      () {
-                                        editingPlayerIndex = index;
                                       },
                                     ),
                                     child: PlayerCard(
                                       player: players[index],
+                                      hideDelete: deletingPlayerIndex != index,
+                                      onPlayerDelete: () => deletePlayer(index),
+                                      onPlayerTap: () => editingPlayer(index),
                                     ),
                                   )
                                 : EditPlayerCard(
@@ -135,21 +168,9 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                       name: players[index].name,
                                       skills: {...players[index].skills},
                                     ),
-                                    onCancel: () => setState(
-                                      () {
-                                        editingPlayerIndex = null;
-                                      },
-                                    ),
-                                    onSave: (player) => setState(
-                                      () {
-                                        editingPlayerIndex = null;
-                                        player.id = players[index].id;
-                                        playerRepository.updatePlayer(
-                                            players[index], player);
-                                        players[index] = player;
-                                        refreshPlayers();
-                                      },
-                                    ),
+                                    onCancel: () => editingPlayer(null),
+                                    onSave: (player) =>
+                                        editPlayer(index, player),
                                   ),
                             const Divider(
                               height: 5,
