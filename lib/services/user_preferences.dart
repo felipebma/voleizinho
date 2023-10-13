@@ -35,6 +35,23 @@ class UserPreferences {
     return teams.map((e) => Team.fromJson(json.decode(e))).toList();
   }
 
+  static Future<void> saveScores(int score1, int score2) async {
+    await SharedPreferences.getInstance().then((prefs) {
+      prefs.setInt("score1", score1);
+      prefs.setInt("score2", score2);
+    });
+    return;
+  }
+
+  static Future<List<int>> getScores() {
+    return SharedPreferences.getInstance().then((prefs) {
+      int score1 = prefs.getInt("score1") ?? 0;
+      int score2 = prefs.getInt("score2") ?? 0;
+      print("get scores");
+      return [score1, score2];
+    });
+  }
+
   static Map<Skill, int> get skillWeights {
     return {..._skillWeights};
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:voleizinho/components/drawer.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class ScoreBoardScreen extends StatefulWidget {
   const ScoreBoardScreen({super.key});
@@ -13,9 +14,11 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
   @override
   void initState() {
     super.initState();
+    initializeScore();
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
   }
 
@@ -30,6 +33,19 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
 
   int time1Score = 0;
   int time2Score = 0;
+
+  void initializeScore() {
+    UserPreferences.getScores().then((value) => {
+          setState(() {
+            time1Score = value[0];
+            time2Score = value[1];
+          })
+        });
+  }
+
+  void saveScores() {
+    UserPreferences.saveScores(time1Score, time2Score);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +64,7 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
               onTap: () => {
                 setState(() {
                   time1Score++;
+                  saveScores();
                 })
               },
               onHorizontalDragEnd: (details) => {
@@ -55,12 +72,14 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
                   {
                     setState(() {
                       time1Score++;
+                      saveScores();
                     })
                   }
                 else
                   {
                     setState(() {
                       time1Score--;
+                      saveScores();
                     })
                   }
               },
@@ -84,6 +103,7 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
               onTap: () => {
                 setState(() {
                   time2Score++;
+                  saveScores();
                 })
               },
               onHorizontalDragEnd: (details) => {
@@ -91,12 +111,14 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
                   {
                     setState(() {
                       time2Score++;
+                      saveScores();
                     })
                   }
                 else
                   {
                     setState(() {
                       time2Score--;
+                      saveScores();
                     })
                   }
               },
