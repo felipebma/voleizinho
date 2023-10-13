@@ -24,8 +24,10 @@ class EditPlayerCard extends StatefulWidget {
 class _EditPlayerCardState extends State<EditPlayerCard> {
   List<Widget> playerDetails(Player player) {
     List<Widget> widgets = [];
+    List<Skill> skills = [...Skill.values];
+    skills.sort((a, b) => a.toShortString().compareTo(b.toShortString()));
 
-    for (Skill skill in Skill.values) {
+    for (Skill skill in skills) {
       widgets.add(
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
