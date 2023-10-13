@@ -43,6 +43,18 @@ class _PlayersScreenState extends State<PlayersScreen> {
   void createPlayer(Player player) {
     setState(
       () {
+        if (player.name == null || player.name!.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red[700],
+              content: const Text(
+                "O nome do jogador não pode estar vazio!",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
+          return;
+        }
         editingPlayer(null);
         playerRepository.addPlayer(player);
         refreshPlayers();
@@ -53,6 +65,18 @@ class _PlayersScreenState extends State<PlayersScreen> {
   void editPlayer(int index, Player player) {
     setState(
       () {
+        if (player.name == null || player.name!.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red[700],
+              content: const Text(
+                "O nome do jogador não pode estar vazio!",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
+          return;
+        }
         editingPlayerIndex = null;
         player.id = players[index].id;
         playerRepository.updatePlayer(players[index], player);
@@ -129,7 +153,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: EditPlayerCard(
-                      player: kDefaultPlayer.copyWith(),
+                      player: kDefaultPlayer.copyWith(name: ""),
                       onCancel: () => editingPlayer(null),
                       onSave: (player) => createPlayer(player),
                     ),

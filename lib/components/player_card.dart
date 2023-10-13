@@ -35,6 +35,11 @@ class _PlayerCardState extends State<PlayerCard> {
               controller: TextEditingController(text: widget.player.name),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
+                labelText: 'Nome',
+                labelStyle: TextStyle(
+                  fontFamily: "poller_one",
+                  color: Colors.grey,
+                ),
               ),
               style: const TextStyle(
                 color: Colors.grey,
