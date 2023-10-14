@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:voleizinho/constants.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/object_box.dart';
 import 'package:voleizinho/objectbox.g.dart';
@@ -26,11 +27,11 @@ Future<void> main() async {
   objectBox = await ObjectBox.create();
   Box<Player> playerBox = objectBox.store.box<Player>();
   PlayerRepository.init(playerBox);
-  // if (PlayerRepository().getPlayers().isEmpty) {
-  //   for (Player p in playersDB) {
-  //     PlayerRepository().addPlayer(p);
-  //   }
-  // }
+  if (PlayerRepository().getPlayers().isEmpty) {
+    for (Player p in playersDB) {
+      PlayerRepository().addPlayer(p);
+    }
+  }
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MainApp(storeRepository: storeRepository));
 }

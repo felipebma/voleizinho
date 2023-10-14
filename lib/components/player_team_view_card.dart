@@ -24,6 +24,7 @@ class PlayerTeamViewCard extends StatelessWidget {
         GestureDetector(
           onTap: () => onPlayerTap(player),
           child: PlayerCard(
+            onPlayerTap: () => onPlayerTap(player),
             player: player,
             hideAverage: true,
           ),

@@ -102,23 +102,21 @@ class _PlayerCardState extends State<PlayerCard> {
                 ),
               ),
             ),
-            if (!widget.hideDelete) ...[
+            if (!widget.hideDelete)
               Expanded(
                   flex: 0,
-                  child: GestureDetector(
-                    onTap: () => widget.onPlayerDelete != null
-                        ? widget.onPlayerDelete!()
-                        : () {},
-                    child: const Row(
-                      children: [
-                        VerticalDivider(
-                          color: Colors.black,
-                        ),
-                        Icon(Icons.delete, color: Colors.red)
-                      ],
-                    ),
+                  child: Row(
+                    children: [
+                      const VerticalDivider(
+                        color: Colors.black,
+                      ),
+                      GestureDetector(
+                          onTap: () => widget.onPlayerDelete != null
+                              ? widget.onPlayerDelete!()
+                              : () {},
+                          child: const Icon(Icons.delete, color: Colors.red))
+                    ],
                   )),
-            ],
           ],
         ),
       ),
