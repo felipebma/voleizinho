@@ -7,6 +7,7 @@ import 'package:voleizinho/model/team.dart';
 class UserPreferences {
   static final Map<Skill, int> _skillWeights = <Skill, int>{};
   static int? _groupId;
+  static bool usePositionalBalacing = false;
 
   static Future<Map<Skill, int>> initUserPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -58,5 +59,11 @@ class UserPreferences {
 
   static int? getGroup() {
     return _groupId;
+  }
+
+  static Future<void> setUsePositionalBalacing(bool value) async {
+    usePositionalBalacing = value;
+    await SharedPreferences.getInstance().then((prefs) =>
+        {prefs.setBool("usePositionalBalancing-${_groupId ?? 0}", value)});
   }
 }

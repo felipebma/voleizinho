@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/group_service.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -19,6 +20,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int agilityWeight = 0;
 
   Map<Skill, int> weights = GroupService.getSkillsWeights();
+
+  bool usePositionalBalancing = UserPreferences.usePositionalBalacing;
 
   List<SkillGauge> skillGauges() {
     List<SkillGauge> skillGauges = [];
@@ -55,6 +58,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Balanceamento Positional:",
+                          style:
+                              TextStyle(fontSize: 10, fontFamily: "poller_one"),
+                        ),
+                        Checkbox(
+                            value: usePositionalBalancing,
+                            onChanged: (value) {
+                              setState(() {
+                                usePositionalBalancing = value!;
+                                UserPreferences.usePositionalBalacing = value;
+                              });
+                            })
+                      ],
+                    ),
                     const Text(
                       "Peso Por Skill",
                       style: TextStyle(

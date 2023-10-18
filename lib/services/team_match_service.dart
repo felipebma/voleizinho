@@ -59,6 +59,14 @@ class TeamMatchService {
   }
 
   static void balanceTeams(Team team1, Team team2) {
+    if (UserPreferences.usePositionalBalacing) {
+      balanceTeamsPositional(team1, team2);
+    } else {
+      balanceTeamsLegacy(team1, team2);
+    }
+  }
+
+  static void balanceTeamsLegacy(Team team1, Team team2) {
     List<Player> bestPair = [];
     double bestDiff = (team1.getAverage() - team2.getAverage()).abs();
     for (Player p1 in [...team1.players]) {
@@ -78,6 +86,37 @@ class TeamMatchService {
         }
         avg2 /= team2.players.length;
         double diff = (avg1 - avg2).abs();
+        if (diff < bestDiff) {
+          bestDiff = diff;
+          bestPair = [p1, p2];
+        }
+      }
+    }
+    if (bestPair.isNotEmpty) {
+      swapPlayers(bestPair[0], bestPair[1]);
+    }
+  }
+
+  static void balanceTeamsPositional(Team team1, Team team2) {
+    List<Player> bestPair = [];
+    double bestDiff = team1.getDifference(team2);
+    for (Player p1 in [...team1.players]) {
+      for (Player p2 in [...team2.players]) {
+        Team t1 = Team();
+        t1.addPlayer(p2.copyWith());
+        for (Player p in team1.players) {
+          if (p != p1) {
+            t1.addPlayer(p.copyWith());
+          }
+        }
+        Team t2 = Team();
+        t2.addPlayer(p1.copyWith());
+        for (Player p in team2.players) {
+          if (p != p2) {
+            t2.addPlayer(p.copyWith());
+          }
+        }
+        double diff = t1.getDifference(t2);
         if (diff < bestDiff) {
           bestDiff = diff;
           bestPair = [p1, p2];
