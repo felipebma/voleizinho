@@ -39,8 +39,12 @@ class Player {
     }
   }
 
-  double getSkill(String skillName) {
+  double getSkillFromName(String skillName) {
     return skills[skillName]!.toDouble();
+  }
+
+  double getSkill(Skill skill) {
+    return skills[skill]!.toDouble();
   }
 
   double getAverage() {
