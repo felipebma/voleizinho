@@ -62,62 +62,66 @@ class _PlayerCardState extends State<PlayerCard> {
     Player player = widget.player;
     return Material(
       elevation: 3,
-      child: Container(
-        height: 40,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: widget.color,
-          shape: BoxShape.rectangle,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: GestureDetector(
-                onTap: () =>
-                    widget.onPlayerTap != null ? widget.onPlayerTap!() : () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    textField,
-                    if (!widget.hideAverage)
-                      Row(
-                        children: [
-                          Text(
-                            player.getAverage().toStringAsFixed(1),
-                            style: const TextStyle(
-                              fontFamily: "poller_one",
-                              color: Colors.black,
-                              fontSize: 20,
+      child: GestureDetector(
+        onTap: () => widget.onPlayerTap != null ? widget.onPlayerTap!() : () {},
+        child: Container(
+          height: 40,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: widget.color,
+            shape: BoxShape.rectangle,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () => widget.onPlayerTap != null
+                      ? widget.onPlayerTap!()
+                      : () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      textField,
+                      if (!widget.hideAverage)
+                        Row(
+                          children: [
+                            Text(
+                              player.getAverage().toStringAsFixed(1),
+                              style: const TextStyle(
+                                fontFamily: "poller_one",
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                        ],
-                      ),
-                  ],
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            if (!widget.hideDelete)
-              Expanded(
-                  flex: 0,
-                  child: Row(
-                    children: [
-                      const VerticalDivider(
-                        color: Colors.black,
-                      ),
-                      GestureDetector(
-                          onTap: () => widget.onPlayerDelete != null
-                              ? widget.onPlayerDelete!()
-                              : () {},
-                          child: const Icon(Icons.delete, color: Colors.red))
-                    ],
-                  )),
-          ],
+              if (!widget.hideDelete)
+                Expanded(
+                    flex: 0,
+                    child: Row(
+                      children: [
+                        const VerticalDivider(
+                          color: Colors.black,
+                        ),
+                        GestureDetector(
+                            onTap: () => widget.onPlayerDelete != null
+                                ? widget.onPlayerDelete!()
+                                : () {},
+                            child: const Icon(Icons.delete, color: Colors.red))
+                      ],
+                    )),
+            ],
+          ),
         ),
       ),
     );
