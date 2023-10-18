@@ -4,8 +4,9 @@ import 'package:voleizinho/repositories/player_repository.dart';
 class PlayerService {
   static final PlayerRepository _playerRepository = PlayerRepository();
 
-  static void addPlayer(Player player) {
-    _playerRepository.addPlayer(player);
+  static void addPlayer(Player player, int groupId) {
+    Player newPlayer = player.copyWith(groupId: groupId);
+    _playerRepository.addPlayer(newPlayer);
   }
 
   static void updatePlayer(Player newPlayer) {

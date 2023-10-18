@@ -15,6 +15,7 @@ import 'package:voleizinho/screens/scoreboard_screen.dart';
 import 'package:voleizinho/screens/settings_screen.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
 import 'package:voleizinho/screens/teams_view_screen.dart';
+import 'package:voleizinho/services/player_service.dart';
 import 'package:voleizinho/services/team_match_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
@@ -32,11 +33,27 @@ Future<void> main() async {
   Box<Group> groupBox = objectBox.store.box<Group>();
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
-  if (PlayerRepository().getPlayers().isEmpty) {
-    for (Player p in playersDB) {
-      PlayerRepository().addPlayer(p);
-    }
+
+  playerBox.removeAll();
+  groupBox.removeAll();
+  GroupRepository groupRepository = GroupRepository();
+  int groupId = groupRepository.addGroup(
+    Group.withArgs(
+      name: "Neuro",
+    ),
+  );
+  for (Player p in playersDB) {
+    PlayerService.addPlayer(p, groupId);
   }
+  groupId = groupRepository.addGroup(
+    Group.withArgs(
+      name: "Quartas/Sextas",
+    ),
+  );
+  for (Player p in playersDB) {
+    PlayerService.addPlayer(p, groupId);
+  }
+
   // groupBox.removeAll();
   // groupBox.put(
   //   Group.withArgs(

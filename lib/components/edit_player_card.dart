@@ -139,6 +139,7 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
                               Player.withArgs(
                                 name: widget.player.name,
                                 skills: {...widget.player.skills},
+                                groupId: widget.player.groupId,
                               ),
                             );
                           });

@@ -19,6 +19,7 @@ class PlayersScreen extends StatefulWidget {
 class _PlayersScreenState extends State<PlayersScreen> {
   late PlayerRepository playerRepository = PlayerRepository();
   late List<Player> players = playerRepository.getPlayers();
+  int groupId = UserPreferences.getGroup()!;
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   void refreshPlayers() {
     setState(() {
-      players = PlayerService.getPlayersFromGroup(UserPreferences.getGroup()!);
+      players = PlayerService.getPlayersFromGroup(groupId);
     });
   }
 
@@ -57,9 +58,9 @@ class _PlayersScreenState extends State<PlayersScreen> {
           );
           return;
         }
-        player.groupId = UserPreferences.getGroup()!;
+        player.groupId = groupId;
         editingPlayer(null);
-        playerRepository.addPlayer(player);
+        PlayerService.addPlayer(player, UserPreferences.getGroup()!);
         refreshPlayers();
       },
     );
@@ -156,8 +157,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: EditPlayerCard(
-                      player: kDefaultPlayer.copyWith(
-                          name: "", groupId: UserPreferences.getGroup()!),
+                      player:
+                          kDefaultPlayer.copyWith(name: "", groupId: groupId),
                       onCancel: () => editingPlayer(null),
                       onSave: (player) => createPlayer(player),
                     ),
@@ -195,6 +196,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                                     player: Player.withArgs(
                                       name: players[index].name,
                                       skills: {...players[index].skills},
+                                      groupId: groupId,
                                     ),
                                     onCancel: () => editingPlayer(null),
                                     onSave: (player) =>
