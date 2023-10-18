@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:voleizinho/constants.dart';
+import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/object_box.dart';
 import 'package:voleizinho/objectbox.g.dart';
+import 'package:voleizinho/playersDB.dart';
+import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
+import 'package:voleizinho/screens/group_home_screen.dart';
 import 'package:voleizinho/screens/home_screen.dart';
 import 'package:voleizinho/screens/players_screen.dart';
 import 'package:voleizinho/screens/scoreboard_screen.dart';
@@ -26,12 +29,20 @@ Future<void> main() async {
   await TeamMatchService.loadStoredTeams();
   objectBox = await ObjectBox.create();
   Box<Player> playerBox = objectBox.store.box<Player>();
+  Box<Group> groupBox = objectBox.store.box<Group>();
+  GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
   if (PlayerRepository().getPlayers().isEmpty) {
     for (Player p in playersDB) {
       PlayerRepository().addPlayer(p);
     }
   }
+  groupBox.removeAll();
+  groupBox.put(
+    Group.withArgs(
+      name: "Default",
+    ),
+  );
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MainApp(storeRepository: storeRepository));
 }
@@ -56,7 +67,8 @@ class MainApp extends StatelessWidget {
         ),
       ),
       routes: {
-        "/": (context) => const HomeScreen(),
+        "/main_group": (context) => const GroupHomeScreen(),
+        "/": (context) => HomeScreen(),
         "/players": (context) => const PlayersScreen(),
         "/team_creation": (context) => const TeamCreationScreen(),
         "/teams_view": (context) => const TeamsViewScreen(),

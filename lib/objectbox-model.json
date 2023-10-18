@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5817927153516367516",
-      "lastPropertyId": "3:302019921712395693",
+      "lastPropertyId": "4:8651932747758421406",
       "name": "Player",
       "properties": [
         {
@@ -23,12 +23,41 @@
           "id": "3:302019921712395693",
           "name": "dbSkills",
           "type": 9
+        },
+        {
+          "id": "4:8651932747758421406",
+          "name": "groupId",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:3126827991196298943",
+      "lastPropertyId": "3:780069684367151973",
+      "name": "Group",
+      "properties": [
+        {
+          "id": "1:2407477485673528843",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3313753390793944440",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:780069684367151973",
+          "name": "dbSkillsWeights",
+          "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "1:5817927153516367516",
+  "lastEntityId": "2:3126827991196298943",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

@@ -6,6 +6,7 @@ import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/constants.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class PlayersScreen extends StatefulWidget {
   const PlayersScreen({super.key});
@@ -55,6 +56,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
           );
           return;
         }
+        player.groupId = UserPreferences.getGroup()!;
         editingPlayer(null);
         playerRepository.addPlayer(player);
         refreshPlayers();
@@ -153,7 +155,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: EditPlayerCard(
-                      player: kDefaultPlayer.copyWith(name: ""),
+                      player: kDefaultPlayer.copyWith(
+                          name: "", groupId: UserPreferences.getGroup()!),
                       onCancel: () => editingPlayer(null),
                       onSave: (player) => createPlayer(player),
                     ),

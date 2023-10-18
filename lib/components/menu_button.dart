@@ -5,16 +5,16 @@ class MenuButton extends StatelessWidget {
       {super.key,
       required this.text,
       required this.onPressed,
-      required this.leftWidget});
+      this.leftWidget});
 
   final String text;
   final void Function() onPressed;
-  final Widget leftWidget;
+  final Widget? leftWidget;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(5.0),
       child: TextButton(
         style: TextButton.styleFrom(
             backgroundColor: Colors.white,
@@ -22,12 +22,12 @@ class MenuButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             elevation: 6.0,
-            padding: const EdgeInsets.all(10)),
+            padding: const EdgeInsets.all(5)),
         onPressed: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            leftWidget,
+            leftWidget ?? Container(),
             Expanded(
               child: Text(
                 text,

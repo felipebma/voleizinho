@@ -14,6 +14,7 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import 'model/group.dart';
 import 'model/player.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -22,7 +23,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 5817927153516367516),
       name: 'Player',
-      lastPropertyId: const IdUid(3, 302019921712395693),
+      lastPropertyId: const IdUid(4, 8651932747758421406),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -38,6 +39,35 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(3, 302019921712395693),
             name: 'dbSkills',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 8651932747758421406),
+            name: 'groupId',
+            type: 6,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(2, 3126827991196298943),
+      name: 'Group',
+      lastPropertyId: const IdUid(3, 780069684367151973),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 2407477485673528843),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 3313753390793944440),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 780069684367151973),
+            name: 'dbSkillsWeights',
             type: 9,
             flags: 0)
       ],
@@ -72,7 +102,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 5817927153516367516),
+      lastEntityId: const IdUid(2, 3126827991196298943),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -99,10 +129,11 @@ ModelDefinition getObjectBoxModel() {
           final dbSkillsOffset = object.dbSkills == null
               ? null
               : fbb.writeString(object.dbSkills!);
-          fbb.startTable(4);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, dbSkillsOffset);
+          fbb.addInt64(3, object.groupId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -115,6 +146,42 @@ ModelDefinition getObjectBoxModel() {
             ..name = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 6)
             ..dbSkills = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 8)
+            ..groupId =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
+
+          return object;
+        }),
+    Group: EntityDefinition<Group>(
+        model: _entities[1],
+        toOneRelations: (Group object) => [],
+        toManyRelations: (Group object) => {},
+        getId: (Group object) => object.id,
+        setId: (Group object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Group object, fb.Builder fbb) {
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          final dbSkillsWeightsOffset = object.dbSkillsWeights == null
+              ? null
+              : fbb.writeString(object.dbSkillsWeights!);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, nameOffset);
+          fbb.addOffset(2, dbSkillsWeightsOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Group()
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..name = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 6)
+            ..dbSkillsWeights = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 8);
 
           return object;
@@ -135,4 +202,21 @@ class Player_ {
   /// see [Player.dbSkills]
   static final dbSkills =
       QueryStringProperty<Player>(_entities[0].properties[2]);
+
+  /// see [Player.groupId]
+  static final groupId =
+      QueryIntegerProperty<Player>(_entities[0].properties[3]);
+}
+
+/// [Group] entity fields to define ObjectBox queries.
+class Group_ {
+  /// see [Group.id]
+  static final id = QueryIntegerProperty<Group>(_entities[1].properties[0]);
+
+  /// see [Group.name]
+  static final name = QueryStringProperty<Group>(_entities[1].properties[1]);
+
+  /// see [Group.dbSkillsWeights]
+  static final dbSkillsWeights =
+      QueryStringProperty<Group>(_entities[1].properties[2]);
 }

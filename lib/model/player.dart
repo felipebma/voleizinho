@@ -10,8 +10,14 @@ class Player {
   int id = 0;
 
   Player();
-  Player.withArgs({this.name, required this.skills});
+  Player.withArgs({
+    this.name,
+    required this.skills,
+    this.groupId = 0,
+  });
   String? name;
+
+  int groupId = 0;
 
   @Transient()
   Map<Skill, int> skills = {};
@@ -59,18 +65,22 @@ class Player {
     return 1 - sum / sumWeights;
   }
 
-  copyWith({String? name, Map<Skill, int>? skills}) {
+  copyWith({String? name, Map<Skill, int>? skills, int? groupId}) {
     return Player.withArgs(
       name: name ?? this.name,
       skills: skills ?? {...this.skills},
+      groupId: groupId ?? this.groupId,
     );
   }
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'skills': json.encode({
-          for (var entry in skills.entries) entry.key.name: entry.value,
-        }),
+        'skills': json.encode(
+          {
+            for (var entry in skills.entries) entry.key.name: entry.value,
+          },
+        ),
+        'groupId': groupId
       };
 
   factory Player.fromJson(Map<String, dynamic> jsonObject) {
@@ -82,6 +92,9 @@ class Player {
       skills[skill] = entry.value;
     }
 
-    return Player.withArgs(name: jsonObject['name'], skills: skills);
+    return Player.withArgs(
+        name: jsonObject['name'],
+        skills: skills,
+        groupId: jsonObject['groupId']);
   }
 }

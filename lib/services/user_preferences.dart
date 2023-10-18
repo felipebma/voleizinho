@@ -6,6 +6,7 @@ import 'package:voleizinho/model/team.dart';
 
 class UserPreferences {
   static final Map<Skill, int> _skillWeights = <Skill, int>{};
+  static int? _groupId;
 
   static Future<Map<Skill, int>> initUserPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -47,9 +48,17 @@ class UserPreferences {
     return SharedPreferences.getInstance().then((prefs) {
       int score1 = prefs.getInt("score1") ?? 0;
       int score2 = prefs.getInt("score2") ?? 0;
-      print("get scores");
       return [score1, score2];
     });
+  }
+
+  static setGroup(int groupId) async {
+    groupId++;
+    _groupId = groupId;
+  }
+
+  static int? getGroup() {
+    return _groupId;
   }
 
   static Map<Skill, int> get skillWeights {

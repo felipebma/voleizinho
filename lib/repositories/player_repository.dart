@@ -1,5 +1,6 @@
 import "package:voleizinho/model/player.dart";
 import "package:voleizinho/objectbox.g.dart";
+import "package:voleizinho/services/user_preferences.dart";
 
 class PlayerRepository {
   static Box<Player>? playerBox;
@@ -10,6 +11,7 @@ class PlayerRepository {
 
   void addPlayer(Player player) async {
     List<Player> players = playerBox!.getAll();
+    player.groupId = UserPreferences.getGroup()!;
     players.add(player);
     playerBox!.put(player);
   }

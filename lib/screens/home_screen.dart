@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/model/group.dart';
+import 'package:voleizinho/repositories/group_repository.dart';
+import 'package:voleizinho/screens/group_home_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final List<Group> groups = GroupRepository().getGroups();
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +17,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Image(image: AssetImage('assets/logo.png')),
+              const Image(image: AssetImage('assets/logo.png'), height: 200),
               const Text(
                 "VOLEIZINHO",
                 style: TextStyle(
@@ -22,64 +26,44 @@ class HomeScreen extends StatelessWidget {
                   fontFamily: "poller_one",
                 ),
               ),
-              const SizedBox(height: 50.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.man,
-                      color: Colors.black,
-                      size: 56,
+              const SizedBox(height: 20.0),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                child: MenuButton(
+                  leftWidget: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.green,
                     ),
-                    text: "Jogadores",
-                    onPressed: () => {
-                      Navigator.pushNamed(context, "/players"),
-                    },
-                  ),
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.settings,
-                      color: Colors.black,
-                      size: 56,
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 30,
                     ),
-                    text: "Configurações",
-                    onPressed: () => {
-                      Navigator.pushNamed(context, "/settings"),
-                    },
                   ),
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.people,
-                      color: Colors.black,
-                      size: 56,
-                    ),
-                    text: "Times",
-                    onPressed: () async {
-                      UserPreferences.getTeams().then(
-                        (value) {
-                          if (value.isNotEmpty) {
-                            Navigator.pushNamed(context, "/teams_view");
-                          } else {
-                            Navigator.pushNamed(context, "/team_creation");
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.scoreboard_outlined,
-                      color: Colors.black,
-                      size: 56,
-                    ),
-                    text: "Placar",
-                    onPressed: () => {
-                      Navigator.pushNamed(context, "/scoreboard"),
-                    },
-                  ),
-                ],
-              )
+                  text: "Criar Grupo",
+                  onPressed: () => {
+                    // Navigator.pushNamed(context, "/group_creation"),
+                  },
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: groups.length,
+                  itemBuilder: (context, index) {
+                    return MenuButton(
+                      text: groups[index].name!,
+                      onPressed: () => {
+                        Navigator.pushNamed(context, "/main_group",
+                            arguments: GroupMainScreenArguments(
+                                groupId: groups[index].id,
+                                groupName: groups[index].name!)),
+                      },
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20.0),
             ],
           ),
         ),

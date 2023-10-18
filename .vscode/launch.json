@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "voleizinho",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "voleizinho (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "voleizinho (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Flutter",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "93FAA59A-ADB0-435E-BC26-2D06A1ED48DA"
+        }
+    ]
+}
