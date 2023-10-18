@@ -26,13 +26,13 @@ class UserPreferences {
 
   static Future<void> setTeams(List<Team> teams) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList(
-        "teams", teams.map((e) => json.encode(e.toJson())).toList());
+    prefs.setStringList("teams-${_groupId ?? 0}",
+        teams.map((e) => json.encode(e.toJson())).toList());
   }
 
   static Future<List<Team>> getTeams() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> teams = prefs.getStringList("teams") ?? [];
+    List<String> teams = prefs.getStringList("teams-${_groupId ?? 0}") ?? [];
     return teams.map((e) => Team.fromJson(json.decode(e))).toList();
   }
 
@@ -58,9 +58,5 @@ class UserPreferences {
 
   static int? getGroup() {
     return _groupId;
-  }
-
-  static Map<Skill, int> get skillWeights {
-    return {..._skillWeights};
   }
 }
