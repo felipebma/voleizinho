@@ -161,6 +161,19 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
               const SizedBox(
                 height: 30,
               ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  "selectedPlayers: ${selectedPlayers.length}",
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: players.length,
