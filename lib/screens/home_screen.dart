@@ -47,11 +47,13 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
+              const SizedBox(height: 20.0),
               Expanded(
                 child: ListView.builder(
                   itemCount: groups.length,
                   itemBuilder: (context, index) {
                     return MenuButton(
+                      padding: EdgeInsets.zero,
                       text: groups[index].name!,
                       onPressed: () => {
                         Navigator.pushNamed(context, "/main_group",
@@ -63,7 +65,6 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 20.0),
             ],
           ),
         ),

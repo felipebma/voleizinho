@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/model/skills.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/services/group_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,7 +18,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int setterWeight = 0;
   int agilityWeight = 0;
 
-  Map<Skill, int> weights = UserPreferences.skillWeights;
+  Map<Skill, int> weights = GroupService.getSkillsWeights();
 
   List<SkillGauge> skillGauges() {
     List<SkillGauge> skillGauges = [];
@@ -67,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    UserPreferences.updateSkillWeight(weights);
+                    GroupService.updateSkillsWeights(weights);
                     Navigator.pop(context);
                   },
                   style: TextButton.styleFrom(

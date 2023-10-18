@@ -53,7 +53,6 @@ class UserPreferences {
   }
 
   static setGroup(int groupId) async {
-    groupId++;
     _groupId = groupId;
   }
 

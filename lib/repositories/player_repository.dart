@@ -9,18 +9,16 @@ class PlayerRepository {
     playerBox = box;
   }
 
-  void addPlayer(Player player) async {
-    List<Player> players = playerBox!.getAll();
+  void addPlayer(Player player) {
     player.groupId = UserPreferences.getGroup()!;
-    players.add(player);
     playerBox!.put(player);
   }
 
-  void updatePlayer(Player oldPlayer, Player newPlayer) async {
+  void updatePlayer(Player newPlayer) {
     playerBox!.put(newPlayer);
   }
 
-  void removePlayer(Player player) async {
+  void removePlayer(Player player) {
     playerBox!.remove(player.id);
   }
 

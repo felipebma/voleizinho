@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/screens/group_home_screen.dart';
+import 'package:voleizinho/services/group_service.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -20,8 +23,13 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-            const DrawerTile(
-                text: "Menu Principal", icon: Icons.menu, route: "/"),
+            DrawerTile(
+                text: "Menu Principal",
+                icon: Icons.menu,
+                route: "/main_group",
+                arguments: GroupMainScreenArguments(
+                    groupId: UserPreferences.getGroup()!,
+                    groupName: GroupService.activeGroup().name!)),
             const DrawerTile(
                 text: "Jogadores", icon: Icons.person, route: "/players"),
             const DrawerTile(
@@ -43,11 +51,16 @@ class CustomDrawer extends StatelessWidget {
 
 class DrawerTile extends StatelessWidget {
   const DrawerTile(
-      {super.key, required this.text, required this.icon, required this.route});
+      {super.key,
+      required this.text,
+      required this.icon,
+      required this.route,
+      this.arguments});
 
   final String text;
   final IconData icon;
   final String route;
+  final Object? arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +74,7 @@ class DrawerTile extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushReplacementNamed(context, route);
+        Navigator.pushReplacementNamed(context, route, arguments: arguments);
       },
     );
   }

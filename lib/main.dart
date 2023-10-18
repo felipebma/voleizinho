@@ -37,12 +37,12 @@ Future<void> main() async {
       PlayerRepository().addPlayer(p);
     }
   }
-  groupBox.removeAll();
-  groupBox.put(
-    Group.withArgs(
-      name: "Default",
-    ),
-  );
+  // groupBox.removeAll();
+  // groupBox.put(
+  //   Group.withArgs(
+  //     name: "Neuro",
+  //   ),
+  // );
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MainApp(storeRepository: storeRepository));
 }
@@ -67,8 +67,8 @@ class MainApp extends StatelessWidget {
         ),
       ),
       routes: {
-        "/main_group": (context) => const GroupHomeScreen(),
         "/": (context) => HomeScreen(),
+        "/main_group": (context) => const GroupHomeScreen(),
         "/players": (context) => const PlayersScreen(),
         "/team_creation": (context) => const TeamCreationScreen(),
         "/teams_view": (context) => const TeamsViewScreen(),

@@ -5,16 +5,18 @@ class MenuButton extends StatelessWidget {
       {super.key,
       required this.text,
       required this.onPressed,
-      this.leftWidget});
+      this.leftWidget,
+      this.padding = const EdgeInsets.all(5.0)});
 
   final String text;
   final void Function() onPressed;
   final Widget? leftWidget;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding: padding,
       child: TextButton(
         style: TextButton.styleFrom(
             backgroundColor: Colors.white,

@@ -81,7 +81,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
         }
         editingPlayerIndex = null;
         player.id = players[index].id;
-        playerRepository.updatePlayer(players[index], player);
+        playerRepository.updatePlayer(player);
         players[index] = player;
         refreshPlayers();
       },

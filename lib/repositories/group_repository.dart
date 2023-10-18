@@ -8,18 +8,20 @@ class GroupRepository {
     groupBox = box;
   }
 
-  void addGroup(Group group) async {
-    List<Group> groups = groupBox!.getAll();
-    groups.add(group);
-    groupBox!.put(group);
+  int addGroup(Group group) {
+    return groupBox!.put(group);
   }
 
-  void updateGroup(Group oldGroup, Group newGroup) async {
+  void updateGroup(Group newGroup) {
     groupBox!.put(newGroup);
   }
 
-  void removeGroup(Group group) async {
+  void removeGroup(Group group) {
     groupBox!.remove(group.id);
+  }
+
+  Group getGroupById(int id) {
+    return groupBox!.get(id)!;
   }
 
   List<Group> getGroups() {
