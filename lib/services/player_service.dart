@@ -11,4 +11,8 @@ class PlayerService {
   static void updatePlayer(Player newPlayer) {
     _playerRepository.updatePlayer(newPlayer);
   }
+
+  static List<Player> getPlayersFromGroup(int groupId) {
+    return _playerRepository.getPlayersFromGroup(groupId);
+  }
 }

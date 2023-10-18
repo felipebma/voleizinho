@@ -25,4 +25,8 @@ class PlayerRepository {
   List<Player> getPlayers() {
     return playerBox!.getAll();
   }
+
+  List<Player> getPlayersFromGroup(int groupId) {
+    return playerBox!.query(Player_.groupId.equals(groupId)).build().find();
+  }
 }

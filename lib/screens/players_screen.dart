@@ -6,6 +6,7 @@ import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/constants.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
+import 'package:voleizinho/services/player_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class PlayersScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   void refreshPlayers() {
     setState(() {
-      players = playerRepository.getPlayers();
+      players = PlayerService.getPlayersFromGroup(UserPreferences.getGroup()!);
     });
   }
 

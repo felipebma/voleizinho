@@ -1,12 +1,13 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
-import 'package:voleizinho/repositories/player_repository.dart';
+import 'package:voleizinho/services/player_service.dart';
 import 'package:voleizinho/services/team_match_service.dart';
-import 'package:collection/collection.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class TeamCreationScreen extends StatefulWidget {
   const TeamCreationScreen({super.key});
@@ -23,8 +24,8 @@ class TeamCreationScreenArguments {
 }
 
 class _TeamCreationScreenState extends State<TeamCreationScreen> {
-  late PlayerRepository playerRepository = PlayerRepository();
-  late List<Player> players = playerRepository.getPlayers();
+  late List<Player> players =
+      PlayerService.getPlayersFromGroup(UserPreferences.getGroup()!);
 
   List<Player> selectedPlayers = [];
 
@@ -81,7 +82,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
 
   void refreshPlayers() {
     setState(() {
-      players = playerRepository.getPlayers();
+      players = PlayerService.getPlayersFromGroup(UserPreferences.getGroup()!);
       players.sort(
           (a, b) => a.name!.toUpperCase().compareTo(b.name!.toUpperCase()));
     });
