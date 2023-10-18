@@ -14,13 +14,24 @@ class CustomDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             if (MediaQuery.of(context).orientation == Orientation.portrait)
-              const DrawerHeader(
-                child: Text(
-                  '',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                  ),
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Color(0xFFCDE8DE),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      UserPreferences.getGroup() == null
+                          ? "Voleizinho"
+                          : GroupService.activeGroup().name!,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontFamily: "poller_one",
+                      ),
+                    ),
+                  ],
                 ),
               ),
             DrawerTile(
@@ -42,6 +53,8 @@ class CustomDrawer extends StatelessWidget {
                 text: "Placar",
                 icon: Icons.scoreboard_outlined,
                 route: "/scoreboard"),
+            const DrawerTile(
+                text: "Trocar Grupo", icon: Icons.sync_alt_rounded, route: "/"),
           ],
         ),
       ),
