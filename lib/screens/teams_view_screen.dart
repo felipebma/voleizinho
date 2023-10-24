@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:share_screenshot_widget/share_screenshot_widget.dart';
+import 'package:voleizinho/components/TeamCard.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/components/player_team_view_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
+import 'package:voleizinho/services/share_service.dart';
 import 'package:voleizinho/services/team_match_service.dart';
 
 class TeamsViewScreen extends StatefulWidget {
@@ -16,6 +18,8 @@ class TeamsViewScreen extends StatefulWidget {
 
 class _TeamsViewScreenState extends State<TeamsViewScreen> {
   Player? switchingPlayer;
+  List<Team> teams = TeamMatchService.teams;
+  List<GlobalKey> globalKeys = [];
 
   void onPlayerSwitch(Player similarPlayer) {
     TeamMatchService.swapPlayers(switchingPlayer!, similarPlayer);
@@ -30,14 +34,38 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
     });
   }
 
-  List<Team> teams = TeamMatchService.teams;
+  List<Widget> getTeamCards() {
+    List<Widget> teamCards = [];
+    for (int i = 0; i < teams.length; i++) {
+      teamCards.add(
+        ShareScreenshotAsImage(
+          globalKey: globalKeys[i],
+          child: TeamCard(
+            teamName: "Time ${i + 1}",
+            team: teams[i],
+            onPlayerSwitch: onPlayerSwitch,
+            onPlayerTap: onPlayerTap,
+            switchingPlayer: switchingPlayer,
+          ),
+        ),
+      );
+    }
+    return teamCards;
+  }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    switchingPlayer = null;
+    teams = TeamMatchService.teams;
     if (teams.isEmpty) {
       Navigator.pushReplacementNamed(context, '/team_creation');
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    globalKeys = teams.map((e) => GlobalKey()).toList();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFCDE8DE),
@@ -45,76 +73,47 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
         foregroundColor: Colors.black,
       ),
       drawer: const CustomDrawer(),
-      body: Center(
+      body: SafeArea(
+        child: Center(
           child: Column(
-        children: [
-          MenuButton(
-            text: "Selecionar Jogadores",
-            onPressed: () {
-              setState(() {
-                Navigator.pushReplacementNamed(context, '/team_creation',
-                    arguments: TeamCreationScreenArguments(
-                        teams
-                            .map((e) => e.getPlayers())
-                            .expand((element) => element)
-                            .toList(),
-                        teams[0].getPlayers().length));
-              });
-            },
-            leftWidget:
-                const Icon(color: Colors.black, Icons.keyboard_backspace_sharp),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: teams.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
+            children: [
+              MenuButton(
+                text: "Selecionar Jogadores",
+                onPressed: () {
+                  setState(() {
+                    Navigator.pushReplacementNamed(context, '/team_creation',
+                        arguments: TeamCreationScreenArguments(
+                            teams
+                                .map((e) => e.getPlayers())
+                                .expand((element) => element)
+                                .toList(),
+                            teams[0].getPlayers().length));
+                  });
+                },
+                leftWidget: const Icon(
+                    color: Colors.black, Icons.keyboard_backspace_sharp),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        color: Colors.red,
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Time ${index + 1}',
-                              style: const TextStyle(
-                                fontFamily: "poller_one",
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),
-                            ),
-                            Text(teams[index].getAverage().toStringAsFixed(2),
-                                style: const TextStyle(
-                                  fontFamily: "poller_one",
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                )),
-                          ],
-                        ),
-                      ),
-                      for (Player player in teams[index].getPlayers())
-                        Column(
-                          children: [
-                            PlayerTeamViewCard(
-                                player: player,
-                                onPlayerSwitch: onPlayerSwitch,
-                                onPlayerTap: onPlayerTap,
-                                showDetails: switchingPlayer == player),
-                          ],
-                        )
-                    ],
+                    children: getTeamCards(),
                   ),
-                );
-              },
-            ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () => {
+                  ShareService.shareWidgets(globalKeys),
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.green),
+                ),
+                child: const Text("Compartilhar Times"),
+              ),
+            ],
           ),
-        ],
-      )),
+        ),
+      ),
     );
   }
 }

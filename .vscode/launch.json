@@ -24,6 +24,14 @@
             "request": "launch",
             "type": "dart",
             "deviceId": "93FAA59A-ADB0-435E-BC26-2D06A1ED48DA"
+        },
+        {
+            "name": "Flutter (debug Iphone)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "00008110-00021DEC0E9B801E"
         }
     ]
 }
