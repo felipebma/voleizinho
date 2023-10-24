@@ -20,6 +20,7 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
   Player? switchingPlayer;
   List<Team> teams = TeamMatchService.teams;
   List<GlobalKey> globalKeys = [];
+  bool hideAverage = false;
 
   void onPlayerSwitch(Player similarPlayer) {
     TeamMatchService.swapPlayers(switchingPlayer!, similarPlayer);
@@ -40,12 +41,20 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
       teamCards.add(
         ShareScreenshotAsImage(
           globalKey: globalKeys[i],
-          child: TeamCard(
-            teamName: "Time ${i + 1}",
-            team: teams[i],
-            onPlayerSwitch: onPlayerSwitch,
-            onPlayerTap: onPlayerTap,
-            switchingPlayer: switchingPlayer,
+          child: GestureDetector(
+            onTap: () => setState(
+              () {
+                hideAverage = !hideAverage;
+              },
+            ),
+            child: TeamCard(
+              teamName: "Time ${i + 1}",
+              team: teams[i],
+              onPlayerSwitch: onPlayerSwitch,
+              onPlayerTap: onPlayerTap,
+              switchingPlayer: switchingPlayer,
+              hideAverage: hideAverage,
+            ),
           ),
         ),
       );

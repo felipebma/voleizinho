@@ -11,6 +11,7 @@ class TeamCard extends StatelessWidget {
     required this.onPlayerSwitch,
     required this.onPlayerTap,
     required this.switchingPlayer,
+    this.hideAverage = false,
   });
 
   final String teamName;
@@ -18,6 +19,7 @@ class TeamCard extends StatelessWidget {
   final void Function(Player) onPlayerSwitch;
   final void Function(Player) onPlayerTap;
   final Player? switchingPlayer;
+  final bool hideAverage;
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +43,15 @@ class TeamCard extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-                Text(team.getAverage().toStringAsFixed(2),
+                if (!hideAverage)
+                  Text(
+                    team.getAverage().toStringAsFixed(2),
                     style: const TextStyle(
                       fontFamily: "poller_one",
                       color: Colors.black,
                       fontSize: 20,
-                    )),
+                    ),
+                  ),
               ],
             ),
           ),
