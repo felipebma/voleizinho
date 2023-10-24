@@ -117,8 +117,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
         foregroundColor: Colors.black,
       ),
       drawer: const CustomDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 16),
+      body: SafeArea(
         child: Center(
           child: Column(
             children: [
@@ -161,15 +160,34 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
               const SizedBox(
                 height: 30,
               ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  "selectedPlayers: ${selectedPlayers.length}",
-                  style: const TextStyle(
-                    fontSize: 15,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      "Jogadores Selecionados: ${selectedPlayers.length}",
+                      style: const TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: ElevatedButton(
+                      onPressed: () => {
+                        setState(() {
+                          selectedPlayers = [];
+                          playersPerTeam = 0;
+                        })
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
+                      child: const Text("Limpar Seleção"),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 10,
