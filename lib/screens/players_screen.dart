@@ -153,6 +153,31 @@ class _PlayersScreenState extends State<PlayersScreen> {
                     size: 30,
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => {},
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.green),
+                        ),
+                        child: const Text("Importar Jogadores"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () =>
+                            {PlayerService.exportPlayersList(groupId)},
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.green),
+                        ),
+                        child: const Text("Exportar Jogadores"),
+                      ),
+                    ],
+                  ),
+                ),
                 if (editingPlayerIndex == -1)
                   Padding(
                     padding: const EdgeInsets.all(16),

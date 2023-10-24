@@ -26,4 +26,10 @@ class ShareService {
       files,
     );
   }
+
+  static Future<void> shareFile(File file) async {
+    Share.shareXFiles([
+      XFile(file.path),
+    ]);
+  }
 }
