@@ -34,32 +34,27 @@ Future<void> main() async {
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
 
-  playerBox.removeAll();
-  groupBox.removeAll();
-  GroupRepository groupRepository = GroupRepository();
-  int groupId = groupRepository.addGroup(
-    Group.withArgs(
-      name: "Neuro",
-    ),
-  );
-  for (Player p in playersDB) {
-    PlayerService.addPlayer(p, groupId);
-  }
-  groupId = groupRepository.addGroup(
-    Group.withArgs(
-      name: "Quartas/Sextas",
-    ),
-  );
-  for (Player p in playersDB) {
-    PlayerService.addPlayer(p, groupId);
-  }
-
+  // playerBox.removeAll();
   // groupBox.removeAll();
-  // groupBox.put(
-  //   Group.withArgs(
-  //     name: "Neuro",
-  //   ),
-  // );
+  GroupRepository groupRepository = GroupRepository();
+  if (groupRepository.getGroups().isEmpty) {
+    int groupId = groupRepository.addGroup(
+      Group.withArgs(
+        name: "Neuro",
+      ),
+    );
+    for (Player p in playersDB) {
+      PlayerService.addPlayer(p, groupId);
+    }
+    groupId = groupRepository.addGroup(
+      Group.withArgs(
+        name: "Quartas/Sextas",
+      ),
+    );
+    for (Player p in playersQuartas) {
+      PlayerService.addPlayer(p, groupId);
+    }
+  }
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MainApp(storeRepository: storeRepository));
 }

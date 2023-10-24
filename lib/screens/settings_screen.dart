@@ -12,13 +12,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  int spikeWeight = 0;
-  int blockWeight = 0;
-  int serveWeight = 0;
-  int receiveWeight = 0;
-  int setterWeight = 0;
-  int agilityWeight = 0;
-
   Map<Skill, int> weights = GroupService.getSkillsWeights();
 
   bool usePositionalBalancing = UserPreferences.usePositionalBalacing;
