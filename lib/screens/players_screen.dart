@@ -105,6 +105,11 @@ class _PlayersScreenState extends State<PlayersScreen> {
     });
   }
 
+  void importPlayersList() async {
+    await PlayerService.importPlayersList(groupId);
+    refreshPlayers();
+  }
+
   @override
   Widget build(BuildContext context) {
     players
@@ -159,7 +164,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
-                        onPressed: () => {},
+                        onPressed: () => {importPlayersList()},
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.green),

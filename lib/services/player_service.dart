@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
@@ -46,5 +48,52 @@ class PlayerService {
     final File file = File(path);
     await file.writeAsString(csv);
     await ShareService.shareFile(file);
+  }
+
+  static Future<void> importPlayersList(int groupId) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv'],
+    );
+
+    if (result == null) {
+      return;
+    }
+
+    String? filePath = result.files.single.path;
+    if (filePath == null) {
+      return;
+    }
+
+    List<Player> players = [];
+
+    try {
+      final input = File(filePath).openRead();
+      final fields = await input
+          .transform(utf8.decoder)
+          .transform(const CsvToListConverter())
+          .toList();
+
+      List<Skill> skillsHeader = fields[0]
+          .sublist(1)
+          .map((e) =>
+              Skill.values.firstWhere((element) => element.toString() == e))
+          .toList();
+
+      for (List<dynamic> row in fields.sublist(1)) {
+        Map<Skill, int> skills = {};
+        for (int i = 1; i < row.length; i++) {
+          skills[skillsHeader[i - 1]] = row[i].round();
+        }
+        players.add(Player.withArgs(name: row[0], skills: skills));
+      }
+    } on Exception catch (e) {
+      print(e);
+      return;
+    }
+
+    for (Player player in players) {
+      addPlayer(player, groupId);
+    }
   }
 }

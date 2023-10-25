@@ -55,6 +55,8 @@ Future<void> main() async {
       PlayerService.addPlayer(p, groupId);
     }
   }
+  groupRepository.removeGroupByName("Teste");
+  groupRepository.addGroup(Group.withArgs(name: "Teste"));
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MainApp(storeRepository: storeRepository));
 }

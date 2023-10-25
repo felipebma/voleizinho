@@ -20,6 +20,10 @@ class GroupRepository {
     groupBox!.remove(group.id);
   }
 
+  void removeGroupByName(String name) {
+    groupBox!.query(Group_.name.equals(name)).build().remove();
+  }
+
   Group getGroupById(int id) {
     return groupBox!.get(id)!;
   }
