@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
-import 'package:voleizinho/screens/group_home_screen.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -56,10 +56,8 @@ class HomeScreen extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       text: groups[index].name!,
                       onPressed: () => {
-                        Navigator.pushNamed(context, "/main_group",
-                            arguments: GroupMainScreenArguments(
-                                groupId: groups[index].id,
-                                groupName: groups[index].name!)),
+                        UserPreferences.setGroup(groups[index].id),
+                        Navigator.pushNamed(context, "/main_group"),
                       },
                     );
                   },

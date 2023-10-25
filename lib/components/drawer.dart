@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:voleizinho/screens/group_home_screen.dart';
 import 'package:voleizinho/services/group_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
@@ -34,13 +33,8 @@ class CustomDrawer extends StatelessWidget {
                   ],
                 ),
               ),
-            DrawerTile(
-                text: "Menu Principal",
-                icon: Icons.menu,
-                route: "/main_group",
-                arguments: GroupMainScreenArguments(
-                    groupId: UserPreferences.getGroup()!,
-                    groupName: GroupService.activeGroup().name!)),
+            const DrawerTile(
+                text: "Menu Principal", icon: Icons.menu, route: "/main_group"),
             const DrawerTile(
                 text: "Jogadores", icon: Icons.person, route: "/players"),
             const DrawerTile(

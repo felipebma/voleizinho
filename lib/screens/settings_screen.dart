@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/drawer.dart';
+import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/group_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
@@ -12,9 +13,9 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  Map<Skill, int> weights = GroupService.getSkillsWeights();
-
   bool usePositionalBalancing = UserPreferences.usePositionalBalacing;
+
+  Group group = GroupService.activeGroup();
 
   List<SkillGauge> skillGauges() {
     List<SkillGauge> skillGauges = [];
@@ -23,10 +24,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         label: skill.toShortString(),
         onChanged: (double value) {
           setState(() {
-            weights[skill] = value.toInt();
+            group.skillsWeights[skill] = value.toInt();
           });
         },
-        value: weights[skill] ?? 1,
+        value: group.skillsWeights[skill] ?? 1,
       ));
     }
     skillGauges.sort((a, b) => a.label.compareTo(b.label));
@@ -38,6 +39,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       GroupService.removeGroup(GroupService.activeGroup());
       Navigator.pushReplacementNamed(context, "/");
     });
+  }
+
+  void saveChanges() {
+    GroupService.updateGroup(group);
+    Navigator.pushReplacementNamed(context, "/main_group");
   }
 
   @override
@@ -75,13 +81,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    TextField(
+                      controller: TextEditingController(text: group.name),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Nome do Grupo',
+                        labelStyle: TextStyle(
+                          fontFamily: "poller_one",
+                          color: Colors.grey,
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontFamily: "poller_one",
+                      ),
+                      onChanged: (text) {
+                        group.name = text;
+                      },
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          "Balanceamento Positional:",
+                          "BALANCEAMENTO POSICIONAL:",
                           style:
-                              TextStyle(fontSize: 10, fontFamily: "poller_one"),
+                              TextStyle(fontSize: 12, fontFamily: "poller_one"),
                         ),
                         Checkbox(
                             value: usePositionalBalancing,
@@ -104,10 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {
-                    GroupService.updateSkillsWeights(weights);
-                    Navigator.pop(context);
-                  },
+                  onPressed: saveChanges,
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.green,
                     shape: RoundedRectangleBorder(

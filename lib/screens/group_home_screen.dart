@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/menu_button.dart';
+import 'package:voleizinho/services/group_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
-
-class GroupMainScreenArguments {
-  GroupMainScreenArguments({required this.groupId, required this.groupName});
-
-  int groupId;
-  String groupName;
-}
 
 class GroupHomeScreen extends StatelessWidget {
   const GroupHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final GroupMainScreenArguments args =
-        ModalRoute.of(context)!.settings.arguments as GroupMainScreenArguments;
-    UserPreferences.setGroup(args.groupId);
-    String groupName = args.groupName;
+    String groupName = GroupService.activeGroup().name!;
 
     return Scaffold(
       body: SafeArea(
