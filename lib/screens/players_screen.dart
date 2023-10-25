@@ -105,6 +105,13 @@ class _PlayersScreenState extends State<PlayersScreen> {
     });
   }
 
+  void deleteAllPlayers() {
+    setState(() {
+      playerRepository.removeAllPlayerByGroup(groupId);
+      refreshPlayers();
+    });
+  }
+
   void importPlayersList() async {
     await PlayerService.importPlayersList(groupId);
     refreshPlayers();
@@ -119,6 +126,35 @@ class _PlayersScreenState extends State<PlayersScreen> {
         backgroundColor: const Color(0xFFCDE8DE),
         elevation: 0,
         foregroundColor: Colors.black,
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                  value: 0,
+                  child: Text("Importar Jogadores"),
+                ),
+                const PopupMenuItem(
+                  value: 1,
+                  child: Text("Exportar Jogadores"),
+                ),
+                const PopupMenuItem(
+                  value: 2,
+                  child: Text("Limpar Jogadores"),
+                )
+              ];
+            },
+            onSelected: (value) {
+              if (value == 0) {
+                importPlayersList();
+              } else if (value == 1) {
+                PlayerService.exportPlayersList(groupId);
+              } else if (value == 2) {
+                deleteAllPlayers();
+              }
+            },
+          ),
+        ],
       ),
       drawer: const CustomDrawer(),
       body: SafeArea(
@@ -156,31 +192,6 @@ class _PlayersScreenState extends State<PlayersScreen> {
                     color: Colors.black,
                     Icons.group_rounded,
                     size: 30,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () => {importPlayersList()},
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.green),
-                        ),
-                        child: const Text("Importar Jogadores"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () =>
-                            {PlayerService.exportPlayersList(groupId)},
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.green),
-                        ),
-                        child: const Text("Exportar Jogadores"),
-                      ),
-                    ],
                   ),
                 ),
                 if (editingPlayerIndex == -1)

@@ -20,6 +20,10 @@ class PlayerRepository {
     playerBox!.remove(player.id);
   }
 
+  void removeAllPlayerByGroup(int groupId) {
+    playerBox!.query(Player_.groupId.equals(groupId)).build().remove();
+  }
+
   List<Player> getPlayers() {
     return playerBox!.getAll();
   }
