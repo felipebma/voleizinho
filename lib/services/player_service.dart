@@ -35,7 +35,7 @@ class PlayerService {
     List<Skill> skills = Skill.values;
     List<String> headers = [
       "name",
-      ...skills.map((e) => e.toString()).toList()
+      ...skills.map((e) => e.toShortString()).toList()
     ];
     List<List<String>> rows = [];
     for (Player p in players) {
@@ -45,10 +45,13 @@ class PlayerService {
       ];
       rows.add(row);
     }
-    String groupName = GroupService.activeGroup().name!;
+    String groupName = GroupService.activeGroup()
+        .name!
+        .replaceAll("/", "_")
+        .replaceAll(".", "_");
     String csv = const ListToCsvConverter().convert([headers, ...rows]);
     final String directory = (await getApplicationDocumentsDirectory()).path;
-    final String path = "$directory/$groupName.csv";
+    final String path = "$directory/'$groupName'.csv";
     final File file = File(path);
     await file.writeAsString(csv);
     await ShareService.shareFile(file);
@@ -80,8 +83,8 @@ class PlayerService {
 
       List<Skill> skillsHeader = fields[0]
           .sublist(1)
-          .map((e) =>
-              Skill.values.firstWhere((element) => element.toString() == e))
+          .map((e) => Skill.values
+              .firstWhere((element) => element.toShortString() == e))
           .toList();
 
       for (List<dynamic> row in fields.sublist(1)) {
