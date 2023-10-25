@@ -22,6 +22,10 @@ class PlayerService {
     _playerRepository.updatePlayer(newPlayer);
   }
 
+  static void removePlayersFromGroup(int groupId) {
+    _playerRepository.removeAllPlayerByGroup(groupId);
+  }
+
   static List<Player> getPlayersFromGroup(int groupId) {
     return _playerRepository.getPlayersFromGroup(groupId);
   }

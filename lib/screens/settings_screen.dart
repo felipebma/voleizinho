@@ -33,6 +33,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return skillGauges;
   }
 
+  void removeGroup() {
+    setState(() {
+      GroupService.removeGroup(GroupService.activeGroup());
+      Navigator.pushReplacementNamed(context, "/");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +47,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           backgroundColor: const Color(0xFFCDE8DE),
           elevation: 0,
           foregroundColor: Colors.black,
+          actions: [
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem(
+                    value: 0,
+                    child: Text("Deletar Grupo"),
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                if (value == 0) {
+                  removeGroup();
+                }
+              },
+            ),
+          ],
         ),
         drawer: const CustomDrawer(),
         body: Center(

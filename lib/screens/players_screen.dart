@@ -21,6 +21,9 @@ class _PlayersScreenState extends State<PlayersScreen> {
   late List<Player> players = playerRepository.getPlayers();
   int groupId = UserPreferences.getGroup()!;
 
+  int? editingPlayerIndex;
+  int? deletingPlayerIndex;
+
   @override
   void initState() {
     super.initState();
@@ -32,9 +35,6 @@ class _PlayersScreenState extends State<PlayersScreen> {
       players = PlayerService.getPlayersFromGroup(groupId);
     });
   }
-
-  int? editingPlayerIndex;
-  int? deletingPlayerIndex;
 
   void editingPlayer(int? index) {
     setState(() {
@@ -140,7 +140,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
                 ),
                 const PopupMenuItem(
                   value: 2,
-                  child: Text("Limpar Jogadores"),
+                  child: Text("Apagar Jogadores"),
                 )
               ];
             },

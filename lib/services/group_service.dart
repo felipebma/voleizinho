@@ -1,6 +1,7 @@
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
+import 'package:voleizinho/services/player_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupService {
@@ -19,6 +20,7 @@ class GroupService {
   }
 
   static void removeGroup(Group group) {
+    PlayerService.removePlayersFromGroup(group.id);
     groupRepository.removeGroup(group);
   }
 
