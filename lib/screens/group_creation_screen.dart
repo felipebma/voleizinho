@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/group_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+class GroupCreationScreen extends StatefulWidget {
+  const GroupCreationScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  State<GroupCreationScreen> createState() => _GroupCreationScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool usePositionalBalancing = UserPreferences.usePositionalBalacing;
+class _GroupCreationScreenState extends State<GroupCreationScreen> {
+  bool usePositionalBalancing = false;
 
-  Group group = GroupService.activeGroup();
+  Group group = Group();
 
   List<SkillGauge> skillGauges() {
     List<SkillGauge> skillGauges = [];
@@ -34,11 +32,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return skillGauges;
   }
 
-  void removeGroup() {
-    setState(() {
-      GroupService.removeGroup(GroupService.activeGroup());
-      Navigator.pushReplacementNamed(context, "/");
-    });
+  void cancel() {
+    Navigator.pushReplacementNamed(context, "/");
   }
 
   void saveChanges() {
@@ -55,7 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       return;
     }
     GroupService.updateGroup(group);
-    Navigator.pushReplacementNamed(context, "/main_group");
+    Navigator.pushReplacementNamed(context, "/");
   }
 
   @override
@@ -65,25 +60,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: const Color(0xFFCDE8DE),
         elevation: 0,
         foregroundColor: Colors.black,
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem(
-                  value: 0,
-                  child: Text("Deletar Grupo"),
-                ),
-              ];
-            },
-            onSelected: (value) {
-              if (value == 0) {
-                removeGroup();
-              }
-            },
-          ),
-        ],
+        leading: Container(),
       ),
-      drawer: const CustomDrawer(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(50.0),
@@ -124,7 +102,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           onChanged: (value) {
                             setState(() {
                               usePositionalBalancing = value!;
-                              UserPreferences.usePositionalBalacing = value;
                             });
                           })
                     ],
@@ -139,24 +116,50 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ...skillGauges(),
                 ],
               ),
-              TextButton(
-                onPressed: saveChanges,
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () => {
+                      Navigator.pushReplacementNamed(context, "/"),
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      elevation: 6,
+                    ),
+                    child: const Text(
+                      "Cancelar",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: "poller_one",
+                      ),
+                    ),
                   ),
-                  padding: const EdgeInsets.all(20),
-                  elevation: 6,
-                ),
-                child: const Text(
-                  "Salvar",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontFamily: "poller_one",
+                  TextButton(
+                    onPressed: saveChanges,
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      elevation: 6,
+                    ),
+                    child: const Text(
+                      "Salvar",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: "poller_one",
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),

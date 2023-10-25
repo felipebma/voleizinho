@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   text: "Criar Grupo",
                   onPressed: () => {
-                    // Navigator.pushNamed(context, "/group_creation"),
+                    Navigator.pushNamed(context, "/group_creation"),
                   },
                 ),
               ),

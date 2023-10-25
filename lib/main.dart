@@ -8,6 +8,7 @@ import 'package:voleizinho/playersDB.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
+import 'package:voleizinho/screens/group_creation_screen.dart';
 import 'package:voleizinho/screens/group_home_screen.dart';
 import 'package:voleizinho/screens/home_screen.dart';
 import 'package:voleizinho/screens/players_screen.dart';
@@ -33,9 +34,6 @@ Future<void> main() async {
   Box<Group> groupBox = objectBox.store.box<Group>();
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
-
-  // playerBox.removeAll();
-  // groupBox.removeAll();
   GroupRepository groupRepository = GroupRepository();
   if (groupRepository.getGroups().isEmpty) {
     int groupId = groupRepository.addGroup(
@@ -82,6 +80,7 @@ class MainApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => HomeScreen(),
+        "/group_creation": (context) => const GroupCreationScreen(),
         "/main_group": (context) => const GroupHomeScreen(),
         "/players": (context) => const PlayersScreen(),
         "/team_creation": (context) => const TeamCreationScreen(),

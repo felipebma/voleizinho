@@ -45,7 +45,7 @@ class GroupHomeScreen extends StatelessWidget {
                     ),
                     text: "Jogadores",
                     onPressed: () => {
-                      Navigator.pushNamed(context, "/players"),
+                      Navigator.pushReplacementNamed(context, "/players"),
                     },
                   ),
                   MenuButton(
@@ -56,7 +56,7 @@ class GroupHomeScreen extends StatelessWidget {
                     ),
                     text: "Configurações",
                     onPressed: () => {
-                      Navigator.pushNamed(context, "/settings"),
+                      Navigator.pushReplacementNamed(context, "/settings"),
                     },
                   ),
                   MenuButton(
@@ -70,9 +70,11 @@ class GroupHomeScreen extends StatelessWidget {
                       UserPreferences.getTeams().then(
                         (value) {
                           if (value.isNotEmpty) {
-                            Navigator.pushNamed(context, "/teams_view");
+                            Navigator.pushReplacementNamed(
+                                context, "/teams_view");
                           } else {
-                            Navigator.pushNamed(context, "/team_creation");
+                            Navigator.pushReplacementNamed(
+                                context, "/team_creation");
                           }
                         },
                       );
@@ -86,7 +88,7 @@ class GroupHomeScreen extends StatelessWidget {
                     ),
                     text: "Placar",
                     onPressed: () => {
-                      Navigator.pushNamed(context, "/scoreboard"),
+                      Navigator.pushReplacementNamed(context, "/scoreboard"),
                     },
                   ),
                   MenuButton(
