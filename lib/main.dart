@@ -4,19 +4,10 @@ import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/object_box.dart';
 import 'package:voleizinho/objectbox.g.dart';
-import 'package:voleizinho/playersDB.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
-import 'package:voleizinho/screens/group_creation_screen.dart';
-import 'package:voleizinho/screens/group_home_screen.dart';
-import 'package:voleizinho/screens/home_screen.dart';
-import 'package:voleizinho/screens/players_screen.dart';
-import 'package:voleizinho/screens/scoreboard_screen.dart';
-import 'package:voleizinho/screens/settings_screen.dart';
-import 'package:voleizinho/screens/team_creation_screen.dart';
-import 'package:voleizinho/screens/teams_view_screen.dart';
-import 'package:voleizinho/services/player_service.dart';
+import 'package:voleizinho/routes.dart';
 import 'package:voleizinho/services/team_match_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
@@ -34,27 +25,6 @@ Future<void> main() async {
   Box<Group> groupBox = objectBox.store.box<Group>();
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
-  GroupRepository groupRepository = GroupRepository();
-  if (groupRepository.getGroups().isEmpty) {
-    int groupId = groupRepository.addGroup(
-      Group.withArgs(
-        name: "Neuro",
-      ),
-    );
-    for (Player p in playersDB) {
-      PlayerService.addPlayer(p, groupId);
-    }
-    groupId = groupRepository.addGroup(
-      Group.withArgs(
-        name: "Quartas/Sextas",
-      ),
-    );
-    for (Player p in playersQuartas) {
-      PlayerService.addPlayer(p, groupId);
-    }
-  }
-  groupRepository.removeGroupByName("Teste");
-  groupRepository.addGroup(Group.withArgs(name: "Teste"));
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MainApp(storeRepository: storeRepository));
 }
@@ -78,16 +48,7 @@ class MainApp extends StatelessWidget {
           ),
         ),
       ),
-      routes: {
-        "/": (context) => HomeScreen(),
-        "/group_creation": (context) => const GroupCreationScreen(),
-        "/main_group": (context) => const GroupHomeScreen(),
-        "/players": (context) => const PlayersScreen(),
-        "/team_creation": (context) => const TeamCreationScreen(),
-        "/teams_view": (context) => const TeamsViewScreen(),
-        "/settings": (context) => const SettingsScreen(),
-        "/scoreboard": (context) => const ScoreBoardScreen(),
-      },
+      routes: routes,
       initialRoute: "/",
     );
   }
