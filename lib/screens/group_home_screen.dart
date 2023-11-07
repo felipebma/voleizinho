@@ -12,99 +12,102 @@ class GroupHomeScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Image(image: AssetImage('assets/logo.png'), height: 200),
-              const Text(
-                "VOLEIZINHO",
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "poller_one",
-                ),
-              ),
-              Text(
-                groupName,
-                style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Image(image: AssetImage('assets/logo.png'), height: 200),
+                const Text(
+                  "VOLEIZINHO",
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
                     fontFamily: "poller_one",
-                    color: Colors.grey),
-              ),
-              const SizedBox(height: 50.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.man,
-                      color: Colors.black,
-                      size: 56,
-                    ),
-                    text: "Jogadores",
-                    onPressed: () => {
-                      Navigator.pushReplacementNamed(context, "/players"),
-                    },
                   ),
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.settings,
-                      color: Colors.black,
-                      size: 56,
+                ),
+                Text(
+                  groupName,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: "poller_one",
+                      color: Colors.grey),
+                ),
+                const SizedBox(height: 50.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    MenuButton(
+                      leftWidget: const Icon(
+                        Icons.man,
+                        color: Colors.black,
+                        size: 56,
+                      ),
+                      text: "Jogadores",
+                      onPressed: () => {
+                        Navigator.pushReplacementNamed(context, "/players"),
+                      },
                     ),
-                    text: "Configurações",
-                    onPressed: () => {
-                      Navigator.pushReplacementNamed(context, "/settings"),
-                    },
-                  ),
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.people,
-                      color: Colors.black,
-                      size: 56,
+                    MenuButton(
+                      leftWidget: const Icon(
+                        Icons.settings,
+                        color: Colors.black,
+                        size: 56,
+                      ),
+                      text: "Configurações",
+                      onPressed: () => {
+                        Navigator.pushReplacementNamed(context, "/settings"),
+                      },
                     ),
-                    text: "Times",
-                    onPressed: () async {
-                      UserPreferences.getTeams().then(
-                        (value) {
-                          if (value.isNotEmpty) {
-                            Navigator.pushReplacementNamed(
-                                context, "/teams_view");
-                          } else {
-                            Navigator.pushReplacementNamed(
-                                context, "/team_creation");
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.scoreboard_outlined,
-                      color: Colors.black,
-                      size: 56,
+                    MenuButton(
+                      leftWidget: const Icon(
+                        Icons.people,
+                        color: Colors.black,
+                        size: 56,
+                      ),
+                      text: "Times",
+                      onPressed: () async {
+                        UserPreferences.getTeams().then(
+                          (value) {
+                            if (value.isNotEmpty) {
+                              Navigator.pushReplacementNamed(
+                                  context, "/teams_view");
+                            } else {
+                              Navigator.pushReplacementNamed(
+                                  context, "/team_creation");
+                            }
+                          },
+                        );
+                      },
                     ),
-                    text: "Placar",
-                    onPressed: () => {
-                      Navigator.pushReplacementNamed(context, "/scoreboard"),
-                    },
-                  ),
-                  MenuButton(
-                    leftWidget: const Icon(
-                      Icons.sync_alt_rounded,
-                      color: Colors.black,
-                      size: 56,
+                    MenuButton(
+                      leftWidget: const Icon(
+                        Icons.scoreboard_outlined,
+                        color: Colors.black,
+                        size: 56,
+                      ),
+                      text: "Placar",
+                      onPressed: () => {
+                        Navigator.pushReplacementNamed(context, "/scoreboard"),
+                      },
                     ),
-                    text: "Alterar Grupo",
-                    onPressed: () => {
-                      Navigator.pushReplacementNamed(context, "/"),
-                    },
-                  ),
-                ],
-              )
-            ],
+                    MenuButton(
+                      leftWidget: const Icon(
+                        Icons.sync_alt_rounded,
+                        color: Colors.black,
+                        size: 56,
+                      ),
+                      text: "Alterar Grupo",
+                      onPressed: () => {
+                        Navigator.pushReplacementNamed(context, "/"),
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
