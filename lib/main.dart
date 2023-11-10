@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/players/players_bloc.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/object_box.dart';
@@ -8,6 +10,7 @@ import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
 import 'package:voleizinho/routes.dart';
+import 'package:voleizinho/services/player_service.dart';
 import 'package:voleizinho/services/team_match_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
@@ -26,30 +29,31 @@ Future<void> main() async {
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(MainApp(storeRepository: storeRepository));
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key, required this.storeRepository});
-
-  final StoreRepository storeRepository;
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.light().copyWith(
-        primaryColor: Colors.blue,
-        scaffoldBackgroundColor: const Color(0xFFCDE8DE),
-        primaryTextTheme: const TextTheme(
-          titleLarge: TextStyle(
-            fontSize: 40,
-            fontWeight: FontWeight.bold,
-            fontFamily: "poller_one",
+    return BlocProvider(
+      create: (context) => PlayersBloc(PlayerService()),
+      child: MaterialApp(
+        theme: ThemeData.light().copyWith(
+          primaryColor: Colors.blue,
+          scaffoldBackgroundColor: const Color(0xFFCDE8DE),
+          primaryTextTheme: const TextTheme(
+            titleLarge: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              fontFamily: "poller_one",
+            ),
           ),
         ),
+        routes: routes,
+        initialRoute: "/",
       ),
-      routes: routes,
-      initialRoute: "/",
     );
   }
 }

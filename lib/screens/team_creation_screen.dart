@@ -25,7 +25,7 @@ class TeamCreationScreenArguments {
 
 class _TeamCreationScreenState extends State<TeamCreationScreen> {
   late List<Player> players =
-      PlayerService.getPlayersFromGroup(UserPreferences.getGroup()!);
+      PlayerService.GetPlayersFromGroup(UserPreferences.getGroup()!);
 
   List<Player> selectedPlayers = [];
 
@@ -82,7 +82,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
 
   void refreshPlayers() {
     setState(() {
-      players = PlayerService.getPlayersFromGroup(UserPreferences.getGroup()!);
+      players = PlayerService.GetPlayersFromGroup(UserPreferences.getGroup()!);
       players.sort(
           (a, b) => a.name!.toUpperCase().compareTo(b.name!.toUpperCase()));
     });

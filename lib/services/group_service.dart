@@ -20,7 +20,7 @@ class GroupService {
   }
 
   static void removeGroup(Group group) {
-    PlayerService.removePlayersFromGroup(group.id);
+    PlayerService.staticRemovePlayersFromGroup(group.id);
     groupRepository.removeGroup(group);
   }
 

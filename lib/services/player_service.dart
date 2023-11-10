@@ -11,26 +11,38 @@ import 'package:voleizinho/services/group_service.dart';
 import 'package:voleizinho/services/share_service.dart';
 
 class PlayerService {
-  static final PlayerRepository _playerRepository = PlayerRepository();
+  final PlayerRepository _playerRepository = PlayerRepository();
 
-  static void addPlayer(Player player, int groupId) {
+  void addPlayer(Player player, int groupId) {
     Player newPlayer = player.copyWith(groupId: groupId);
     _playerRepository.addPlayer(newPlayer);
   }
 
-  static void updatePlayer(Player newPlayer) {
+  void deletePlayer(Player player) {
+    _playerRepository.removePlayer(player);
+  }
+
+  void updatePlayer(Player newPlayer) {
     _playerRepository.updatePlayer(newPlayer);
   }
 
-  static void removePlayersFromGroup(int groupId) {
+  void removePlayersFromGroup(int groupId) {
     _playerRepository.removeAllPlayerByGroup(groupId);
   }
 
-  static List<Player> getPlayersFromGroup(int groupId) {
+  static void staticRemovePlayersFromGroup(int groupId) {
+    PlayerRepository().removeAllPlayerByGroup(groupId);
+  }
+
+  List<Player> getPlayersFromGroup(int groupId) {
     return _playerRepository.getPlayersFromGroup(groupId);
   }
 
-  static Future<void> exportPlayersList(int groupId) async {
+  static List<Player> GetPlayersFromGroup(int groupId) {
+    return PlayerRepository().getPlayersFromGroup(groupId);
+  }
+
+  Future<void> exportPlayersList(int groupId) async {
     List<Player> players = _playerRepository.getPlayersFromGroup(groupId);
     List<Skill> skills = Skill.values;
     List<String> headers = [
@@ -57,7 +69,7 @@ class PlayerService {
     await ShareService.shareFile(file);
   }
 
-  static Future<void> importPlayersList(int groupId) async {
+  Future<void> importPlayersList(int groupId) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['csv'],

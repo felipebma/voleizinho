@@ -35,6 +35,14 @@
             "deviceId": "emulator-5556"
         },
         {
+            "name": "Flutter (ios emulator)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "9E261579-997B-410C-A96B-4ED9DAC63D50"
+        },
+        {
             "name": "Flutter (debug Iphone)",
             "program": "lib/main.dart",
             "request": "launch",
