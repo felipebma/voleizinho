@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voleizinho/bloc/players/players_events.dart';
 import 'package:voleizinho/bloc/players/players_states.dart';
 import 'package:voleizinho/services/player_service.dart';
@@ -72,21 +73,26 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
         deletingPlayerIndex: -2));
   }
 
-  void _onImportPlayers(PlayersImportEvent event, Emitter<PlayersState> emit) {
-    playerService.importPlayersList(event.groupId);
-    emit(state.copyWith(
-        players: playerService.getPlayersFromGroup(event.groupId)));
+  void _onImportPlayers(
+      PlayersImportEvent event, Emitter<PlayersState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    int groupId = prefs.getInt("activeGroup") ?? 0;
+    await playerService.importPlayersList(groupId);
+    emit(state.copyWith(players: playerService.getPlayersFromGroup(groupId)));
   }
 
-  void _onExportPlayers(PlayersExportEvent event, Emitter<PlayersState> emit) {
-    playerService.exportPlayersList(event.groupId);
-    emit(state.copyWith(
-        players: playerService.getPlayersFromGroup(event.groupId)));
+  void _onExportPlayers(
+      PlayersExportEvent event, Emitter<PlayersState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    int groupId = prefs.getInt("activeGroup") ?? 0;
+    await playerService.exportPlayersList(groupId);
   }
 
-  void _onClearPlayers(PlayersClearEvent event, Emitter<PlayersState> emit) {
-    playerService.removePlayersFromGroup(event.groupId);
-    emit(state.copyWith(
-        players: playerService.getPlayersFromGroup(event.groupId)));
+  void _onClearPlayers(
+      PlayersClearEvent event, Emitter<PlayersState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    int groupId = prefs.getInt("activeGroup") ?? 0;
+    playerService.removePlayersFromGroup(groupId);
+    emit(state.copyWith(players: playerService.getPlayersFromGroup(groupId)));
   }
 }

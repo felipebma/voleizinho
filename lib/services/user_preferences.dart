@@ -54,7 +54,8 @@ class UserPreferences {
   }
 
   static setGroup(int groupId) async {
-    _groupId = groupId;
+    await SharedPreferences.getInstance().then(
+        (prefs) => {prefs.setInt("activeGroup", groupId), _groupId = groupId});
   }
 
   static int? getGroup() {

@@ -39,20 +39,8 @@ class PlayersDeleteEvent extends PlayersEvent {
   PlayersDeleteEvent(this.player);
 }
 
-class PlayersImportEvent extends PlayersEvent {
-  final int groupId;
+class PlayersImportEvent extends PlayersEvent {}
 
-  PlayersImportEvent(this.groupId);
-}
+class PlayersExportEvent extends PlayersEvent {}
 
-class PlayersExportEvent extends PlayersEvent {
-  final int groupId;
-
-  PlayersExportEvent(this.groupId);
-}
-
-class PlayersClearEvent extends PlayersEvent {
-  final int groupId;
-
-  PlayersClearEvent(this.groupId);
-}
+class PlayersClearEvent extends PlayersEvent {}
