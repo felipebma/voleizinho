@@ -52,7 +52,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(2, 3126827991196298943),
       name: 'Group',
-      lastPropertyId: const IdUid(3, 780069684367151973),
+      lastPropertyId: const IdUid(4, 6561424085908876837),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -69,6 +69,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(3, 780069684367151973),
             name: 'dbSkillsWeights',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 6561424085908876837),
+            name: 'usePositionalBalacing',
+            type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -166,10 +171,11 @@ ModelDefinition getObjectBoxModel() {
           final dbSkillsWeightsOffset = object.dbSkillsWeights == null
               ? null
               : fbb.writeString(object.dbSkillsWeights!);
-          fbb.startTable(4);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, dbSkillsWeightsOffset);
+          fbb.addBool(3, object.usePositionalBalacing);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -182,7 +188,9 @@ ModelDefinition getObjectBoxModel() {
             ..name = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 6)
             ..dbSkillsWeights = const fb.StringReader(asciiOptimization: true)
-                .vTableGetNullable(buffer, rootOffset, 8);
+                .vTableGetNullable(buffer, rootOffset, 8)
+            ..usePositionalBalacing =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false);
 
           return object;
         })
@@ -219,4 +227,8 @@ class Group_ {
   /// see [Group.dbSkillsWeights]
   static final dbSkillsWeights =
       QueryStringProperty<Group>(_entities[1].properties[2]);
+
+  /// see [Group.usePositionalBalacing]
+  static final usePositionalBalacing =
+      QueryBooleanProperty<Group>(_entities[1].properties[3]);
 }

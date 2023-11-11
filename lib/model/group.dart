@@ -8,11 +8,13 @@ class Group {
   @Id()
   int id = 0;
   String? name;
+  bool usePositionalBalacing = true;
 
   Group();
 
   Group.withArgs(
       {this.name,
+      this.usePositionalBalacing = true,
       this.skillsWeights = const {
         Skill.spike: 1,
         Skill.agility: 1,
@@ -45,6 +47,7 @@ class Group {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
+      'usePositionalBalacing': usePositionalBalacing,
       'skillsWeights': skillsWeights,
     };
   }
@@ -59,6 +62,8 @@ class Group {
     }
 
     return Group.withArgs(
-        name: jsonObject['name'], skillsWeights: skillsWeights);
+        name: jsonObject['name'],
+        usePositionalBalacing: jsonObject['usePositionalBalancing'],
+        skillsWeights: skillsWeights);
   }
 }
