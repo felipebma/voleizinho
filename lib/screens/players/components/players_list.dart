@@ -34,10 +34,11 @@ class _PlayersListState extends State<PlayersList> {
               children: [
                 state.editingPlayerIndex != index
                     ? GestureDetector(
-                        onHorizontalDragEnd: (details) =>
-                            bloc.add(PlayersDeletingEvent(
-                          details.primaryVelocity! < 0 ? index : null,
-                        )),
+                        onHorizontalDragEnd: (details) => bloc.add(
+                          PlayersDeletingEvent(
+                            details.primaryVelocity! < 0 ? index : null,
+                          ),
+                        ),
                         child: PlayerCard(
                           player: widget.players[index],
                           hideDelete: bloc.state.deletingPlayerIndex != index,

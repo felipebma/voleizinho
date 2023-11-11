@@ -4,11 +4,10 @@ import 'package:voleizinho/bloc/players/players_bloc.dart';
 import 'package:voleizinho/bloc/players/players_events.dart';
 import 'package:voleizinho/bloc/players/players_states.dart';
 import 'package:voleizinho/components/drawer.dart';
-import 'package:voleizinho/components/edit_player_card.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/constants.dart';
-import 'package:voleizinho/screens/players/widgets/players_list.dart';
-import 'package:voleizinho/screens/players/widgets/popup_menu_widget.dart';
+import 'package:voleizinho/screens/players/components/create_player_card.dart';
+import 'package:voleizinho/screens/players/components/players_list.dart';
+import 'package:voleizinho/screens/players/components/popup_menu_widget.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class PlayersScreen extends StatefulWidget {
@@ -89,16 +88,9 @@ class _PlayersScreenState extends State<PlayersScreen> {
                       ),
                     ),
                     if (state.editingPlayerIndex == -1)
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: EditPlayerCard(
-                          player: kDefaultPlayer.copyWith(
-                              name: "", groupId: groupId),
-                          onCancel: () => bloc.add(PlayersEditingEvent(-2)),
-                          onSave: (player) =>
-                              bloc.add(PlayersCreateEvent(player)),
-                        ),
-                      ),
+                      const Padding(
+                          padding: EdgeInsets.all(16),
+                          child: CreatePlayerCard()),
                     const SizedBox(height: 30),
                     PlayersList(players: players),
                   ],
