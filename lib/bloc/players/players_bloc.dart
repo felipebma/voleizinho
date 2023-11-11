@@ -36,7 +36,8 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
     event.player.groupId = event.player.groupId;
     playerService.addPlayer(event.player, event.player.groupId);
     emit(state.copyWith(
-        players: playerService.getPlayersFromGroup(event.player.groupId)));
+        players: playerService.getPlayersFromGroup(event.player.groupId),
+        editingPlayerIndex: -2));
   }
 
   void _onEditingPlayer(PlayersEditingEvent event, Emitter<PlayersState> emit) {
