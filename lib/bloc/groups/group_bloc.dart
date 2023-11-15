@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voleizinho/bloc/groups/group_events.dart';
 import 'package:voleizinho/bloc/groups/group_states.dart';
 import 'package:voleizinho/services/group_service.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupBloc extends Bloc<GroupEvent, GroupState> {
   // ignore: unused_field
@@ -35,6 +36,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   }
 
   void _onSelectGroup(GroupSelectEvent event, Emitter<GroupState> emit) {
+    UserPreferences.setGroup(event.group.id);
     GroupService.updateGroup(event.group);
     emit(GroupSelectedState(event.group));
   }

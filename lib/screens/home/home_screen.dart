@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_events.dart';
+import 'package:voleizinho/bloc/groups/group_states.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/model/group.dart';
-import 'package:voleizinho/repositories/group_repository.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
-
-  final List<Group> groups = GroupRepository().getGroups();
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    GroupBloc bloc = BlocProvider.of<GroupBloc>(context);
+    bloc.add(GroupsLoadEvent());
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -51,17 +52,25 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: groups.length,
-                    itemBuilder: (context, index) {
-                      return MenuButton(
-                        padding: EdgeInsets.zero,
-                        text: groups[index].name!,
-                        onPressed: () => {
-                          UserPreferences.setGroup(groups[index].id),
-                          Navigator.pushNamed(context, "/main_group"),
-                        },
-                      );
+                  child: BlocBuilder<GroupBloc, GroupState>(
+                    builder: (context, state) {
+                      if (state is GroupsLoadedState) {
+                        final groups = state.groups;
+                        return ListView.builder(
+                          itemCount: groups.length,
+                          itemBuilder: (context, index) {
+                            return MenuButton(
+                              padding: EdgeInsets.zero,
+                              text: groups[index].name!,
+                              onPressed: () => {
+                                bloc.add(GroupSelectEvent(groups[index])),
+                                Navigator.pushNamed(context, "/main_group"),
+                              },
+                            );
+                          },
+                        );
+                      }
+                      return Container();
                     },
                   ),
                 ),

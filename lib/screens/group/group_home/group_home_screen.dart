@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_states.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/services/group_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupHomeScreen extends StatelessWidget {
@@ -8,8 +10,6 @@ class GroupHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String groupName = GroupService.activeGroup().name!;
-
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -27,13 +27,17 @@ class GroupHomeScreen extends StatelessWidget {
                     fontFamily: "poller_one",
                   ),
                 ),
-                Text(
-                  groupName,
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: "poller_one",
-                      color: Colors.grey),
+                BlocBuilder<GroupBloc, GroupState>(
+                  builder: (context, state) {
+                    return Text(
+                      state.activeGroup?.name ?? "",
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: "poller_one",
+                          color: Colors.grey),
+                    );
+                  },
                 ),
                 const SizedBox(height: 50.0),
                 Column(

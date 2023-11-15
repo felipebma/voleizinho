@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:voleizinho/services/group_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_states.dart';
 import 'package:voleizinho/services/team_match_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -21,15 +22,17 @@ class CustomDrawer extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      UserPreferences.getGroup() == null
-                          ? "Voleizinho"
-                          : GroupService.activeGroup().name!,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        fontFamily: "poller_one",
-                      ),
+                    BlocBuilder<GroupBloc, GroupState>(
+                      builder: (context, state) {
+                        return Text(
+                          state.activeGroup?.name ?? "Voleizinho",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontFamily: "poller_one",
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
