@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:voleizinho/components/drawer.dart';
+import 'package:voleizinho/screens/scoreboard/components/score.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class ScoreBoardScreen extends StatefulWidget {
@@ -31,20 +32,49 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
     ]).then((value) => null);
   }
 
-  int time1Score = 0;
-  int time2Score = 0;
+  int team1Score = 0;
+  int team2Score = 0;
 
   void initializeScore() {
     UserPreferences.getScores().then((value) => {
           setState(() {
-            time1Score = value[0];
-            time2Score = value[1];
+            team1Score = value[0];
+            team2Score = value[1];
           })
         });
   }
 
-  void saveScores() {
-    UserPreferences.saveScores(time1Score, time2Score);
+  void resetScore() {
+    setState(() {
+      team1Score = 0;
+      team2Score = 0;
+    });
+  }
+
+  void incrementScore(int team) {
+    if (team == 1) {
+      setState(() {
+        team1Score++;
+      });
+    } else {
+      setState(() {
+        team2Score++;
+      });
+    }
+    UserPreferences.saveScores(team1Score, team2Score);
+  }
+
+  void decrementScore(int team) {
+    if (team == 1) {
+      setState(() {
+        team1Score--;
+      });
+    } else {
+      setState(() {
+        team2Score--;
+      });
+    }
+    UserPreferences.saveScores(team1Score, team2Score);
   }
 
   @override
@@ -59,84 +89,16 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
       drawer: const CustomDrawer(),
       body: Row(
         children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () => {
-                setState(() {
-                  time1Score++;
-                  saveScores();
-                })
-              },
-              onHorizontalDragEnd: (details) => {
-                if (details.primaryVelocity! > 0)
-                  {
-                    setState(() {
-                      time1Score++;
-                      saveScores();
-                    })
-                  }
-                else
-                  {
-                    setState(() {
-                      time1Score--;
-                      saveScores();
-                    })
-                  }
-              },
-              child: Container(
-                color: Colors.red,
-                child: Center(
-                  child: Text(
-                    time1Score.toString(),
-                    style: const TextStyle(
-                      fontSize: 300,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () => {
-                setState(() {
-                  time2Score++;
-                  saveScores();
-                })
-              },
-              onHorizontalDragEnd: (details) => {
-                if (details.primaryVelocity! > 0)
-                  {
-                    setState(() {
-                      time2Score++;
-                      saveScores();
-                    })
-                  }
-                else
-                  {
-                    setState(() {
-                      time2Score--;
-                      saveScores();
-                    })
-                  }
-              },
-              child: Container(
-                color: Colors.blue,
-                child: Center(
-                  child: Text(
-                    time2Score.toString(),
-                    style: const TextStyle(
-                      fontSize: 300,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          Score(
+              score: team1Score,
+              incrementScore: () => incrementScore(1),
+              decrementScore: () => decrementScore(1),
+              backgroundColor: Colors.red),
+          Score(
+              score: team2Score,
+              incrementScore: () => incrementScore(2),
+              decrementScore: () => decrementScore(2),
+              backgroundColor: Colors.blue),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -152,12 +114,7 @@ class _ScoreBoardScreenState extends State<ScoreBoardScreen> {
             fontFamily: "poller_one",
           ),
         ),
-        onPressed: () {
-          setState(() {
-            time1Score = 0;
-            time2Score = 0;
-          });
-        },
+        onPressed: resetScore,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
