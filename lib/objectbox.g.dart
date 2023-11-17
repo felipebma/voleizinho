@@ -175,7 +175,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addOffset(2, dbSkillsWeightsOffset);
-          fbb.addBool(3, object.usePositionalBalacing);
+          fbb.addBool(3, object.usePositionalBalancing);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -189,7 +189,7 @@ ModelDefinition getObjectBoxModel() {
                 .vTableGetNullable(buffer, rootOffset, 6)
             ..dbSkillsWeights = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 8)
-            ..usePositionalBalacing =
+            ..usePositionalBalancing =
                 const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false);
 
           return object;
@@ -228,7 +228,7 @@ class Group_ {
   static final dbSkillsWeights =
       QueryStringProperty<Group>(_entities[1].properties[2]);
 
-  /// see [Group.usePositionalBalacing]
+  /// see [Group.usePositionalBalancing]
   static final usePositionalBalacing =
       QueryBooleanProperty<Group>(_entities[1].properties[3]);
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:voleizinho/components/skill_gauge.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
-import 'package:voleizinho/screens/settings_screen.dart';
 import 'package:voleizinho/services/group_service.dart';
 
 class GroupCreationScreen extends StatefulWidget {
@@ -12,8 +12,6 @@ class GroupCreationScreen extends StatefulWidget {
 }
 
 class _GroupCreationScreenState extends State<GroupCreationScreen> {
-  bool usePositionalBalancing = false;
-
   Group group = Group();
 
   List<SkillGauge> skillGauges() {
@@ -99,10 +97,10 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
                             TextStyle(fontSize: 12, fontFamily: "poller_one"),
                       ),
                       Checkbox(
-                          value: usePositionalBalancing,
+                          value: group.usePositionalBalancing,
                           onChanged: (value) {
                             setState(() {
-                              usePositionalBalancing = value!;
+                              group.usePositionalBalancing = value!;
                             });
                           })
                     ],

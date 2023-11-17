@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
 import 'package:voleizinho/components/drawer.dart';
+import 'package:voleizinho/components/skill_gauge.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/group_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -13,9 +15,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool usePositionalBalancing = UserPreferences.usePositionalBalacing;
+  Group? group;
 
-  Group group = GroupService.activeGroup();
+  @override
+  void initState() {
+    super.initState();
+    group = BlocProvider.of<GroupBloc>(context).state.activeGroup!;
+  }
 
   List<SkillGauge> skillGauges() {
     List<SkillGauge> skillGauges = [];
@@ -24,10 +30,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         label: skill.toShortString(),
         onChanged: (double value) {
           setState(() {
-            group.skillsWeights[skill] = value.toInt();
+            group!.skillsWeights[skill] = value.toInt();
           });
         },
-        value: group.skillsWeights[skill] ?? 1,
+        value: group!.skillsWeights[skill] ?? 1,
       ));
     }
     skillGauges.sort((a, b) => a.label.compareTo(b.label));
@@ -41,7 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  void saveChanges() {
+  void saveChanges(Group group) {
     if (group.name == null || group.name!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -94,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
-                    controller: TextEditingController(text: group.name),
+                    controller: TextEditingController(text: group!.name),
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Nome do Grupo',
@@ -108,7 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       fontFamily: "poller_one",
                     ),
                     onChanged: (text) {
-                      group.name = text;
+                      group!.name = text;
                     },
                   ),
                   Row(
@@ -120,11 +126,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             TextStyle(fontSize: 12, fontFamily: "poller_one"),
                       ),
                       Checkbox(
-                          value: usePositionalBalancing,
+                          value: group!.usePositionalBalancing,
                           onChanged: (value) {
                             setState(() {
-                              usePositionalBalancing = value!;
-                              UserPreferences.usePositionalBalacing = value;
+                              group!.usePositionalBalancing = value!;
                             });
                           })
                     ],
@@ -140,7 +145,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
               TextButton(
-                onPressed: saveChanges,
+                onPressed: () => saveChanges(group!),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.green,
                   shape: RoundedRectangleBorder(
@@ -162,42 +167,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class SkillGauge extends StatelessWidget {
-  const SkillGauge(
-      {super.key,
-      required this.value,
-      required this.onChanged,
-      required this.label});
-
-  final int value;
-  final int maxValue = 10;
-  final String label;
-  final void Function(double) onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text(label,
-              style: const TextStyle(fontSize: 10, fontFamily: "poller_one")),
-        ),
-        Expanded(
-          child: Slider(
-            value: value.toDouble(),
-            min: 0,
-            max: 10,
-            divisions: 10,
-            label: value.toString(),
-            onChanged: onChanged,
-          ),
-        ),
-      ],
     );
   }
 }
