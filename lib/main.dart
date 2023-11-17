@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/bloc/groups/group_bloc.dart';
 import 'package:voleizinho/bloc/players/players_bloc.dart';
 import 'package:voleizinho/model/group.dart';
@@ -20,16 +21,19 @@ late ObjectBox objectBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  final getIt = GetIt.instance;
+
   await UserPreferences.initUserPreferences();
 
   StoreRepository storeRepository = StoreRepository();
   await storeRepository.initStore();
   await TeamMatchService.loadStoredTeams();
   objectBox = await ObjectBox.create();
-  Box<Player> playerBox = objectBox.store.box<Player>();
-  Box<Group> groupBox = objectBox.store.box<Group>();
-  GroupRepository.init(groupBox);
-  PlayerRepository.init(playerBox);
+
+  getIt.registerSingleton<Box<Player>>(objectBox.store.box<Player>());
+  getIt.registerSingleton<Box<Group>>(objectBox.store.box<Group>());
+  getIt.registerSingleton<GroupRepository>(GroupRepository());
+  getIt.registerSingleton<PlayerRepository>(PlayerRepository());
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MainApp());
 }

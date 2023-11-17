@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
@@ -72,7 +74,15 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
       );
       return;
     }
-    await TeamMatchService.createTeams(selectedPlayers, playersPerTeam);
+    await TeamMatchService.createTeams(
+      selectedPlayers,
+      playersPerTeam,
+      BlocProvider.of<GroupBloc>(context).state.activeGroup!.skillsWeights,
+      BlocProvider.of<GroupBloc>(context)
+          .state
+          .activeGroup!
+          .usePositionalBalancing,
+    );
 
     while (!context.mounted) {
       await Future.delayed(const Duration(milliseconds: 100));

@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
-import 'package:voleizinho/services/group_service.dart';
 import 'package:voleizinho/services/share_service.dart';
 
 class PlayerService {
@@ -42,7 +42,7 @@ class PlayerService {
     return PlayerRepository().getPlayersFromGroup(groupId);
   }
 
-  Future<void> exportPlayersList(int groupId) async {
+  Future<void> exportPlayersList(int groupId, Group activeGroup) async {
     List<Player> players = _playerRepository.getPlayersFromGroup(groupId);
     List<Skill> skills = Skill.values;
     List<String> headers = [
@@ -57,10 +57,8 @@ class PlayerService {
       ];
       rows.add(row);
     }
-    String groupName = GroupService.activeGroup()
-        .name!
-        .replaceAll("/", "_")
-        .replaceAll(".", "_");
+    String groupName =
+        activeGroup.name!.replaceAll("/", "_").replaceAll(".", "_");
     String csv = const ListToCsvConverter().convert([headers, ...rows]);
     final String directory = (await getApplicationDocumentsDirectory()).path;
     final String path = "$directory/'$groupName'.csv";

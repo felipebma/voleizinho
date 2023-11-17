@@ -1,11 +1,13 @@
+import "package:get_it/get_it.dart";
 import "package:voleizinho/model/player.dart";
 import "package:voleizinho/objectbox.g.dart";
 
 class PlayerRepository {
   static Box<Player>? playerBox;
 
-  static void init(Box<Player> box) {
-    playerBox = box;
+  PlayerRepository() {
+    final getIt = GetIt.instance;
+    playerBox = getIt.get<Box<Player>>();
   }
 
   void addPlayer(Player player) {

@@ -4,7 +4,6 @@ import 'package:voleizinho/model/team.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class TeamMatchService {
-  static Map<Skill, int> skillWeights = {};
   static List<Team> teams = [];
 
   static List<Team> getTeams() {
@@ -15,11 +14,12 @@ class TeamMatchService {
     teams = await UserPreferences.getTeams();
   }
 
-  static Future<void> createTeams(
-      List<Player> players, int playersPerTeam) async {
+  static Future<void> createTeams(List<Player> players, int playersPerTeam,
+      Map<Skill, int> skillsWeights, bool usePositionalBalancing) async {
     teams = [];
     List<Player> undraftedPlayers = [...players];
-    undraftedPlayers.sort((a, b) => b.getAverage().compareTo(a.getAverage()));
+    undraftedPlayers.sort((a, b) =>
+        b.getAverage(skillsWeights).compareTo(a.getAverage(skillsWeights)));
     int numOfTeams = players.length ~/ playersPerTeam;
     for (int i = 0; i < numOfTeams; i++) {
       teams.add(Team());
@@ -50,7 +50,8 @@ class TeamMatchService {
       for (int i = 0; i < teams.length; i++) {
         for (int j = 0; j < teams.length; j++) {
           if (i != j) {
-            balanceTeams(teams[i], teams[j]);
+            balanceTeams(
+                teams[i], teams[j], skillsWeights, usePositionalBalancing);
           }
         }
       }
@@ -58,30 +59,34 @@ class TeamMatchService {
     await UserPreferences.setTeams(teams);
   }
 
-  static void balanceTeams(Team team1, Team team2) {
-    if (UserPreferences.usePositionalBalacing) {
-      balanceTeamsPositional(team1, team2);
+  static void balanceTeams(Team team1, Team team2,
+      Map<Skill, int> skillsWeights, bool usePositionalBalacing) {
+    if (usePositionalBalacing) {
+      balanceTeamsPositional(team1, team2, skillsWeights);
     } else {
-      balanceTeamsLegacy(team1, team2);
+      balanceTeamsLegacy(team1, team2, skillsWeights);
     }
   }
 
-  static void balanceTeamsLegacy(Team team1, Team team2) {
+  static void balanceTeamsLegacy(
+      Team team1, Team team2, Map<Skill, int> skillsWeights) {
     List<Player> bestPair = [];
-    double bestDiff = (team1.getAverage() - team2.getAverage()).abs();
+    double bestDiff =
+        (team1.getAverage(skillsWeights) - team2.getAverage(skillsWeights))
+            .abs();
     for (Player p1 in [...team1.players]) {
       for (Player p2 in [...team2.players]) {
-        double avg1 = p2.getAverage();
+        double avg1 = p2.getAverage(skillsWeights);
         for (Player p in team1.players) {
           if (p != p1) {
-            avg1 += p.getAverage();
+            avg1 += p.getAverage(skillsWeights);
           }
         }
         avg1 /= team1.players.length;
-        double avg2 = p1.getAverage();
+        double avg2 = p1.getAverage(skillsWeights);
         for (Player p in team2.players) {
           if (p != p2) {
-            avg2 += p.getAverage();
+            avg2 += p.getAverage(skillsWeights);
           }
         }
         avg2 /= team2.players.length;
@@ -97,9 +102,10 @@ class TeamMatchService {
     }
   }
 
-  static void balanceTeamsPositional(Team team1, Team team2) {
+  static void balanceTeamsPositional(
+      Team team1, Team team2, Map<Skill, int> skillsWeights) {
     List<Player> bestPair = [];
-    double bestDiff = team1.getDifference(team2);
+    double bestDiff = team1.getDifference(team2, skillsWeights);
     for (Player p1 in [...team1.players]) {
       for (Player p2 in [...team2.players]) {
         Team t1 = Team();
@@ -116,7 +122,7 @@ class TeamMatchService {
             t2.addPlayer(p.copyWith());
           }
         }
-        double diff = t1.getDifference(t2);
+        double diff = t1.getDifference(t2, skillsWeights);
         if (diff < bestDiff) {
           bestDiff = diff;
           bestPair = [p1, p2];
@@ -135,15 +141,17 @@ class TeamMatchService {
     }
   }
 
-  static List<Player> getSimilarPlayers(Player player) {
+  static List<Player> getSimilarPlayers(
+      Player player, Map<Skill, int> skillsWeights) {
     List<Player> players = [];
     for (var team in teams) {
       if (!team.players.contains(player)) {
         players.addAll(team.players);
       }
     }
-    players
-        .sort((a, b) => player.similarity(b).compareTo(player.similarity(a)));
+    players.sort((a, b) => player
+        .similarity(b, skillsWeights)
+        .compareTo(player.similarity(a, skillsWeights)));
     return players;
   }
 
@@ -167,7 +175,8 @@ class TeamMatchService {
     }
   }
 
-  static double avgDiffOnSwap(Player player1, Player player2) {
+  static double avgDiffOnSwap(
+      Player player1, Player player2, Map<Skill, int> skillsWeights) {
     double avgDiff = 0;
     for (var team in teams) {
       Team teamCopy = Team();
@@ -175,10 +184,10 @@ class TeamMatchService {
       if (team.players.contains(player1)) {
         teamCopy.players.remove(player1);
         teamCopy.players.add(player2);
-        avgDiff = teamCopy.getAverage();
+        avgDiff = teamCopy.getAverage(skillsWeights);
         teamCopy.players.remove(player2);
         teamCopy.players.add(player1);
-        avgDiff -= teamCopy.getAverage();
+        avgDiff -= teamCopy.getAverage(skillsWeights);
       }
     }
     return avgDiff;

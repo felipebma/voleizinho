@@ -76,8 +76,7 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
 
   void _onImportPlayers(
       PlayersImportEvent event, Emitter<PlayersState> emit) async {
-    final prefs = await SharedPreferences.getInstance();
-    int groupId = prefs.getInt("activeGroup") ?? 0;
+    int groupId = event.groupId;
     await playerService.importPlayersList(groupId);
     emit(state.copyWith(players: playerService.getPlayersFromGroup(groupId)));
   }
@@ -86,13 +85,12 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
       PlayersExportEvent event, Emitter<PlayersState> emit) async {
     final prefs = await SharedPreferences.getInstance();
     int groupId = prefs.getInt("activeGroup") ?? 0;
-    await playerService.exportPlayersList(groupId);
+    await playerService.exportPlayersList(groupId, event.activeGroup);
   }
 
   void _onClearPlayers(
       PlayersClearEvent event, Emitter<PlayersState> emit) async {
-    final prefs = await SharedPreferences.getInstance();
-    int groupId = prefs.getInt("activeGroup") ?? 0;
+    int groupId = event.groupId;
     playerService.removePlayersFromGroup(groupId);
     emit(state.copyWith(players: playerService.getPlayersFromGroup(groupId)));
   }

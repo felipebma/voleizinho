@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:voleizinho/components/skill_gauge.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_events.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
-import 'package:voleizinho/services/group_service.dart';
+import 'package:voleizinho/screens/group/components/skill_gauge.dart';
 
 class GroupCreationScreen extends StatefulWidget {
   const GroupCreationScreen({super.key});
@@ -48,7 +50,7 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
       );
       return;
     }
-    GroupService.updateGroup(group);
+    BlocProvider.of<GroupBloc>(context).add(GroupCreateEvent(group));
     Navigator.pushReplacementNamed(context, "/");
   }
 

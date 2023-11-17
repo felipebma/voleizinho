@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:objectbox/objectbox.dart';
 import 'package:voleizinho/model/skills.dart';
-import 'package:voleizinho/services/group_service.dart';
 
 @Entity()
 class Player {
@@ -47,24 +46,22 @@ class Player {
     return skills[skill]!.toDouble();
   }
 
-  double getAverage() {
+  double getAverage(Map<Skill, int> skillsWeights) {
     double sum = 0;
-    var weights = GroupService.getSkillsWeights();
     int sumWeights = 0;
     skills.forEach((key, value) {
-      sum += value * (weights[key] ?? 1);
-      sumWeights += weights[key] ?? 1;
+      sum += value * (skillsWeights[key] ?? 1);
+      sumWeights += skillsWeights[key] ?? 1;
     });
     return sum / sumWeights;
   }
 
-  double similarity(Player player) {
+  double similarity(Player player, Map<Skill, int> skillsWeights) {
     double sum = 0;
-    var weights = GroupService.getSkillsWeights();
     int sumWeights = 0;
     skills.forEach((key, value) {
-      sum += ((value - player.skills[key]!).abs()) * (weights[key] ?? 1);
-      sumWeights += (weights[key] ?? 1) * 5;
+      sum += ((value - player.skills[key]!).abs()) * (skillsWeights[key] ?? 1);
+      sumWeights += (skillsWeights[key] ?? 1) * 5;
     });
     return 1 - sum / sumWeights;
   }

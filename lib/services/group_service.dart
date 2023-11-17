@@ -1,39 +1,35 @@
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/services/player_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupService {
-  static final GroupRepository groupRepository = GroupRepository();
+  final GroupRepository groupRepository = GetIt.instance.get<GroupRepository>();
 
-  static List<Group> getGroups() {
+  List<Group> getGroups() {
     return groupRepository.getGroups();
   }
 
-  static int createGroup(Group group) {
+  int createGroup(Group group) {
     return groupRepository.addGroup(group);
   }
 
-  static void updateGroup(Group newGroup) {
+  void updateGroup(Group newGroup) {
     groupRepository.updateGroup(newGroup);
   }
 
-  static void removeGroup(Group group) {
+  void removeGroup(Group group) {
     PlayerService.staticRemovePlayersFromGroup(group.id);
     groupRepository.removeGroup(group);
   }
 
-  static Group activeGroup() {
-    return groupRepository.getGroupById(UserPreferences.getGroup()!);
+  Map<Skill, int> getSkillsWeights(int groupId) {
+    return groupRepository.getGroupById(groupId).skillsWeights;
   }
 
-  static Map<Skill, int> getSkillsWeights() {
-    return activeGroup().skillsWeights;
-  }
-
-  static void updateSkillsWeights(Map<Skill, int> weights) {
-    Group group = activeGroup();
+  void updateSkillsWeights(int groupId, Map<Skill, int> weights) {
+    Group group = groupRepository.getGroupById(groupId);
     group.skillsWeights = weights;
     updateGroup(group);
   }

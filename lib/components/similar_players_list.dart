@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_states.dart';
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/team_match_service.dart';
 
 class SimilarPlayersList extends StatelessWidget {
@@ -11,10 +15,13 @@ class SimilarPlayersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Map<Skill, int> skillsWeights =
+        BlocProvider.of<GroupBloc>(context).state.activeGroup!.skillsWeights;
     return Column(
       children: [
         for (Player similarPlayer
-            in TeamMatchService.getSimilarPlayers(player).take(5))
+            in TeamMatchService.getSimilarPlayers(player, skillsWeights)
+                .take(5))
           Material(
             elevation: 3,
             child: Container(
@@ -31,34 +38,37 @@ class SimilarPlayersList extends StatelessWidget {
                         fontSize: 10,
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "Similaridade: ${(100 * player.similarity(similarPlayer)).toStringAsFixed(0)}%",
-                          style: const TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "Média: ${TeamMatchService.avgDiffOnSwap(player, similarPlayer) > 0 ? "+" : ""}${TeamMatchService.avgDiffOnSwap(player, similarPlayer).toStringAsFixed(2)}",
-                          style: const TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        GestureDetector(
-                          onTap: () => onPlayerSwitch(similarPlayer),
-                          child: const Icon(Icons.change_circle),
-                        ),
-                      ],
-                    )
+                    BlocBuilder<GroupBloc, GroupState>(
+                        builder: (context, state) {
+                      return Row(
+                        children: [
+                          Text(
+                            "Similaridade: ${(100 * player.similarity(similarPlayer, state.activeGroup!.skillsWeights)).toStringAsFixed(0)}%",
+                            style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Média: ${TeamMatchService.avgDiffOnSwap(player, similarPlayer, skillsWeights) > 0 ? "+" : ""}${TeamMatchService.avgDiffOnSwap(player, similarPlayer, skillsWeights).toStringAsFixed(2)}",
+                            style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          GestureDetector(
+                            onTap: () => onPlayerSwitch(similarPlayer),
+                            child: const Icon(Icons.change_circle),
+                          ),
+                        ],
+                      );
+                    })
                   ]),
             ),
           )

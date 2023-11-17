@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
 import 'package:voleizinho/bloc/players/players_bloc.dart';
 import 'package:voleizinho/bloc/players/players_events.dart';
 
@@ -28,11 +29,14 @@ class PopUpMenu extends StatelessWidget {
       },
       onSelected: (value) {
         if (value == 0) {
-          bloc.add(PlayersImportEvent());
+          bloc.add(PlayersImportEvent(
+              BlocProvider.of<GroupBloc>(context).state.activeGroup!.id));
         } else if (value == 1) {
-          bloc.add(PlayersExportEvent());
+          bloc.add(PlayersExportEvent(
+              BlocProvider.of<GroupBloc>(context).state.activeGroup!));
         } else if (value == 2) {
-          bloc.add(PlayersClearEvent());
+          bloc.add(PlayersClearEvent(
+              BlocProvider.of<GroupBloc>(context).state.activeGroup!.id));
         }
       },
     );

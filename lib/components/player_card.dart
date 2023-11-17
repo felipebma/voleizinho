@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_states.dart';
 import 'package:voleizinho/model/player.dart';
 
 class PlayerCard extends StatefulWidget {
@@ -85,22 +88,28 @@ class _PlayerCardState extends State<PlayerCard> {
                     children: [
                       textField,
                       if (!widget.hideAverage)
-                        Row(
-                          children: [
-                            Text(
-                              player.getAverage().toStringAsFixed(1),
-                              style: const TextStyle(
-                                fontFamily: "poller_one",
-                                color: Colors.black,
-                                fontSize: 20,
+                        BlocBuilder<GroupBloc, GroupState>(
+                            builder: (context, state) {
+                          return Row(
+                            children: [
+                              Text(
+                                player
+                                    .getAverage(
+                                        state.activeGroup!.skillsWeights)
+                                    .toStringAsFixed(1),
+                                style: const TextStyle(
+                                  fontFamily: "poller_one",
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ),
                               ),
-                            ),
-                            const Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                          ],
-                        ),
+                              const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                            ],
+                          );
+                        }),
                     ],
                   ),
                 ),

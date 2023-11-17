@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_states.dart';
 import 'package:voleizinho/components/player_team_view_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
@@ -44,14 +47,18 @@ class TeamCard extends StatelessWidget {
                   ),
                 ),
                 if (!hideAverage)
-                  Text(
-                    team.getAverage().toStringAsFixed(2),
-                    style: const TextStyle(
-                      fontFamily: "poller_one",
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
+                  BlocBuilder<GroupBloc, GroupState>(builder: (context, state) {
+                    return Text(
+                      team
+                          .getAverage(state.activeGroup!.skillsWeights)
+                          .toStringAsFixed(2),
+                      style: const TextStyle(
+                        fontFamily: "poller_one",
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    );
+                  }),
               ],
             ),
           ),

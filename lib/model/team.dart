@@ -1,6 +1,5 @@
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
-import 'package:voleizinho/services/group_service.dart';
 
 class Team {
   Team() {
@@ -9,10 +8,10 @@ class Team {
 
   List<Player> players = [];
 
-  double getAverage() {
+  double getAverage(Map<Skill, int> skillsWeights) {
     double sum = 0;
     for (var player in players) {
-      sum += player.getAverage();
+      sum += player.getAverage(skillsWeights);
     }
 
     return sum / players.length;
@@ -43,36 +42,36 @@ class Team {
         .cast<Player>();
   }
 
-  double getPlayerAtk(Player player) {
-    Map<Skill, int> weights = GroupService.getSkillsWeights();
-    double atk = player.getSkill(Skill.spike) * weights[Skill.spike]! +
-        player.getSkill(Skill.set) * weights[Skill.set]! +
-        player.getSkill(Skill.block) * weights[Skill.block]!;
+  double getPlayerAtk(Player player, Map<Skill, int> skillsWeights) {
+    double atk = player.getSkill(Skill.spike) * skillsWeights[Skill.spike]! +
+        player.getSkill(Skill.set) * skillsWeights[Skill.set]! +
+        player.getSkill(Skill.block) * skillsWeights[Skill.block]!;
     return atk /
-        (weights[Skill.spike]! + weights[Skill.set]! + weights[Skill.block]!);
+        (skillsWeights[Skill.spike]! +
+            skillsWeights[Skill.set]! +
+            skillsWeights[Skill.block]!);
   }
 
-  double getPlayerDef(Player player) {
-    Map<Skill, int> weights = GroupService.getSkillsWeights();
-    double atk = player.getSkill(Skill.serve) * weights[Skill.serve]! +
-        player.getSkill(Skill.receive) * weights[Skill.receive]! +
-        player.getSkill(Skill.agility) * weights[Skill.agility]!;
+  double getPlayerDef(Player player, Map<Skill, int> skillsWeights) {
+    double atk = player.getSkill(Skill.serve) * skillsWeights[Skill.serve]! +
+        player.getSkill(Skill.receive) * skillsWeights[Skill.receive]! +
+        player.getSkill(Skill.agility) * skillsWeights[Skill.agility]!;
     return atk /
-        (weights[Skill.serve]! +
-            weights[Skill.receive]! +
-            weights[Skill.agility]!);
+        (skillsWeights[Skill.serve]! +
+            skillsWeights[Skill.receive]! +
+            skillsWeights[Skill.agility]!);
   }
 
-  double getDifference(Team team) {
+  double getDifference(Team team, Map<Skill, int> skillsWeights) {
     double atk = 0, def = 0;
     for (Player p in players) {
-      atk += getPlayerAtk(p) / players.length;
-      def += getPlayerDef(p) / players.length;
+      def += getPlayerDef(p, skillsWeights) / players.length;
+      atk += getPlayerAtk(p, skillsWeights) / players.length;
     }
     double atk2 = 0, def2 = 0;
     for (Player p in team.players) {
-      atk2 += getPlayerAtk(p) / team.players.length;
-      def2 += getPlayerDef(p) / team.players.length;
+      atk2 += getPlayerAtk(p, skillsWeights) / team.players.length;
+      def2 += getPlayerDef(p, skillsWeights) / team.players.length;
     }
     return (atk - atk2).abs() + (def - def2).abs();
   }

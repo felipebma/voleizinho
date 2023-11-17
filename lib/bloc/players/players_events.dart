@@ -1,3 +1,4 @@
+import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/player.dart';
 
 abstract class PlayersEvent {}
@@ -39,8 +40,20 @@ class PlayersDeleteEvent extends PlayersEvent {
   PlayersDeleteEvent(this.player);
 }
 
-class PlayersImportEvent extends PlayersEvent {}
+class PlayersImportEvent extends PlayersEvent {
+  final int groupId;
 
-class PlayersExportEvent extends PlayersEvent {}
+  PlayersImportEvent(this.groupId);
+}
 
-class PlayersClearEvent extends PlayersEvent {}
+class PlayersExportEvent extends PlayersEvent {
+  final Group activeGroup;
+
+  PlayersExportEvent(this.activeGroup);
+}
+
+class PlayersClearEvent extends PlayersEvent {
+  final int groupId;
+
+  PlayersClearEvent(this.groupId);
+}

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/groups/group_bloc.dart';
 import 'package:voleizinho/bloc/players/players_bloc.dart';
 import 'package:voleizinho/bloc/players/players_events.dart';
 import 'package:voleizinho/bloc/players/players_states.dart';
 import 'package:voleizinho/components/edit_player_card.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
 class PlayersList extends StatefulWidget {
   const PlayersList({super.key, required this.players});
@@ -21,7 +21,7 @@ class _PlayersListState extends State<PlayersList> {
   @override
   Widget build(BuildContext context) {
     PlayersBloc bloc = BlocProvider.of<PlayersBloc>(context);
-    int groupId = UserPreferences.getGroup()!;
+    int groupId = BlocProvider.of<GroupBloc>(context).state.activeGroup!.id;
     PlayersState state = bloc.state;
 
     return Expanded(

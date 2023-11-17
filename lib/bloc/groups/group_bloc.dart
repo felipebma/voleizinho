@@ -5,7 +5,6 @@ import 'package:voleizinho/services/group_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupBloc extends Bloc<GroupEvent, GroupState> {
-  // ignore: unused_field
   final GroupService _groupService;
 
   GroupBloc(this._groupService) : super(GroupsLoadingState()) {
@@ -17,27 +16,27 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   }
 
   void _onLoadGroups(GroupsLoadEvent event, Emitter<GroupState> emit) {
-    emit(GroupsLoadedState(GroupService.getGroups()));
+    emit(GroupsLoadedState(_groupService.getGroups()));
   }
 
   void _onCreateGroup(GroupCreateEvent event, Emitter<GroupState> emit) {
-    GroupService.createGroup(event.group);
+    _groupService.createGroup(event.group);
     emit(GroupCreatedState(event.group));
   }
 
   void _onUpdateGroup(GroupUpdateEvent event, Emitter<GroupState> emit) {
-    GroupService.updateGroup(event.group);
+    _groupService.updateGroup(event.group);
     emit(GroupUpdatedState(event.group));
   }
 
   void _onDeleteGroup(GroupDeleteEvent event, Emitter<GroupState> emit) {
-    GroupService.removeGroup(event.group);
+    _groupService.removeGroup(event.group);
     emit(GroupDeletedState());
   }
 
   void _onSelectGroup(GroupSelectEvent event, Emitter<GroupState> emit) {
     UserPreferences.setGroup(event.group.id);
-    GroupService.updateGroup(event.group);
+    _groupService.updateGroup(event.group);
     emit(GroupSelectedState(event.group));
   }
 }
