@@ -46,7 +46,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                     text: "Criar Grupo",
                     onPressed: () => {
-                      Navigator.pushNamed(context, "/group_creation"),
+                      Navigator.pushReplacementNamed(
+                          context, "/group_creation"),
                     },
                   ),
                 ),
@@ -64,7 +65,8 @@ class HomeScreen extends StatelessWidget {
                               text: groups[index].name!,
                               onPressed: () => {
                                 bloc.add(GroupSelectEvent(groups[index])),
-                                Navigator.pushNamed(context, "/main_group"),
+                                Navigator.pushReplacementNamed(
+                                    context, "/main_group"),
                               },
                             );
                           },

@@ -3,7 +3,7 @@ import 'package:voleizinho/screens//group/group_creation/group_creation_screen.d
 import 'package:voleizinho/screens/group/group_settings/settings_screen.dart';
 import 'package:voleizinho/screens/home/home_screen.dart';
 import 'package:voleizinho/screens/players/players_screen.dart';
-import 'package:voleizinho/screens/scoreboard_screen.dart';
+import 'package:voleizinho/screens/scoreboard/scoreboard_screen.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
 import 'package:voleizinho/screens/teams_view_screen.dart';
 
