@@ -6,19 +6,32 @@ import 'package:voleizinho/services/user_preferences.dart';
 
 class TeamMatchService {
   static Map<Skill, int> skillWeights = {};
-  static List<Team> teams = [];
+  static final Map<int, List<Team>> _teams = {};
 
   static List<Team> getTeams() {
-    return teams;
+    int groupId = GroupService.activeGroup().id;
+    List<Team> groupTeams = [];
+    if (_teams.containsKey(groupId)) {
+      groupTeams = _teams[groupId]!;
+    }
+    return groupTeams;
   }
 
-  static Future<void> loadStoredTeams() async {
-    teams = await UserPreferences.getTeams();
+  static Future<void> loadStoredTeams(List<int> groupIds) async {
+    for (var groupId in groupIds) {
+      _teams[groupId] = await UserPreferences.getTeams(groupId);
+    }
+  }
+
+  static _saveTeams(int groupId, List<Team> teams) async {
+    _teams[groupId] = teams;
+    await UserPreferences.setTeams(groupId, teams);
   }
 
   static Future<void> createTeams(
       List<Player> players, int playersPerTeam) async {
-    teams = [];
+    int groupId = GroupService.activeGroup().id;
+    List<Team> teams = [];
     List<Player> undraftedPlayers = [...players];
     undraftedPlayers.sort((a, b) => b.getAverage().compareTo(a.getAverage()));
     int numOfTeams = players.length ~/ playersPerTeam;
@@ -38,7 +51,7 @@ class TeamMatchService {
         teams[j].addPlayer(undraftedPlayers.removeAt(0));
       }
     }
-    shuffleTeams();
+    _shuffleTeams(teams);
 
     if (undraftedPlayers.isNotEmpty) {
       Team undraftedTeam = Team();
@@ -56,7 +69,7 @@ class TeamMatchService {
         }
       }
     }
-    await UserPreferences.setTeams(teams);
+    _saveTeams(groupId, teams);
   }
 
   static void balanceTeams(Team team1, Team team2) {
@@ -129,7 +142,7 @@ class TeamMatchService {
     }
   }
 
-  static void shuffleTeams() {
+  static void _shuffleTeams(List<Team> teams) {
     teams.shuffle();
     for (var team in teams) {
       team.players.shuffle();
@@ -137,6 +150,7 @@ class TeamMatchService {
   }
 
   static List<Player> getSimilarPlayers(Player player) {
+    List<Team> teams = getTeams();
     List<Player> players = [];
     for (var team in teams) {
       if (!team.players.contains(player)) {
@@ -148,15 +162,8 @@ class TeamMatchService {
     return players;
   }
 
-  static void swapPlayersInTeams(
-      Team team1, Player player1, Team team2, Player player2) {
-    team1.players.remove(player1);
-    team1.players.add(player2);
-    team2.players.remove(player2);
-    team2.players.add(player1);
-  }
-
   static void swapPlayers(Player player1, Player player2) {
+    List<Team> teams = getTeams();
     for (var team in teams) {
       if (team.players.contains(player1)) {
         team.players.remove(player1);
@@ -166,9 +173,11 @@ class TeamMatchService {
         team.players.add(player1);
       }
     }
+    _saveTeams(GroupService.activeGroup().id, teams);
   }
 
   static double avgDiffOnSwap(Player player1, Player player2) {
+    List<Team> teams = getTeams();
     double avgDiff = 0;
     for (var team in teams) {
       Team teamCopy = Team();

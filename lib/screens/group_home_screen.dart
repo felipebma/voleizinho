@@ -69,7 +69,8 @@ class GroupHomeScreen extends StatelessWidget {
                       ),
                       text: "Times",
                       onPressed: () async {
-                        UserPreferences.getTeams().then(
+                        UserPreferences.getTeams(GroupService.activeGroup().id)
+                            .then(
                           (value) {
                             if (value.isNotEmpty) {
                               Navigator.pushReplacementNamed(

@@ -24,15 +24,15 @@ class UserPreferences {
     }
   }
 
-  static Future<void> setTeams(List<Team> teams) async {
+  static Future<void> setTeams(int groupId, List<Team> teams) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList("teams-${_groupId ?? 0}",
-        teams.map((e) => json.encode(e.toJson())).toList());
+    prefs.setStringList(
+        "teams-$groupId", teams.map((e) => json.encode(e.toJson())).toList());
   }
 
-  static Future<List<Team>> getTeams() async {
+  static Future<List<Team>> getTeams(int groupId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> teams = prefs.getStringList("teams-${_groupId ?? 0}") ?? [];
+    List<String> teams = prefs.getStringList("teams-$groupId") ?? [];
     return teams.map((e) => Team.fromJson(json.decode(e))).toList();
   }
 

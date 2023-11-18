@@ -19,10 +19,11 @@ Future<void> main() async {
 
   StoreRepository storeRepository = StoreRepository();
   await storeRepository.initStore();
-  await TeamMatchService.loadStoredTeams();
   objectBox = await ObjectBox.create();
   Box<Player> playerBox = objectBox.store.box<Player>();
   Box<Group> groupBox = objectBox.store.box<Group>();
+  await TeamMatchService.loadStoredTeams(
+      groupBox.getAll().map((e) => e.id).toList());
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

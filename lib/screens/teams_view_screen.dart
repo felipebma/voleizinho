@@ -18,7 +18,7 @@ class TeamsViewScreen extends StatefulWidget {
 
 class _TeamsViewScreenState extends State<TeamsViewScreen> {
   Player? switchingPlayer;
-  List<Team> teams = TeamMatchService.teams;
+  List<Team> teams = TeamMatchService.getTeams();
   List<GlobalKey> globalKeys = [];
   bool hideAverage = false;
 
@@ -66,7 +66,7 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
   void initState() {
     super.initState();
     switchingPlayer = null;
-    teams = TeamMatchService.teams;
+    teams = TeamMatchService.getTeams();
     if (teams.isEmpty) {
       Future.delayed(const Duration(milliseconds: 100)).then(
         (value) => Navigator.pushReplacementNamed(context, '/team_creation'),

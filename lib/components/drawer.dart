@@ -41,7 +41,7 @@ class CustomDrawer extends StatelessWidget {
             DrawerTile(
                 text: "Times",
                 icon: Icons.group,
-                route: TeamMatchService.teams.isEmpty
+                route: TeamMatchService.getTeams().isEmpty
                     ? "/team_creation"
                     : "/teams_view"),
             const DrawerTile(
