@@ -1,6 +1,7 @@
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/model/team.dart';
+import 'package:voleizinho/services/group_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class TeamMatchService {
@@ -59,7 +60,7 @@ class TeamMatchService {
   }
 
   static void balanceTeams(Team team1, Team team2) {
-    if (UserPreferences.usePositionalBalacing) {
+    if (GroupService.activeGroup().usePositionalBalancing) {
       balanceTeamsPositional(team1, team2);
     } else {
       balanceTeamsLegacy(team1, team2);

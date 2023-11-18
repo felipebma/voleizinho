@@ -3,7 +3,6 @@ import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/group_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -13,8 +12,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool usePositionalBalancing = UserPreferences.usePositionalBalacing;
-
   Group group = GroupService.activeGroup();
 
   List<SkillGauge> skillGauges() {
@@ -120,11 +117,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             TextStyle(fontSize: 12, fontFamily: "poller_one"),
                       ),
                       Checkbox(
-                          value: usePositionalBalancing,
+                          value: group.usePositionalBalancing,
                           onChanged: (value) {
                             setState(() {
-                              usePositionalBalancing = value!;
-                              UserPreferences.usePositionalBalacing = value;
+                              group.usePositionalBalancing = value!;
                             });
                           })
                     ],

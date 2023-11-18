@@ -34,7 +34,7 @@
     },
     {
       "id": "2:3126827991196298943",
-      "lastPropertyId": "3:780069684367151973",
+      "lastPropertyId": "4:3454813107997236055",
       "name": "Group",
       "properties": [
         {
@@ -52,6 +52,11 @@
           "id": "3:780069684367151973",
           "name": "dbSkillsWeights",
           "type": 9
+        },
+        {
+          "id": "4:3454813107997236055",
+          "name": "usePositionalBalancing",
+          "type": 1
         }
       ],
       "relations": []

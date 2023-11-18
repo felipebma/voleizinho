@@ -68,7 +68,9 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
     switchingPlayer = null;
     teams = TeamMatchService.teams;
     if (teams.isEmpty) {
-      Navigator.pushReplacementNamed(context, '/team_creation');
+      Future.delayed(const Duration(milliseconds: 100)).then(
+        (value) => Navigator.pushReplacementNamed(context, '/team_creation'),
+      );
     }
   }
 
