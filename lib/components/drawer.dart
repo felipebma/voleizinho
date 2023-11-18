@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/services/group_service.dart';
-import 'package:voleizinho/services/team_match_service.dart';
+import 'package:voleizinho/services/team_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -41,7 +41,7 @@ class CustomDrawer extends StatelessWidget {
             DrawerTile(
                 text: "Times",
                 icon: Icons.group,
-                route: TeamMatchService.getTeams().isEmpty
+                route: TeamService.getInstance().getTeams().isEmpty
                     ? "/team_creation"
                     : "/teams_view"),
             const DrawerTile(

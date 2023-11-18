@@ -7,7 +7,7 @@ import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
 import 'package:voleizinho/services/share_service.dart';
-import 'package:voleizinho/services/team_match_service.dart';
+import 'package:voleizinho/services/team_service.dart';
 
 class TeamsViewScreen extends StatefulWidget {
   const TeamsViewScreen({super.key});
@@ -18,12 +18,12 @@ class TeamsViewScreen extends StatefulWidget {
 
 class _TeamsViewScreenState extends State<TeamsViewScreen> {
   Player? switchingPlayer;
-  List<Team> teams = TeamMatchService.getTeams();
+  List<Team> teams = TeamService.getInstance().getTeams();
   List<GlobalKey> globalKeys = [];
   bool hideAverage = false;
 
   void onPlayerSwitch(Player similarPlayer) {
-    TeamMatchService.swapPlayers(switchingPlayer!, similarPlayer);
+    TeamService.getInstance().swapPlayers(switchingPlayer!, similarPlayer);
     setState(() {
       switchingPlayer = null;
     });
@@ -66,7 +66,7 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
   void initState() {
     super.initState();
     switchingPlayer = null;
-    teams = TeamMatchService.getTeams();
+    teams = TeamService.getInstance().getTeams();
     if (teams.isEmpty) {
       Future.delayed(const Duration(milliseconds: 100)).then(
         (value) => Navigator.pushReplacementNamed(context, '/team_creation'),

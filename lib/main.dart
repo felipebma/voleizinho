@@ -8,7 +8,7 @@ import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
 import 'package:voleizinho/routes.dart';
-import 'package:voleizinho/services/team_match_service.dart';
+import 'package:voleizinho/services/team_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 late ObjectBox objectBox;
@@ -22,8 +22,8 @@ Future<void> main() async {
   objectBox = await ObjectBox.create();
   Box<Player> playerBox = objectBox.store.box<Player>();
   Box<Group> groupBox = objectBox.store.box<Group>();
-  await TeamMatchService.loadStoredTeams(
-      groupBox.getAll().map((e) => e.id).toList());
+  await TeamService.getInstance()
+      .loadStoredTeams(groupBox.getAll().map((e) => e.id).toList());
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

@@ -6,7 +6,7 @@ import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/services/player_service.dart';
-import 'package:voleizinho/services/team_match_service.dart';
+import 'package:voleizinho/services/team_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class TeamCreationScreen extends StatefulWidget {
@@ -72,7 +72,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
       );
       return;
     }
-    await TeamMatchService.createTeams(selectedPlayers, playersPerTeam);
+    TeamService.getInstance().createTeams(selectedPlayers, playersPerTeam);
 
     while (!context.mounted) {
       await Future.delayed(const Duration(milliseconds: 100));

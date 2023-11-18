@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/model/player.dart';
-import 'package:voleizinho/services/team_match_service.dart';
+import 'package:voleizinho/services/team_service.dart';
 
 class SimilarPlayersList extends StatelessWidget {
   const SimilarPlayersList(
@@ -14,7 +14,7 @@ class SimilarPlayersList extends StatelessWidget {
     return Column(
       children: [
         for (Player similarPlayer
-            in TeamMatchService.getSimilarPlayers(player).take(5))
+            in TeamService.getInstance().getSimilarPlayers(player).take(5))
           Material(
             elevation: 3,
             child: Container(
@@ -44,7 +44,7 @@ class SimilarPlayersList extends StatelessWidget {
                           width: 20,
                         ),
                         Text(
-                          "Média: ${TeamMatchService.avgDiffOnSwap(player, similarPlayer) > 0 ? "+" : ""}${TeamMatchService.avgDiffOnSwap(player, similarPlayer).toStringAsFixed(2)}",
+                          "Média: ${TeamService.getInstance().avgDiffOnSwap(player, similarPlayer) > 0 ? "+" : ""}${TeamService.getInstance().avgDiffOnSwap(player, similarPlayer).toStringAsFixed(2)}",
                           style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
