@@ -22,7 +22,7 @@ Future<void> main() async {
   objectBox = await ObjectBox.create();
   Box<Player> playerBox = objectBox.store.box<Player>();
   Box<Group> groupBox = objectBox.store.box<Group>();
-  await TeamService.getInstance()
+  await TeamService.I
       .loadStoredTeams(groupBox.getAll().map((e) => e.id).toList());
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);

@@ -18,12 +18,12 @@ class TeamsViewScreen extends StatefulWidget {
 
 class _TeamsViewScreenState extends State<TeamsViewScreen> {
   Player? switchingPlayer;
-  List<Team> teams = TeamService.getInstance().getTeams();
+  List<Team> teams = TeamService.I.getTeams();
   List<GlobalKey> globalKeys = [];
   bool hideAverage = false;
 
   void onPlayerSwitch(Player similarPlayer) {
-    TeamService.getInstance().swapPlayers(switchingPlayer!, similarPlayer);
+    TeamService.I.swapPlayers(switchingPlayer!, similarPlayer);
     setState(() {
       switchingPlayer = null;
     });
@@ -66,7 +66,7 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
   void initState() {
     super.initState();
     switchingPlayer = null;
-    teams = TeamService.getInstance().getTeams();
+    teams = TeamService.I.getTeams();
     if (teams.isEmpty) {
       Future.delayed(const Duration(milliseconds: 100)).then(
         (value) => Navigator.pushReplacementNamed(context, '/team_creation'),
@@ -91,15 +91,20 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
               MenuButton(
                 text: "Selecionar Jogadores",
                 onPressed: () {
-                  setState(() {
-                    Navigator.pushReplacementNamed(context, '/team_creation',
+                  setState(
+                    () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        '/team_creation',
                         arguments: TeamCreationScreenArguments(
                             teams
                                 .map((e) => e.getPlayers())
                                 .expand((element) => element)
                                 .toList(),
-                            teams[0].getPlayers().length));
-                  });
+                            teams[0].getPlayers().length),
+                      );
+                    },
+                  );
                 },
                 leftWidget: const Icon(
                     color: Colors.black, Icons.keyboard_backspace_sharp),

@@ -12,6 +12,8 @@ class TeamService {
     return _instance!;
   }
 
+  static get I => getInstance();
+
   final Map<int, List<Team>> _teams = {};
 
   _saveTeams(List<Team> teams) async {

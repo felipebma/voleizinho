@@ -72,7 +72,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
       );
       return;
     }
-    TeamService.getInstance().createTeams(selectedPlayers, playersPerTeam);
+    TeamService.I.createTeams(selectedPlayers, playersPerTeam);
 
     while (!context.mounted) {
       await Future.delayed(const Duration(milliseconds: 100));

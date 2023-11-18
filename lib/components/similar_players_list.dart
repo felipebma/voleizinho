@@ -14,7 +14,7 @@ class SimilarPlayersList extends StatelessWidget {
     return Column(
       children: [
         for (Player similarPlayer
-            in TeamService.getInstance().getSimilarPlayers(player).take(5))
+            in TeamService.I.getSimilarPlayers(player).take(5))
           Material(
             elevation: 3,
             child: Container(
@@ -44,7 +44,7 @@ class SimilarPlayersList extends StatelessWidget {
                           width: 20,
                         ),
                         Text(
-                          "Média: ${TeamService.getInstance().avgDiffOnSwap(player, similarPlayer) > 0 ? "+" : ""}${TeamService.getInstance().avgDiffOnSwap(player, similarPlayer).toStringAsFixed(2)}",
+                          "Média: ${TeamService.I.avgDiffOnSwap(player, similarPlayer) > 0 ? "+" : ""}${TeamService.I.avgDiffOnSwap(player, similarPlayer).toStringAsFixed(2)}",
                           style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
