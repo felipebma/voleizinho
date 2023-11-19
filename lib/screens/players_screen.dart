@@ -25,6 +25,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
   int? editingPlayerIndex;
   int? deletingPlayerIndex;
 
+  late Player newPlayer;
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +36,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
   void refreshPlayers() {
     setState(() {
       players = PlayerService.I.getPlayersFromGroup(groupId);
+      newPlayer = kDefaultPlayer.copyWith(name: "", groupId: groupId);
     });
   }
 
@@ -211,9 +214,8 @@ class _PlayersScreenState extends State<PlayersScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: EditPlayerCard(
-                      player:
-                          kDefaultPlayer.copyWith(name: "", groupId: groupId),
-                      onCancel: () => editingPlayer(null),
+                      player: newPlayer,
+                      onCancel: () => {editingPlayer(null), refreshPlayers()},
                       onSave: (player) => createPlayer(player),
                     ),
                   ),
