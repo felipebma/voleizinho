@@ -32,7 +32,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   void refreshPlayers() {
     setState(() {
-      players = PlayerService.getPlayersFromGroup(groupId);
+      players = PlayerService.I.getPlayersFromGroup(groupId);
     });
   }
 
@@ -60,7 +60,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
         }
         player.groupId = groupId;
         editingPlayer(null);
-        PlayerService.addPlayer(player, UserPreferences.getGroup()!);
+        PlayerService.I.addPlayer(player, UserPreferences.getGroup()!);
         refreshPlayers();
       },
     );
@@ -113,7 +113,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
   }
 
   void importPlayersList() async {
-    await PlayerService.importPlayersList(groupId);
+    await PlayerService.I.importPlayersList(groupId);
     refreshPlayers();
   }
 
@@ -148,7 +148,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
               if (value == 0) {
                 importPlayersList();
               } else if (value == 1) {
-                PlayerService.exportPlayersList(groupId);
+                PlayerService.I.exportPlayersList(groupId);
               } else if (value == 2) {
                 deleteAllPlayers();
               }

@@ -6,6 +6,7 @@ import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupService {
   static final GroupRepository groupRepository = GroupRepository();
+  static final PlayerService playerService = PlayerService.getInstance();
 
   static List<Group> getGroups() {
     return groupRepository.getGroups();
@@ -20,7 +21,7 @@ class GroupService {
   }
 
   static void removeGroup(Group group) {
-    PlayerService.removePlayersFromGroup(group.id);
+    playerService.removePlayersFromGroup(group.id);
     groupRepository.removeGroup(group);
   }
 

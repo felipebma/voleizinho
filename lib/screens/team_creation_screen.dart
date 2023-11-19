@@ -24,8 +24,10 @@ class TeamCreationScreenArguments {
 }
 
 class _TeamCreationScreenState extends State<TeamCreationScreen> {
+  PlayerService playerService = PlayerService.getInstance();
+
   late List<Player> players =
-      PlayerService.getPlayersFromGroup(UserPreferences.getGroup()!);
+      playerService.getPlayersFromGroup(UserPreferences.getGroup()!);
 
   List<Player> selectedPlayers = [];
 
@@ -72,7 +74,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
       );
       return;
     }
-    TeamService.I.createTeams(selectedPlayers, playersPerTeam);
+    TeamService.getInstance().createTeams(selectedPlayers, playersPerTeam);
 
     while (!context.mounted) {
       await Future.delayed(const Duration(milliseconds: 100));
@@ -82,7 +84,7 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
 
   void refreshPlayers() {
     setState(() {
-      players = PlayerService.getPlayersFromGroup(UserPreferences.getGroup()!);
+      players = playerService.getPlayersFromGroup(UserPreferences.getGroup()!);
       players.sort(
           (a, b) => a.name!.toUpperCase().compareTo(b.name!.toUpperCase()));
     });
