@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/edit_player_card.dart';
@@ -52,6 +53,18 @@ class _PlayersScreenState extends State<PlayersScreen> {
               backgroundColor: Colors.red[700],
               content: const Text(
                 "O nome do jogador não pode estar vazio!",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
+          return;
+        }
+        if (players.firstWhereOrNull((p) => player.name == p.name) != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red[700],
+              content: const Text(
+                "Já existe um jogador com esse nome!",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
