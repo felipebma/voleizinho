@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:voleizinho/exceptions/player/player_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/player/player_name_is_empty_exception.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
@@ -127,7 +128,7 @@ class PlayerService {
     List<Player> players = getPlayersFromGroup(player.groupId);
     if (players.any(
         (element) => element.name == player.name && element.id != player.id)) {
-      throw PlayerNameIsEmptyException("Player name already exists");
+      throw PlayerNameAlreadyExistsException("Player name already exists");
     }
   }
 }

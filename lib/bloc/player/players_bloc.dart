@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voleizinho/bloc/player/players_event.dart';
 import 'package:voleizinho/bloc/player/players_state.dart';
+import 'package:voleizinho/exceptions/player/player_name_already_existis_exception.dart';
+import 'package:voleizinho/exceptions/player/player_name_is_empty_exception.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/services/player_service.dart';
 
@@ -44,11 +46,24 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
           playerService.getPlayersFromGroup(event.player.groupId);
       emit(state.copyWith(
           status: PlayersStatus.created, players: players, errorMessage: null));
+    } on PlayerNameAlreadyExistsException {
+      emit(
+        state.copyWith(
+          status: PlayersStatus.error,
+          errorMessage: "Já existe outro jogador com esse nome!",
+        ),
+      );
+    } on PlayerNameIsEmptyException {
+      emit(
+        state.copyWith(
+          status: PlayersStatus.error,
+          errorMessage: "O nome do jogador não pode ser vazio!",
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
           status: PlayersStatus.error,
-          players: [],
           errorMessage: "Ocorreu um erro, não foi possível criar o jogador!",
         ),
       );
@@ -63,6 +78,22 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
           playerService.getPlayersFromGroup(event.player.groupId);
       emit(state.copyWith(
           status: PlayersStatus.edited, players: players, errorMessage: null));
+    } on PlayerNameAlreadyExistsException {
+      emit(
+        state.copyWith(
+          status: PlayersStatus.error,
+          players: [],
+          errorMessage: "Já existe outro jogador com esse nome!",
+        ),
+      );
+    } on PlayerNameIsEmptyException {
+      emit(
+        state.copyWith(
+          status: PlayersStatus.error,
+          players: [],
+          errorMessage: "O nome do jogador não pode ser vazio!",
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -96,7 +127,8 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
   void _onImportPlayersEvent(
       ImportPlayersEvent event, Emitter<PlayersState> emit) async {
     try {
-      playerService.importPlayersList(event.groupId);
+      emit(state.copyWith(status: PlayersStatus.loading));
+      await playerService.importPlayersList(event.groupId);
       List<Player> players = playerService.getPlayersFromGroup(event.groupId);
       emit(state.copyWith(
           status: PlayersStatus.loaded, players: players, errorMessage: null));

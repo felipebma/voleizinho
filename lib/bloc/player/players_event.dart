@@ -16,9 +16,8 @@ class CreatePlayerEvent extends PlayersEvent {
 
 class EditPlayerEvent extends PlayersEvent {
   final Player player;
-  final int index;
 
-  EditPlayerEvent(this.player, this.index);
+  EditPlayerEvent(this.player);
 }
 
 class DeletePlayerEvent extends PlayersEvent {

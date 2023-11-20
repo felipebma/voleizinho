@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/player/players_bloc.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/object_box.dart';
@@ -27,13 +29,18 @@ Future<void> main() async {
   GroupRepository.init(groupBox);
   PlayerRepository.init(playerBox);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(MainApp(storeRepository: storeRepository));
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<PlayersBloc>(create: (context) => PlayersBloc()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key, required this.storeRepository});
-
-  final StoreRepository storeRepository;
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
