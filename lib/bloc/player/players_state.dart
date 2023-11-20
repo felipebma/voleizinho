@@ -1,6 +1,6 @@
 import 'package:voleizinho/model/player.dart';
 
-enum PlayersStatus { initial, loading, loaded, error }
+enum PlayersStatus { initial, loading, loaded, created, edited, deleted, error }
 
 class PlayersState {
   PlayersStatus status;

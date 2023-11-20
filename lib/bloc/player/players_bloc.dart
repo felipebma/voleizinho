@@ -43,7 +43,7 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
       List<Player> players =
           playerService.getPlayersFromGroup(event.player.groupId);
       emit(state.copyWith(
-          status: PlayersStatus.loaded, players: players, errorMessage: null));
+          status: PlayersStatus.created, players: players, errorMessage: null));
     } catch (e) {
       emit(
         state.copyWith(
@@ -62,7 +62,7 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
       List<Player> players =
           playerService.getPlayersFromGroup(event.player.groupId);
       emit(state.copyWith(
-          status: PlayersStatus.loaded, players: players, errorMessage: null));
+          status: PlayersStatus.edited, players: players, errorMessage: null));
     } catch (e) {
       emit(
         state.copyWith(
@@ -81,7 +81,7 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
       List<Player> players =
           playerService.getPlayersFromGroup(event.player.groupId);
       emit(state.copyWith(
-          status: PlayersStatus.loaded, players: players, errorMessage: null));
+          status: PlayersStatus.deleted, players: players, errorMessage: null));
     } catch (e) {
       emit(
         state.copyWith(
