@@ -31,6 +31,10 @@ class PlayerService {
     _playerRepository.updatePlayer(newPlayer);
   }
 
+  void removePlayer(Player player) {
+    _playerRepository.removePlayer(player);
+  }
+
   void removePlayersFromGroup(int groupId) {
     _playerRepository.removeAllPlayerByGroup(groupId);
   }

@@ -115,7 +115,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
 
   void deletePlayer(int index) {
     setState(() {
-      playerRepository.removePlayer(players[index]);
+      PlayerService.getInstance().removePlayer(players[index]);
       deletingPlayer(null);
       refreshPlayers();
     });
