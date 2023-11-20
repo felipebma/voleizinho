@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:voleizinho/exceptions/player/player_name_is_empty_exception.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
@@ -22,12 +23,14 @@ class PlayerService {
 
   static get I => getInstance();
 
-  void addPlayer(Player player, int groupId) {
-    Player newPlayer = player.copyWith(groupId: groupId);
+  void addPlayer(Player player) {
+    _validatePlayer(player);
+    Player newPlayer = player.copyWith();
     _playerRepository.addPlayer(newPlayer);
   }
 
   void updatePlayer(Player newPlayer) {
+    _validatePlayer(newPlayer);
     _playerRepository.updatePlayer(newPlayer);
   }
 
@@ -113,7 +116,18 @@ class PlayerService {
     }
 
     for (Player player in players) {
-      addPlayer(player, groupId);
+      addPlayer(player.copyWith(groupId: groupId));
+    }
+  }
+
+  void _validatePlayer(Player player) {
+    if (player.name == null || player.name!.isEmpty) {
+      throw PlayerNameIsEmptyException("Player name is empty");
+    }
+    List<Player> players = getPlayersFromGroup(player.groupId);
+    if (players.any(
+        (element) => element.name == player.name && element.id != player.id)) {
+      throw PlayerNameIsEmptyException("Player name already exists");
     }
   }
 }

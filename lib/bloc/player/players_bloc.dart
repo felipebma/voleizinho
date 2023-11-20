@@ -39,7 +39,7 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
   void _onCreatePlayerEvent(
       CreatePlayerEvent event, Emitter<PlayersState> emit) async {
     try {
-      playerService.addPlayer(event.player, event.player.groupId);
+      playerService.addPlayer(event.player);
       List<Player> players =
           playerService.getPlayersFromGroup(event.player.groupId);
       emit(state.copyWith(
