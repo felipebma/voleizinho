@@ -27,7 +27,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
   int? editingPlayerIndex;
   int? deletingPlayerIndex;
 
-  late Player newPlayer;
+  late Player newPlayer = kDefaultPlayer.copyWith(name: "", groupId: groupId);
 
   @override
   void initState() {

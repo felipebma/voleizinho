@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/components/menu_button.dart';
-import 'package:voleizinho/services/group_service.dart';
+import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupHomeScreen extends StatelessWidget {
@@ -8,7 +10,7 @@ class GroupHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String groupName = GroupService.I.activeGroup().name!;
+    Group group = BlocProvider.of<GroupsBloc>(context).state.activeGroup!;
 
     return Scaffold(
       body: SafeArea(
@@ -28,7 +30,7 @@ class GroupHomeScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  groupName,
+                  group.name!,
                   style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.normal,
@@ -69,9 +71,7 @@ class GroupHomeScreen extends StatelessWidget {
                       ),
                       text: "Times",
                       onPressed: () async {
-                        UserPreferences.getTeams(
-                                GroupService.I.activeGroup().id)
-                            .then(
+                        UserPreferences.getTeams(group.id).then(
                           (value) {
                             if (value.isNotEmpty) {
                               Navigator.pushReplacementNamed(
