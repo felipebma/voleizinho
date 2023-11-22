@@ -1,6 +1,6 @@
 import 'package:voleizinho/screens/group/group_creation_screen.dart';
 import 'package:voleizinho/screens/group_home_screen.dart';
-import 'package:voleizinho/screens/home_screen.dart';
+import 'package:voleizinho/screens/home/home_screen.dart';
 import 'package:voleizinho/screens/players/players_screen.dart';
 import 'package:voleizinho/screens/scoreboard_screen.dart';
 import 'package:voleizinho/screens/settings_screen.dart';

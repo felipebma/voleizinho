@@ -4,6 +4,7 @@ import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/exceptions/group/group_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
 import 'package:voleizinho/services/group_service.dart';
+import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
   final GroupService groupService = GroupService.getInstance();
@@ -90,8 +91,9 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
   void _setActiveGroup(
       SetActiveGroupEvent event, Emitter<GroupsState> emit) async {
     try {
+      await UserPreferences.setGroup(event.group.id);
       emit(state.copyWith(
-          status: GroupsStatus.loaded,
+          status: GroupsStatus.selected,
           groups: groupService.getGroups(),
           activeGroup: event.group));
     } catch (e) {

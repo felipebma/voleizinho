@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/group/groups_bloc.dart';
+import 'package:voleizinho/bloc/group/groups_event.dart';
+import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/model/group.dart';
-import 'package:voleizinho/repositories/group_repository.dart';
-import 'package:voleizinho/services/user_preferences.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
-  final List<Group> groups = GroupRepository().getGroups();
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<GroupsBloc>(context).add(LoadGroups());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,22 +62,31 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20.0),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: groups.length,
-                    itemBuilder: (context, index) {
-                      return MenuButton(
-                        padding: EdgeInsets.zero,
-                        text: groups[index].name!,
-                        onPressed: () => {
-                          UserPreferences.setGroup(groups[index].id),
-                          Navigator.pushReplacementNamed(
-                              context, "/main_group"),
-                        },
-                      );
-                    },
-                  ),
-                ),
+                BlocConsumer<GroupsBloc, GroupsState>(
+                    listener: (context, state) {
+                  if (state.status == GroupsStatus.selected) {
+                    Navigator.pushReplacementNamed(context, "/main_group");
+                  }
+                }, builder: (context, state) {
+                  if (state.status == GroupsStatus.loading) {
+                    return const CircularProgressIndicator();
+                  }
+                  List<Group> groups = state.groups;
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: groups.length,
+                      itemBuilder: (context, index) {
+                        return MenuButton(
+                          padding: EdgeInsets.zero,
+                          text: groups[index].name!,
+                          onPressed: () => context
+                              .read<GroupsBloc>()
+                              .add(SetActiveGroupEvent(groups[index])),
+                        );
+                      },
+                    ),
+                  );
+                }),
               ],
             ),
           ),

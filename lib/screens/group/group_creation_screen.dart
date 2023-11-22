@@ -4,7 +4,7 @@ import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/model/group.dart';
-import 'package:voleizinho/screens/group/components/skill_gauges.dart';
+import 'package:voleizinho/screens/group/components/skill_gauges_list.dart';
 
 class GroupCreationScreen extends StatefulWidget {
   const GroupCreationScreen({super.key});

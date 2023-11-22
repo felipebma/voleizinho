@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
-import 'package:voleizinho/screens/settings_screen.dart';
+import 'package:voleizinho/screens/group/components/skill_gauge.dart';
 
 class SkillGaugesList extends StatefulWidget {
   const SkillGaugesList({super.key, required this.group});

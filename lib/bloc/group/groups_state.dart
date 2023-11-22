@@ -1,6 +1,15 @@
 import 'package:voleizinho/model/group.dart';
 
-enum GroupsStatus { initial, loading, loaded, created, edited, deleted, error }
+enum GroupsStatus {
+  initial,
+  loading,
+  loaded,
+  selected,
+  created,
+  edited,
+  deleted,
+  error
+}
 
 class GroupsState {
   final GroupsStatus status;
