@@ -4,7 +4,7 @@ import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/model/group.dart';
-import 'package:voleizinho/model/skills.dart';
+import 'package:voleizinho/screens/group/components/skill_gauges.dart';
 
 class GroupCreationScreen extends StatefulWidget {
   const GroupCreationScreen({super.key});
@@ -15,23 +15,6 @@ class GroupCreationScreen extends StatefulWidget {
 
 class _GroupCreationScreenState extends State<GroupCreationScreen> {
   Group group = Group();
-
-  List<SkillGauge> skillGauges() {
-    List<SkillGauge> skillGauges = [];
-    for (Skill skill in Skill.values) {
-      skillGauges.add(SkillGauge(
-        label: skill.toShortString(),
-        onChanged: (double value) {
-          setState(() {
-            group.skillsWeights[skill] = value.toInt();
-          });
-        },
-        value: group.skillsWeights[skill] ?? 1,
-      ));
-    }
-    skillGauges.sort((a, b) => a.label.compareTo(b.label));
-    return skillGauges;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +92,9 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
                           fontFamily: "poller_one",
                           fontWeight: FontWeight.bold),
                     ),
-                    ...skillGauges(),
+                    SkillGaugesList(
+                      group: group,
+                    )
                   ],
                 ),
                 Row(
@@ -165,42 +150,6 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class SkillGauge extends StatelessWidget {
-  const SkillGauge(
-      {super.key,
-      required this.value,
-      required this.onChanged,
-      required this.label});
-
-  final int value;
-  final int maxValue = 10;
-  final String label;
-  final void Function(double) onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text(label,
-              style: const TextStyle(fontSize: 10, fontFamily: "poller_one")),
-        ),
-        Expanded(
-          child: Slider(
-            value: value.toDouble(),
-            min: 0,
-            max: 10,
-            divisions: 10,
-            label: value.toString(),
-            onChanged: onChanged,
-          ),
-        ),
-      ],
     );
   }
 }
