@@ -12,7 +12,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  Group group = GroupService.activeGroup();
+  Group group = GroupService.I.activeGroup();
 
   List<SkillGauge> skillGauges() {
     List<SkillGauge> skillGauges = [];
@@ -33,7 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void removeGroup() {
     setState(() {
-      GroupService.removeGroup(GroupService.activeGroup());
+      GroupService.I.removeGroup(GroupService.I.activeGroup());
       Navigator.pushReplacementNamed(context, "/");
     });
   }
@@ -51,7 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
       return;
     }
-    GroupService.updateGroup(group);
+    GroupService.I.updateGroup(group);
     Navigator.pushReplacementNamed(context, "/main_group");
   }
 

@@ -8,7 +8,7 @@ class GroupHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String groupName = GroupService.activeGroup().name!;
+    String groupName = GroupService.I.activeGroup().name!;
 
     return Scaffold(
       body: SafeArea(
@@ -69,7 +69,8 @@ class GroupHomeScreen extends StatelessWidget {
                       ),
                       text: "Times",
                       onPressed: () async {
-                        UserPreferences.getTeams(GroupService.activeGroup().id)
+                        UserPreferences.getTeams(
+                                GroupService.I.activeGroup().id)
                             .then(
                           (value) {
                             if (value.isNotEmpty) {

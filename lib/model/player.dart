@@ -49,22 +49,22 @@ class Player {
 
   double getAverage() {
     double sum = 0;
-    var weights = GroupService.getSkillsWeights();
+    var weights = GroupService.I.getSkillsWeights();
     int sumWeights = 0;
     skills.forEach((key, value) {
       sum += value * (weights[key] ?? 1);
-      sumWeights += weights[key] ?? 1;
+      sumWeights += (weights[key] ?? 1) as int;
     });
     return sum / sumWeights;
   }
 
   double similarity(Player player) {
     double sum = 0;
-    var weights = GroupService.getSkillsWeights();
+    var weights = GroupService.I.getSkillsWeights();
     int sumWeights = 0;
     skills.forEach((key, value) {
       sum += ((value - player.skills[key]!).abs()) * (weights[key] ?? 1);
-      sumWeights += (weights[key] ?? 1) * 5;
+      sumWeights += ((weights[key] ?? 1) * 5) as int;
     });
     return 1 - sum / sumWeights;
   }

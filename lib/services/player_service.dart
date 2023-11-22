@@ -62,7 +62,8 @@ class PlayerService {
       ];
       rows.add(row);
     }
-    String groupName = GroupService.activeGroup()
+    String groupName = GroupService.I
+        .activeGroup()
         .name!
         .replaceAll("/", "_")
         .replaceAll(".", "_");

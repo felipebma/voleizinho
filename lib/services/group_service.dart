@@ -5,35 +5,44 @@ import 'package:voleizinho/services/player_service.dart';
 import 'package:voleizinho/services/user_preferences.dart';
 
 class GroupService {
-  static final GroupRepository groupRepository = GroupRepository();
-  static final PlayerService playerService = PlayerService.getInstance();
+  final GroupRepository groupRepository = GroupRepository();
+  final PlayerService playerService = PlayerService.getInstance();
 
-  static List<Group> getGroups() {
+  static GroupService? _instance;
+
+  static GroupService getInstance() {
+    _instance ??= GroupService();
+    return _instance!;
+  }
+
+  static get I => getInstance();
+
+  List<Group> getGroups() {
     return groupRepository.getGroups();
   }
 
-  static int createGroup(Group group) {
+  int createGroup(Group group) {
     return groupRepository.addGroup(group);
   }
 
-  static void updateGroup(Group newGroup) {
+  void updateGroup(Group newGroup) {
     groupRepository.updateGroup(newGroup);
   }
 
-  static void removeGroup(Group group) {
+  void removeGroup(Group group) {
     playerService.removePlayersFromGroup(group.id);
     groupRepository.removeGroup(group);
   }
 
-  static Group activeGroup() {
+  Group activeGroup() {
     return groupRepository.getGroupById(UserPreferences.getGroup()!);
   }
 
-  static Map<Skill, int> getSkillsWeights() {
+  Map<Skill, int> getSkillsWeights() {
     return activeGroup().skillsWeights;
   }
 
-  static void updateSkillsWeights(Map<Skill, int> weights) {
+  void updateSkillsWeights(Map<Skill, int> weights) {
     Group group = activeGroup();
     group.skillsWeights = weights;
     updateGroup(group);

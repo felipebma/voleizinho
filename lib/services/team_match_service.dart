@@ -46,7 +46,7 @@ class TeamMatchService {
   }
 
   static void balanceTeams(Team team1, Team team2) {
-    if (GroupService.activeGroup().usePositionalBalancing) {
+    if (GroupService.I.activeGroup().usePositionalBalancing) {
       _balanceTeamsPositional(team1, team2);
     } else {
       _balanceTeamsLegacy(team1, team2);

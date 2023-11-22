@@ -47,7 +47,7 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
       );
       return;
     }
-    GroupService.createGroup(group);
+    GroupService.I.createGroup(group);
     Navigator.pushReplacementNamed(context, "/");
   }
 

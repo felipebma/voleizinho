@@ -17,7 +17,7 @@ class TeamService {
   final Map<int, List<Team>> _teams = {};
 
   _saveTeams(List<Team> teams) async {
-    int groupId = GroupService.activeGroup().id;
+    int groupId = GroupService.I.activeGroup().id;
     _teams[groupId] = teams;
     await UserPreferences.setTeams(groupId, teams);
   }
@@ -29,7 +29,7 @@ class TeamService {
   }
 
   List<Team> getTeams() {
-    int groupId = GroupService.activeGroup().id;
+    int groupId = GroupService.I.activeGroup().id;
     List<Team> groupTeams = [];
     if (_teams.containsKey(groupId)) {
       groupTeams = _teams[groupId]!;

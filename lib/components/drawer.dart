@@ -24,7 +24,7 @@ class CustomDrawer extends StatelessWidget {
                     Text(
                       UserPreferences.getGroup() == null
                           ? "Voleizinho"
-                          : GroupService.activeGroup().name!,
+                          : GroupService.I.activeGroup().name!,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 24,

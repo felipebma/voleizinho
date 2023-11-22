@@ -44,7 +44,7 @@ class Team {
   }
 
   double getPlayerAtk(Player player) {
-    Map<Skill, int> weights = GroupService.getSkillsWeights();
+    Map<Skill, int> weights = GroupService.I.getSkillsWeights();
     double atk = player.getSkill(Skill.spike) * weights[Skill.spike]! +
         player.getSkill(Skill.set) * weights[Skill.set]! +
         player.getSkill(Skill.block) * weights[Skill.block]!;
@@ -53,7 +53,7 @@ class Team {
   }
 
   double getPlayerDef(Player player) {
-    Map<Skill, int> weights = GroupService.getSkillsWeights();
+    Map<Skill, int> weights = GroupService.I.getSkillsWeights();
     double atk = player.getSkill(Skill.serve) * weights[Skill.serve]! +
         player.getSkill(Skill.receive) * weights[Skill.receive]! +
         player.getSkill(Skill.agility) * weights[Skill.agility]!;
