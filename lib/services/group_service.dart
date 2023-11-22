@@ -21,6 +21,10 @@ class GroupService {
     return groupRepository.getGroups();
   }
 
+  Group getGroupById(int id) {
+    return groupRepository.getGroupById(id);
+  }
+
   int createGroup(Group group) {
     return groupRepository.addGroup(group);
   }
