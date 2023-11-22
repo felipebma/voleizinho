@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/player/players_bloc.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/player.dart';
@@ -33,6 +34,7 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<PlayersBloc>(create: (context) => PlayersBloc()),
+        BlocProvider<GroupsBloc>(create: (context) => GroupsBloc()),
       ],
       child: const MainApp(),
     ),
