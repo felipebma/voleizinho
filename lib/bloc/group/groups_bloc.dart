@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
+import 'package:voleizinho/exceptions/group/group_name_already_existis_exception.dart';
+import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
 import 'package:voleizinho/services/group_service.dart';
 
 class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
@@ -33,9 +35,18 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
           status: GroupsStatus.created,
           groups: groupService.getGroups(),
           activeGroup: groupService.getGroupById(id)));
+    } on GroupNameAlreadyExistsException {
+      emit(state.copyWith(
+          status: GroupsStatus.error,
+          errorMessage: 'Já existe um grupo com esse nome'));
+    } on GroupNameIsEmptyException {
+      emit(state.copyWith(
+          status: GroupsStatus.error,
+          errorMessage: 'O nome do grupo não pode ser vazio'));
     } catch (e) {
       emit(state.copyWith(
-          status: GroupsStatus.error, errorMessage: e.toString()));
+          status: GroupsStatus.error,
+          errorMessage: "Ocorreu um erro inesperado"));
     }
   }
 
@@ -50,9 +61,18 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
           activeGroup: event.group,
         ),
       );
+    } on GroupNameAlreadyExistsException {
+      emit(state.copyWith(
+          status: GroupsStatus.error,
+          errorMessage: 'Já existe um grupo com esse nome'));
+    } on GroupNameIsEmptyException {
+      emit(state.copyWith(
+          status: GroupsStatus.error,
+          errorMessage: 'O nome do grupo não pode ser vazio'));
     } catch (e) {
       emit(state.copyWith(
-          status: GroupsStatus.error, errorMessage: e.toString()));
+          status: GroupsStatus.error,
+          errorMessage: "Ocorreu um erro inesperado"));
     }
   }
 
