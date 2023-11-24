@@ -4,6 +4,7 @@ import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/model/group.dart';
+import 'package:voleizinho/screens/group/components/menu_button.dart';
 import 'package:voleizinho/screens/group/components/skill_gauges_list.dart';
 
 class GroupCreationScreen extends StatefulWidget {
@@ -100,48 +101,17 @@ class _GroupCreationScreenState extends State<GroupCreationScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                      onPressed: () => {
-                        Navigator.pushReplacementNamed(context, "/"),
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        padding: const EdgeInsets.all(20),
-                        elevation: 6,
-                      ),
-                      child: const Text(
-                        "Cancelar",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: "poller_one",
-                        ),
-                      ),
+                    MenuButton(
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, "/"),
+                      text: "Cancelar",
+                      backgroundColor: Colors.red,
                     ),
-                    TextButton(
-                      onPressed: () => {
-                        BlocProvider.of<GroupsBloc>(context)
-                            .add(CreateGroupEvent(group)),
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        padding: const EdgeInsets.all(20),
-                        elevation: 6,
-                      ),
-                      child: const Text(
-                        "Salvar",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: "poller_one",
-                        ),
-                      ),
+                    MenuButton(
+                      onPressed: () => BlocProvider.of<GroupsBloc>(context)
+                          .add(CreateGroupEvent(group)),
+                      text: "Salvar",
+                      backgroundColor: Colors.green,
                     ),
                   ],
                 ),

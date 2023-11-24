@@ -4,6 +4,7 @@ import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/components/drawer.dart';
+import 'package:voleizinho/screens/group/components/menu_button.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/screens/group/components/skill_gauges_list.dart';
 import 'package:voleizinho/services/group_service.dart';
@@ -118,26 +119,11 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
                     )
                   ],
                 ),
-                TextButton(
-                  onPressed: () =>
-                      context.read<GroupsBloc>().add(EditGroupEvent(group)),
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    elevation: 6,
-                  ),
-                  child: const Text(
-                    "Salvar",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontFamily: "poller_one",
-                    ),
-                  ),
-                ),
+                MenuButton(
+                    text: "Salvar",
+                    onPressed: () =>
+                        context.read<GroupsBloc>().add(EditGroupEvent(group)),
+                    backgroundColor: Colors.green),
               ],
             ),
           ),
