@@ -3,8 +3,8 @@ import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
-import 'package:voleizinho/services/player_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/services/players/player_service.dart';
+import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class GroupService {
   final GroupRepository groupRepository = GroupRepository();

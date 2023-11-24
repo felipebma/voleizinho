@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:objectbox/objectbox.dart';
 import 'package:voleizinho/model/skills.dart';
-import 'package:voleizinho/services/group_service.dart';
+import 'package:voleizinho/services/groups/group_service.dart';
 
 @Entity()
 class Player {

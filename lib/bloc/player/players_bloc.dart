@@ -4,7 +4,7 @@ import 'package:voleizinho/bloc/player/players_state.dart';
 import 'package:voleizinho/exceptions/player/player_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/player/player_name_is_empty_exception.dart';
 import 'package:voleizinho/model/player.dart';
-import 'package:voleizinho/services/player_service.dart';
+import 'package:voleizinho/services/players/player_service.dart';
 
 class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
   final PlayerService playerService = PlayerService.getInstance();

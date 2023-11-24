@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/model/player.dart';
-import 'package:voleizinho/services/team_service.dart';
+import 'package:voleizinho/services/teams/team_service.dart';
 
 class SimilarPlayersList extends StatelessWidget {
   const SimilarPlayersList(

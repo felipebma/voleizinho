@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/model/group.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class GroupHomeScreen extends StatelessWidget {
   const GroupHomeScreen({super.key});

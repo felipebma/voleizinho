@@ -3,8 +3,8 @@ import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/exceptions/group/group_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
-import 'package:voleizinho/services/group_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/services/groups/group_service.dart';
+import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
   final GroupService groupService = GroupService.getInstance();

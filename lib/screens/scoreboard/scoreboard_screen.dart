@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/screens/scoreboard/components/score.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class ScoreBoardScreen extends StatefulWidget {
   const ScoreBoardScreen({super.key});

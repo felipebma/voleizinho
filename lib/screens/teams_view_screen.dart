@@ -6,8 +6,8 @@ import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
 import 'package:voleizinho/screens/team_creation_screen.dart';
-import 'package:voleizinho/services/share_service.dart';
-import 'package:voleizinho/services/team_service.dart';
+import 'package:voleizinho/services/share_service/share_service.dart';
+import 'package:voleizinho/services/teams/team_service.dart';
 
 class TeamsViewScreen extends StatefulWidget {
   const TeamsViewScreen({super.key});

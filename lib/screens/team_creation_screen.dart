@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
-import 'package:voleizinho/services/player_service.dart';
-import 'package:voleizinho/services/team_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/services/players/player_service.dart';
+import 'package:voleizinho/services/teams/team_service.dart';
+import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class TeamCreationScreen extends StatefulWidget {
   const TeamCreationScreen({super.key});

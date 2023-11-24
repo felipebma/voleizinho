@@ -9,8 +9,8 @@ import 'package:voleizinho/exceptions/player/player_name_is_empty_exception.dart
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
-import 'package:voleizinho/services/group_service.dart';
-import 'package:voleizinho/services/share_service.dart';
+import 'package:voleizinho/services/groups/group_service.dart';
+import 'package:voleizinho/services/share_service/share_service.dart';
 
 class PlayerService {
   final PlayerRepository _playerRepository = PlayerRepository();

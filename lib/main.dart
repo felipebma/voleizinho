@@ -11,8 +11,8 @@ import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
 import 'package:voleizinho/routes.dart';
-import 'package:voleizinho/services/team_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/services/teams/team_service.dart';
+import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 late ObjectBox objectBox;
 Future<void> main() async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:voleizinho/services/group_service.dart';
-import 'package:voleizinho/services/team_service.dart';
-import 'package:voleizinho/services/user_preferences.dart';
+import 'package:voleizinho/services/groups/group_service.dart';
+import 'package:voleizinho/services/teams/team_service.dart';
+import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
