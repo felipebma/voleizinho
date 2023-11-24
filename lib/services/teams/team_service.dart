@@ -37,8 +37,10 @@ class TeamService {
     return groupTeams;
   }
 
-  void createTeams(List<Player> players, int playersPerTeam) {
-    List<Team> teams = TeamMatchService.createTeams(players, playersPerTeam);
+  void createTeams(
+      List<Player> players, int playersPerTeam, bool usePositionalBalancing) {
+    List<Team> teams = TeamMatchService.createTeams(
+        players, playersPerTeam, usePositionalBalancing);
     _saveTeams(teams);
   }
 

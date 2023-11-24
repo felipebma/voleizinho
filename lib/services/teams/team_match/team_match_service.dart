@@ -1,9 +1,9 @@
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
-import 'package:voleizinho/services/groups/group_service.dart';
 
 class TeamMatchService {
-  static List<Team> createTeams(List<Player> players, int playersPerTeam) {
+  static List<Team> createTeams(
+      List<Player> players, int playersPerTeam, bool usePositionalBalancing) {
     List<Team> teams = [];
     List<Player> undraftedPlayers = [...players];
     undraftedPlayers.sort((a, b) => b.getAverage().compareTo(a.getAverage()));
@@ -37,7 +37,7 @@ class TeamMatchService {
       for (int i = 0; i < teams.length; i++) {
         for (int j = 0; j < teams.length; j++) {
           if (i != j) {
-            balanceTeams(teams[i], teams[j]);
+            balanceTeams(teams[i], teams[j], usePositionalBalancing);
           }
         }
       }
@@ -45,8 +45,9 @@ class TeamMatchService {
     return teams;
   }
 
-  static void balanceTeams(Team team1, Team team2) {
-    if (GroupService.I.activeGroup().usePositionalBalancing) {
+  static void balanceTeams(
+      Team team1, Team team2, bool usePositionalBalancing) {
+    if (usePositionalBalancing) {
       _balanceTeamsPositional(team1, team2);
     } else {
       _balanceTeamsLegacy(team1, team2);
