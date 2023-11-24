@@ -4,10 +4,9 @@ import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/components/drawer.dart';
-import 'package:voleizinho/screens/group/components/menu_button.dart';
 import 'package:voleizinho/model/group.dart';
+import 'package:voleizinho/screens/group/components/menu_button.dart';
 import 'package:voleizinho/screens/group/components/skill_gauges_list.dart';
-import 'package:voleizinho/services/group_service.dart';
 
 class GroupSettingsScreen extends StatefulWidget {
   const GroupSettingsScreen({super.key});
@@ -17,7 +16,13 @@ class GroupSettingsScreen extends StatefulWidget {
 }
 
 class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
-  Group group = GroupService.I.activeGroup();
+  late Group group;
+
+  @override
+  void initState() {
+    super.initState();
+    group = BlocProvider.of<GroupsBloc>(context).state.activeGroup!.copyWith();
+  }
 
   @override
   Widget build(BuildContext context) {

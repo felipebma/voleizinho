@@ -21,17 +21,19 @@ class Group {
     };
   }
 
-  Group.withArgs(
-      {this.name,
-      this.usePositionalBalancing = true,
-      this.skillsWeights = const {
-        Skill.spike: 1,
-        Skill.agility: 1,
-        Skill.block: 1,
-        Skill.receive: 1,
-        Skill.serve: 1,
-        Skill.set: 1,
-      }});
+  Group.withArgs({
+    this.id = 0,
+    this.name,
+    this.usePositionalBalancing = true,
+    this.skillsWeights = const {
+      Skill.spike: 1,
+      Skill.agility: 1,
+      Skill.block: 1,
+      Skill.receive: 1,
+      Skill.serve: 1,
+      Skill.set: 1,
+    },
+  });
 
   @Transient()
   Map<Skill, int> skillsWeights = {};
@@ -74,5 +76,17 @@ class Group {
         name: jsonObject['name'],
         usePositionalBalancing: jsonObject['usePositionalBalancing'],
         skillsWeights: skillsWeights);
+  }
+
+  Group copyWith(
+      {String? name,
+      bool? usePositionalBalancing,
+      Map<Skill, int>? skillsWeights}) {
+    return Group.withArgs(
+        id: id,
+        name: name ?? this.name,
+        usePositionalBalancing:
+            usePositionalBalancing ?? this.usePositionalBalancing,
+        skillsWeights: skillsWeights ?? this.skillsWeights);
   }
 }
