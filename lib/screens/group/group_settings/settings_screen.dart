@@ -4,6 +4,7 @@ import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/components/drawer.dart';
+import 'package:voleizinho/components/error_snackbar.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/screens/group/components/menu_button.dart';
 import 'package:voleizinho/screens/group/components/skill_gauges_list.dart';
@@ -34,13 +35,7 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
           Navigator.pushReplacementNamed(context, "/");
         } else if (state.status == GroupsStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.red[700],
-              content: Text(
-                state.errorMessage!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
+            ErrorSnackbar(content: state.errorMessage!),
           );
         }
       },

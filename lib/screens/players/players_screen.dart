@@ -5,6 +5,7 @@ import 'package:voleizinho/bloc/player/players_event.dart';
 import 'package:voleizinho/bloc/player/players_state.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/edit_player_card.dart';
+import 'package:voleizinho/components/error_snackbar.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/constants.dart';
@@ -55,13 +56,7 @@ class _PlayersScreenState extends State<PlayersScreen> {
       listener: (context, state) {
         if (state.status == PlayersStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.red[700],
-              content: Text(
-                state.errorMessage!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
+            ErrorSnackbar(content: state.errorMessage!),
           );
         } else if (state.status == PlayersStatus.edited ||
             state.status == PlayersStatus.created) {

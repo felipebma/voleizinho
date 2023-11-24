@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/components/drawer.dart';
+import 'package:voleizinho/components/error_snackbar.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/services/players/player_service.dart';
@@ -66,13 +67,8 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
   void createTeams() async {
     if (playersPerTeam < 2) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red[700],
-          content: const Text(
-            "Você deve selecionar pelo menos 2 jogadores por time!",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
+        ErrorSnackbar(
+            content: "Você deve selecionar pelo menos 2 jogadores por time!"),
       );
       return;
     }
