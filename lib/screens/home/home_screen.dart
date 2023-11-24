@@ -7,7 +7,7 @@ import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/model/group.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
