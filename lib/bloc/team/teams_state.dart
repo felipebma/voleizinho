@@ -1,4 +1,5 @@
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/model/similar_player.dart';
 import 'package:voleizinho/model/team.dart';
 
 enum TeamsStatus { initial, loading, loaded, error, created }
@@ -9,7 +10,7 @@ class TeamsState {
   final List<Team> teams;
   final List<Player> selectedPlayers;
   final bool usePositionalBalancing;
-  final Map<Player, List<Player>> similarPlayers;
+  final List<SimilarPlayer> similarPlayers;
 
   const TeamsState({
     this.status = TeamsStatus.initial,
@@ -17,7 +18,7 @@ class TeamsState {
     this.teams = const [],
     this.selectedPlayers = const [],
     this.usePositionalBalancing = false,
-    this.similarPlayers = const {},
+    this.similarPlayers = const [],
   });
 
   TeamsState copyWith({
@@ -26,7 +27,7 @@ class TeamsState {
     List<Team>? teams,
     List<Player>? selectedPlayers,
     bool? usePositionalBalancing,
-    Map<Player, List<Player>>? similarPlayers,
+    List<SimilarPlayer>? similarPlayers,
   }) {
     return TeamsState(
       status: status ?? this.status,

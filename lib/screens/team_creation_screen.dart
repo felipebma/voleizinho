@@ -4,12 +4,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voleizinho/bloc/group/groups_bloc.dart';
+import 'package:voleizinho/bloc/team/teams_bloc.dart';
+import 'package:voleizinho/bloc/team/teams_event.dart';
+import 'package:voleizinho/bloc/team/teams_state.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/error_snackbar.dart';
 import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/services/players/player_service.dart';
-import 'package:voleizinho/services/teams/team_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class TeamCreationScreen extends StatefulWidget {
@@ -72,17 +74,14 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
       );
       return;
     }
-    bool usePositionalBalancing = BlocProvider.of<GroupsBloc>(context)
-        .state
-        .activeGroup!
-        .usePositionalBalancing;
-    TeamService.getInstance()
-        .createTeams(selectedPlayers, playersPerTeam, usePositionalBalancing);
+    int groupId = BlocProvider.of<GroupsBloc>(context).state.activeGroup!.id;
+    BlocProvider.of<TeamsBloc>(context)
+        .add(CreateTeams(groupId, selectedPlayers, playersPerTeam));
 
-    while (!context.mounted) {
-      await Future.delayed(const Duration(milliseconds: 100));
-    }
-    if (context.mounted) Navigator.pushReplacementNamed(context, "/teams_view");
+    // while (!context.mounted) {
+    //   await Future.delayed(const Duration(milliseconds: 100));
+    // }
+    // if (context.mounted) Navigator.pushReplacementNamed(context, "/teams_view");
   }
 
   void refreshPlayers() {
@@ -122,112 +121,119 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
         foregroundColor: Colors.black,
       ),
       drawer: const CustomDrawer(),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    children: [
-                      DropdownMenu<int>(
-                        menuStyle: const MenuStyle(alignment: Alignment.center),
-                        onSelected: (value) => setState(() {
-                          playersPerTeam = value!;
-                        }),
-                        initialSelection: playersPerTeam,
-                        dropdownMenuEntries: List.generate(
-                          maxPlayersPerTeam - minPlayersPerTeam + 1,
-                          (index) => DropdownMenuEntry(
-                            label:
-                                "${index + minPlayersPerTeam} jogadores por time",
-                            value: index + minPlayersPerTeam,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
-                    onPressed: () => createTeams(),
-                    child: const Text(
-                      "Criar Times",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      "Jogadores Selecionados: ${selectedPlayers.length}",
-                      style: const TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16),
-                    child: ElevatedButton(
-                      onPressed: () => {
-                        setState(() {
-                          selectedPlayers = [];
-                          playersPerTeam = 0;
-                        })
-                      },
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.red)),
-                      child: const Text("Limpar Seleção"),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: players.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() => selectPlayer(players[index]));
-                            },
-                            child: PlayerCard(
-                              onPlayerTap: () => selectPlayer(players[index]),
-                              player: players[index],
-                              color: selectedPlayers.contains(players[index])
-                                  ? Colors.green
-                                  : Colors.white,
+      body: BlocListener<TeamsBloc, TeamsState>(
+        listener: (context, state) => {
+          if (state.status == TeamsStatus.created)
+            {Navigator.pushReplacementNamed(context, "/teams_view")}
+        },
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      children: [
+                        DropdownMenu<int>(
+                          menuStyle:
+                              const MenuStyle(alignment: Alignment.center),
+                          onSelected: (value) => setState(() {
+                            playersPerTeam = value!;
+                          }),
+                          initialSelection: playersPerTeam,
+                          dropdownMenuEntries: List.generate(
+                            maxPlayersPerTeam - minPlayersPerTeam + 1,
+                            (index) => DropdownMenuEntry(
+                              label:
+                                  "${index + minPlayersPerTeam} jogadores por time",
+                              value: index + minPlayersPerTeam,
                             ),
                           ),
-                          const Divider(
-                            color: Colors.black,
-                            height: 1,
-                          ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
                       ),
-                    );
-                  },
+                      onPressed: () => createTeams(),
+                      child: const Text(
+                        "Criar Times",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        "Jogadores Selecionados: ${selectedPlayers.length}",
+                        style: const TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          setState(() {
+                            selectedPlayers = [];
+                            playersPerTeam = 0;
+                          })
+                        },
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.red)),
+                        child: const Text("Limpar Seleção"),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: players.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() => selectPlayer(players[index]));
+                              },
+                              child: PlayerCard(
+                                onPlayerTap: () => selectPlayer(players[index]),
+                                player: players[index],
+                                color: selectedPlayers.contains(players[index])
+                                    ? Colors.green
+                                    : Colors.white,
+                              ),
+                            ),
+                            const Divider(
+                              color: Colors.black,
+                              height: 1,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

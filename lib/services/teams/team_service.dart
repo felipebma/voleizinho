@@ -1,6 +1,5 @@
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
-import 'package:voleizinho/services/groups/group_service.dart';
 import 'package:voleizinho/services/teams/team_match/team_match_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
@@ -14,38 +13,22 @@ class TeamService {
 
   static get I => getInstance();
 
-  final Map<int, List<Team>> _teams = {};
-
-  _saveTeams(List<Team> teams) async {
-    int groupId = GroupService.I.activeGroup().id;
-    _teams[groupId] = teams;
+  _saveTeams(List<Team> teams, int groupId) async {
     await UserPreferences.setTeams(groupId, teams);
   }
 
-  Future<void> loadStoredTeams(List<int> groupIds) async {
-    for (var groupId in groupIds) {
-      _teams[groupId] = await UserPreferences.getTeams(groupId);
-    }
+  Future<List<Team>> getTeams(int groupId) async {
+    return await UserPreferences.getTeams(groupId);
   }
 
-  List<Team> getTeams() {
-    int groupId = GroupService.I.activeGroup().id;
-    List<Team> groupTeams = [];
-    if (_teams.containsKey(groupId)) {
-      groupTeams = _teams[groupId]!;
-    }
-    return groupTeams;
-  }
-
-  void createTeams(
-      List<Player> players, int playersPerTeam, bool usePositionalBalancing) {
+  Future<void> createTeams(int groupId, List<Player> players,
+      int playersPerTeam, bool usePositionalBalancing) async {
     List<Team> teams = TeamMatchService.createTeams(
         players, playersPerTeam, usePositionalBalancing);
-    _saveTeams(teams);
+    await _saveTeams(teams, groupId);
   }
 
-  List<Player> getSimilarPlayers(Player player) {
-    List<Team> teams = getTeams();
+  List<Player> getSimilarPlayers(List<Team> teams, Player player) {
     List<Player> players = [];
     for (var team in teams) {
       if (!team.players.contains(player)) {
@@ -57,8 +40,8 @@ class TeamService {
     return players;
   }
 
-  void swapPlayers(Player player1, Player player2) {
-    List<Team> teams = getTeams();
+  void swapPlayers(
+      int groupId, List<Team> teams, Player player1, Player player2) async {
     for (var team in teams) {
       if (team.players.contains(player1)) {
         team.players.remove(player1);
@@ -68,11 +51,10 @@ class TeamService {
         team.players.add(player1);
       }
     }
-    _saveTeams(teams);
+    await _saveTeams(teams, groupId);
   }
 
-  double avgDiffOnSwap(Player player1, Player player2) {
-    List<Team> teams = getTeams();
+  double avgDiffOnSwap(List<Team> teams, Player player1, Player player2) {
     Team team =
         teams.firstWhere((element) => element.players.contains(player1));
     return (player2.getAverage() - player1.getAverage()) / team.players.length;

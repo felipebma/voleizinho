@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:voleizinho/services/groups/group_service.dart';
-import 'package:voleizinho/services/teams/team_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -38,12 +37,8 @@ class CustomDrawer extends StatelessWidget {
                 text: "Menu Principal", icon: Icons.menu, route: "/main_group"),
             const DrawerTile(
                 text: "Jogadores", icon: Icons.person, route: "/players"),
-            DrawerTile(
-                text: "Times",
-                icon: Icons.group,
-                route: TeamService.I.getTeams().isEmpty
-                    ? "/team_creation"
-                    : "/teams_view"),
+            const DrawerTile(
+                text: "Times", icon: Icons.group, route: "/teams_view"),
             const DrawerTile(
                 text: "Configurações",
                 icon: Icons.settings,
