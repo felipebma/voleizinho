@@ -36,14 +36,13 @@ class UnselectAllPlayers extends TeamsEvent {}
 
 class SwapPlayers extends TeamsEvent {
   final int groupId;
-  final Player player1;
   final Player player2;
 
-  SwapPlayers(this.groupId, this.player1, this.player2);
+  SwapPlayers(this.groupId, this.player2);
 }
 
-class GetSimilarPlayers extends TeamsEvent {
+class SelectPlayerToSwitch extends TeamsEvent {
   final Player player;
 
-  GetSimilarPlayers(this.player);
+  SelectPlayerToSwitch(this.player);
 }

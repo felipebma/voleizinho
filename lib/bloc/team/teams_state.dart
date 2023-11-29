@@ -11,6 +11,7 @@ enum TeamsStatus {
   playersSelected,
   playersUnselected,
   playersSwapped,
+  selectedPlayerToSwitch,
   similarPlayersLoaded,
   playersPerTeamSet,
 }
@@ -22,6 +23,7 @@ class TeamsState {
   final List<Player> selectedPlayers;
   final bool usePositionalBalancing;
   final List<SimilarPlayer> similarPlayers;
+  final Player? switchingPlayer;
 
   final int playersPerTeam;
   final int minPlayersPerTeam;
@@ -37,6 +39,7 @@ class TeamsState {
     this.playersPerTeam = 0,
     this.minPlayersPerTeam = 0,
     this.maxPlayersPerTeam = 0,
+    this.switchingPlayer,
   });
 
   TeamsState copyWith({
@@ -49,6 +52,7 @@ class TeamsState {
     int? playersPerTeam,
     int? minPlayersPerTeam,
     int? maxPlayersPerTeam,
+    Player? switchingPlayer,
   }) {
     return TeamsState(
       status: status ?? this.status,
@@ -61,6 +65,7 @@ class TeamsState {
       playersPerTeam: playersPerTeam ?? this.playersPerTeam,
       minPlayersPerTeam: minPlayersPerTeam ?? this.minPlayersPerTeam,
       maxPlayersPerTeam: maxPlayersPerTeam ?? this.maxPlayersPerTeam,
+      switchingPlayer: switchingPlayer,
     );
   }
 }

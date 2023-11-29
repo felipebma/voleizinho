@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voleizinho/bloc/team/teams_bloc.dart';
+import 'package:voleizinho/bloc/team/teams_state.dart';
 import 'package:voleizinho/components/player_team_view_card.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
@@ -10,7 +13,6 @@ class TeamCard extends StatelessWidget {
     required this.team,
     required this.onPlayerSwitch,
     required this.onPlayerTap,
-    required this.switchingPlayer,
     this.hideAverage = false,
   });
 
@@ -18,7 +20,6 @@ class TeamCard extends StatelessWidget {
   final Team team;
   final void Function(Player) onPlayerSwitch;
   final void Function(Player) onPlayerTap;
-  final Player? switchingPlayer;
   final bool hideAverage;
 
   @override
@@ -58,11 +59,13 @@ class TeamCard extends StatelessWidget {
           for (Player player in team.getPlayers())
             Column(
               children: [
-                PlayerTeamViewCard(
-                    player: player,
-                    onPlayerSwitch: onPlayerSwitch,
-                    onPlayerTap: onPlayerTap,
-                    showDetails: switchingPlayer == player),
+                BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
+                  return PlayerTeamViewCard(
+                      player: player,
+                      onPlayerSwitch: onPlayerSwitch,
+                      onPlayerTap: onPlayerTap,
+                      showDetails: state.switchingPlayer == player);
+                }),
               ],
             )
         ],

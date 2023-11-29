@@ -21,31 +21,14 @@ class TeamsViewScreen extends StatefulWidget {
 }
 
 class _TeamsViewScreenState extends State<TeamsViewScreen> {
-  Player? switchingPlayer;
   List<GlobalKey> globalKeys = [];
-  bool hideAverage = false;
+  bool hideAverage = true;
 
   void onPlayerSwitch(Player similarPlayer) {
     int groupId = BlocProvider.of<GroupsBloc>(context).state.activeGroup!.id;
     context.read<TeamsBloc>().add(
-          SwapPlayers(groupId, switchingPlayer!, similarPlayer),
+          SwapPlayers(groupId, similarPlayer),
         );
-    setState(() {
-      switchingPlayer = null;
-    });
-  }
-
-  void onPlayerTap(Player player) {
-    setState(() {
-      switchingPlayer = switchingPlayer == player ? null : player;
-      if (switchingPlayer != null) {
-        context.read<TeamsBloc>().add(
-              GetSimilarPlayers(
-                switchingPlayer!,
-              ),
-            );
-      }
-    });
   }
 
   List<Widget> getTeamCards(List<Team> teams) {
@@ -64,8 +47,8 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
               teamName: "Time ${i + 1}",
               team: teams[i],
               onPlayerSwitch: onPlayerSwitch,
-              onPlayerTap: onPlayerTap,
-              switchingPlayer: switchingPlayer,
+              onPlayerTap: (player) =>
+                  context.read<TeamsBloc>().add(SelectPlayerToSwitch(player)),
               hideAverage: hideAverage,
             ),
           ),
@@ -78,7 +61,6 @@ class _TeamsViewScreenState extends State<TeamsViewScreen> {
   @override
   void initState() {
     super.initState();
-    switchingPlayer = null;
     int groupId = BlocProvider.of<GroupsBloc>(context).state.activeGroup!.id;
     BlocProvider.of<TeamsBloc>(context).add(LoadTeams(groupId));
   }

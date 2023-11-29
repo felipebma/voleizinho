@@ -27,7 +27,7 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
     on<SelectPlayer>(_selectPlayer);
     on<UnselectAllPlayers>(_unselectAllPlayers);
     on<SwapPlayers>(_swapPlayers);
-    on<GetSimilarPlayers>(_getSimilarPlayers);
+    on<SelectPlayerToSwitch>(_selectPlayerToSwitch);
   }
 
   Future<void> _getTeams(
@@ -147,7 +147,7 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   ) async {
     List<Team> teams = state.teams;
     teamsService.swapPlayers(
-        event.groupId, teams, event.player1, event.player2);
+        event.groupId, teams, state.switchingPlayer!, event.player2);
     emit(
       state.copyWith(
         status: TeamsStatus.playersSwapped,
@@ -156,26 +156,32 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
     );
   }
 
-  void _getSimilarPlayers(
-    GetSimilarPlayers event,
+  void _selectPlayerToSwitch(
+    SelectPlayerToSwitch event,
     Emitter<TeamsState> emit,
   ) {
-    emit(state.copyWith(similarPlayers: []));
-    List<SimilarPlayer> similarPlayers = teamsService
-        .getSimilarPlayers(state.teams, event.player)
-        .map(
-          (similarPlayer) => SimilarPlayer(
-            similarPlayer,
-            event.player.similarity(similarPlayer),
-            teamsService.avgDiffOnSwap(
-                state.teams, event.player, similarPlayer),
-          ),
-        )
-        .toList();
-    emit(
-      state.copyWith(
-          status: TeamsStatus.similarPlayersLoaded,
-          similarPlayers: similarPlayers),
-    );
+    Player? switchingPlayer =
+        state.switchingPlayer == event.player ? null : event.player;
+    emit(state.copyWith(
+        status: TeamsStatus.similarPlayersLoaded, similarPlayers: []));
+    if (switchingPlayer != null) {
+      List<SimilarPlayer> similarPlayers = teamsService
+          .getSimilarPlayers(state.teams, event.player)
+          .map(
+            (similarPlayer) => SimilarPlayer(
+              similarPlayer,
+              event.player.similarity(similarPlayer),
+              teamsService.avgDiffOnSwap(
+                  state.teams, event.player, similarPlayer),
+            ),
+          )
+          .toList();
+      emit(
+        state.copyWith(
+            status: TeamsStatus.similarPlayersLoaded,
+            similarPlayers: similarPlayers,
+            switchingPlayer: event.player),
+      );
+    }
   }
 }

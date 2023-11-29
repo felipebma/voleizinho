@@ -5,7 +5,7 @@ import 'package:voleizinho/screens/players/players_screen.dart';
 import 'package:voleizinho/screens/scoreboard/scoreboard_screen.dart';
 import 'package:voleizinho/screens/group/group_settings/settings_screen.dart';
 import 'package:voleizinho/screens/teams/teams_creation/team_creation_screen.dart';
-import 'package:voleizinho/screens/teams_view_screen.dart';
+import 'package:voleizinho/screens/teams/teams_view/teams_view_screen.dart';
 
 var routes = {
   "/": (context) => const HomeScreen(),

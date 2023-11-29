@@ -1,11 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/groups/group_service.dart';
 
 @Entity()
-class Player {
+class Player extends Equatable {
   @Id()
   int id = 0;
 
@@ -99,9 +102,12 @@ class Player {
     }
 
     return Player.withArgs(
-        id: jsonObject['id'],
+        id: jsonObject['id'] ?? 0,
         name: jsonObject['name'],
         skills: skills,
         groupId: jsonObject['groupId']);
   }
+
+  @override
+  List<Object?> get props => [id, name, skills, groupId];
 }
