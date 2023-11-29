@@ -2,7 +2,18 @@ import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/similar_player.dart';
 import 'package:voleizinho/model/team.dart';
 
-enum TeamsStatus { initial, loading, loaded, error, created }
+enum TeamsStatus {
+  initial,
+  loading,
+  loaded,
+  error,
+  created,
+  playersSelected,
+  playersUnselected,
+  playersSwapped,
+  similarPlayersLoaded,
+  playersPerTeamSet,
+}
 
 class TeamsState {
   final TeamsStatus status;
@@ -12,6 +23,10 @@ class TeamsState {
   final bool usePositionalBalancing;
   final List<SimilarPlayer> similarPlayers;
 
+  final int playersPerTeam;
+  final int minPlayersPerTeam;
+  final int maxPlayersPerTeam;
+
   const TeamsState({
     this.status = TeamsStatus.initial,
     this.errorMessage,
@@ -19,6 +34,9 @@ class TeamsState {
     this.selectedPlayers = const [],
     this.usePositionalBalancing = false,
     this.similarPlayers = const [],
+    this.playersPerTeam = 0,
+    this.minPlayersPerTeam = 0,
+    this.maxPlayersPerTeam = 0,
   });
 
   TeamsState copyWith({
@@ -28,6 +46,9 @@ class TeamsState {
     List<Player>? selectedPlayers,
     bool? usePositionalBalancing,
     List<SimilarPlayer>? similarPlayers,
+    int? playersPerTeam,
+    int? minPlayersPerTeam,
+    int? maxPlayersPerTeam,
   }) {
     return TeamsState(
       status: status ?? this.status,
@@ -37,6 +58,9 @@ class TeamsState {
       usePositionalBalancing:
           usePositionalBalancing ?? this.usePositionalBalancing,
       similarPlayers: similarPlayers ?? this.similarPlayers,
+      playersPerTeam: playersPerTeam ?? this.playersPerTeam,
+      minPlayersPerTeam: minPlayersPerTeam ?? this.minPlayersPerTeam,
+      maxPlayersPerTeam: maxPlayersPerTeam ?? this.maxPlayersPerTeam,
     );
   }
 }

@@ -10,10 +10,20 @@ class LoadTeams extends TeamsEvent {
 
 class CreateTeams extends TeamsEvent {
   final int groupId;
-  final List<Player> players;
+
+  CreateTeams(this.groupId);
+}
+
+class SetPlayersPerTeam extends TeamsEvent {
   final int playersPerTeam;
 
-  CreateTeams(this.groupId, this.players, this.playersPerTeam);
+  SetPlayersPerTeam(this.playersPerTeam);
+}
+
+class LoadSelectedPlayers extends TeamsEvent {
+  final int groupId;
+
+  LoadSelectedPlayers(this.groupId);
 }
 
 class SelectPlayer extends TeamsEvent {
@@ -21,6 +31,8 @@ class SelectPlayer extends TeamsEvent {
 
   SelectPlayer(this.player);
 }
+
+class UnselectAllPlayers extends TeamsEvent {}
 
 class SwapPlayers extends TeamsEvent {
   final int groupId;

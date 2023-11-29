@@ -11,6 +11,7 @@ class Player {
 
   Player();
   Player.withArgs({
+    this.id = 0,
     this.name,
     required this.skills,
     this.groupId = 0,
@@ -78,6 +79,7 @@ class Player {
   }
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'name': name,
         'skills': json.encode(
           {
@@ -97,6 +99,7 @@ class Player {
     }
 
     return Player.withArgs(
+        id: jsonObject['id'],
         name: jsonObject['name'],
         skills: skills,
         groupId: jsonObject['groupId']);

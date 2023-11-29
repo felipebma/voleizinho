@@ -1,3 +1,4 @@
+import 'package:voleizinho/exceptions/team/not_enough_players_exception.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
 import 'package:voleizinho/services/teams/team_match/team_match_service.dart';
@@ -5,6 +6,7 @@ import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class TeamService {
   static TeamService? _instance;
+  final int minPlayersPerTeam = 2;
 
   static TeamService getInstance() {
     _instance ??= TeamService();
@@ -23,6 +25,10 @@ class TeamService {
 
   Future<void> createTeams(int groupId, List<Player> players,
       int playersPerTeam, bool usePositionalBalancing) async {
+    if (players.length < 2 * playersPerTeam ||
+        playersPerTeam < minPlayersPerTeam) {
+      throw NotEnoughPlayersException("Not enough players to create teams");
+    }
     List<Team> teams = TeamMatchService.createTeams(
         players, playersPerTeam, usePositionalBalancing);
     await _saveTeams(teams, groupId);
