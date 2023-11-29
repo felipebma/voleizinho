@@ -11,7 +11,7 @@ import 'package:voleizinho/components/error_snackbar.dart';
 import 'package:voleizinho/components/menu_button.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
-import 'package:voleizinho/screens/team_creation_screen.dart';
+import 'package:voleizinho/screens/teams/team_creation_screen.dart';
 import 'package:voleizinho/services/share_service/share_service.dart';
 
 class TeamsViewScreen extends StatefulWidget {

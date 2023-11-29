@@ -9,8 +9,8 @@ import 'package:voleizinho/bloc/team/teams_event.dart';
 import 'package:voleizinho/bloc/team/teams_state.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/error_snackbar.dart';
-import 'package:voleizinho/components/player_card.dart';
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/screens/teams/components/player_list.dart';
 import 'package:voleizinho/services/players/player_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
@@ -77,11 +77,6 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
     int groupId = BlocProvider.of<GroupsBloc>(context).state.activeGroup!.id;
     BlocProvider.of<TeamsBloc>(context)
         .add(CreateTeams(groupId, selectedPlayers, playersPerTeam));
-
-    // while (!context.mounted) {
-    //   await Future.delayed(const Duration(milliseconds: 100));
-    // }
-    // if (context.mounted) Navigator.pushReplacementNamed(context, "/teams_view");
   }
 
   void refreshPlayers() {
@@ -203,33 +198,10 @@ class _TeamCreationScreenState extends State<TeamCreationScreen> {
                   height: 10,
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: players.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() => selectPlayer(players[index]));
-                              },
-                              child: PlayerCard(
-                                onPlayerTap: () => selectPlayer(players[index]),
-                                player: players[index],
-                                color: selectedPlayers.contains(players[index])
-                                    ? Colors.green
-                                    : Colors.white,
-                              ),
-                            ),
-                            const Divider(
-                              color: Colors.black,
-                              height: 1,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                  child: PlayerList(
+                    players: players,
+                    selectPlayer: selectPlayer,
+                    selectedPlayers: selectedPlayers,
                   ),
                 ),
               ],
