@@ -5,7 +5,7 @@ import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/team/teams_bloc.dart';
 import 'package:voleizinho/bloc/team/teams_event.dart';
 import 'package:voleizinho/bloc/team/teams_state.dart';
-import 'package:voleizinho/components/TeamCard.dart';
+import 'package:voleizinho/screens/teams/teams_view/components/team_card.dart';
 import 'package:voleizinho/components/drawer.dart';
 import 'package:voleizinho/components/error_snackbar.dart';
 import 'package:voleizinho/components/menu_button.dart';
