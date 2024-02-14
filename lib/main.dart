@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/player/players_bloc.dart';
 import 'package:voleizinho/bloc/team/teams_bloc.dart';
-import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/object_box.dart';
 import 'package:voleizinho/objectbox.g.dart';
@@ -16,7 +15,6 @@ import 'package:voleizinho/routes.dart';
 import 'package:voleizinho/services/players/player_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
-late ObjectBox objectBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -26,10 +24,11 @@ Future<void> main() async {
 
   StoreRepository storeRepository = StoreRepository();
   await storeRepository.initStore();
-  objectBox = await ObjectBox.create();
+  ObjectBox objectBox = await ObjectBox.create();
+  getIt.registerSingleton<ObjectBox>(objectBox);
+
+  getIt.registerSingleton<GroupRepository>(GroupRepository());
   Box<Player> playerBox = objectBox.store.box<Player>();
-  Box<Group> groupBox = objectBox.store.box<Group>();
-  getIt.registerSingleton<GroupRepository>(GroupRepository(groupBox));
   PlayerRepository.init(playerBox);
   getIt.registerSingleton<PlayerService>(PlayerService(PlayerRepository()));
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

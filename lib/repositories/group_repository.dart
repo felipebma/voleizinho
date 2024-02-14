@@ -1,10 +1,12 @@
+import "package:get_it/get_it.dart";
 import "package:voleizinho/model/group.dart";
+import "package:voleizinho/object_box.dart";
 import "package:voleizinho/objectbox.g.dart";
 
 class GroupRepository {
-  final Box<Group> groupBox;
+  final Box<Group> groupBox = GetIt.I<ObjectBox>().store.box<Group>();
 
-  GroupRepository(this.groupBox);
+  GroupRepository();
 
   int addGroup(Group group) {
     return groupBox.put(group);
