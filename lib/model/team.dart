@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/groups/group_service.dart';
@@ -44,7 +45,7 @@ class Team {
   }
 
   double getPlayerAtk(Player player) {
-    Map<Skill, int> weights = GroupService.I.getSkillsWeights();
+    Map<Skill, int> weights = GetIt.I<GroupService>().getSkillsWeights();
     double atk = player.getSkill(Skill.spike) * weights[Skill.spike]! +
         player.getSkill(Skill.set) * weights[Skill.set]! +
         player.getSkill(Skill.block) * weights[Skill.block]!;
@@ -53,7 +54,7 @@ class Team {
   }
 
   double getPlayerDef(Player player) {
-    Map<Skill, int> weights = GroupService.I.getSkillsWeights();
+    Map<Skill, int> weights = GetIt.I<GroupService>().getSkillsWeights();
     double atk = player.getSkill(Skill.serve) * weights[Skill.serve]! +
         player.getSkill(Skill.receive) * weights[Skill.receive]! +
         player.getSkill(Skill.agility) * weights[Skill.agility]!;

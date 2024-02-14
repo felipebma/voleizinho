@@ -10,6 +10,7 @@ import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
 import 'package:voleizinho/routes.dart';
+import 'package:voleizinho/services/groups/group_service.dart';
 import 'package:voleizinho/services/players/player_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
@@ -25,7 +26,7 @@ Future<void> main() async {
   ObjectBox objectBox = await ObjectBox.create();
   getIt.registerSingleton<ObjectBox>(objectBox);
 
-  getIt.registerSingleton<GroupRepository>(GroupRepository());
+  getIt.registerSingleton<GroupService>(GroupService(GroupRepository()));
   getIt.registerSingleton<PlayerService>(PlayerService(PlayerRepository()));
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(

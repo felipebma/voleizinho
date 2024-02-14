@@ -9,7 +9,6 @@ import 'package:voleizinho/exceptions/player/player_name_is_empty_exception.dart
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
-import 'package:voleizinho/services/groups/group_service.dart';
 import 'package:voleizinho/services/share_service/share_service.dart';
 
 class PlayerService {
@@ -40,7 +39,7 @@ class PlayerService {
     return _playerRepository.getPlayersFromGroup(groupId);
   }
 
-  Future<void> exportPlayersList(int groupId) async {
+  Future<void> exportPlayersList(int groupId, String groupName) async {
     List<Player> players = _playerRepository.getPlayersFromGroup(groupId);
     List<Skill> skills = Skill.values;
     List<String> headers = [
@@ -55,11 +54,7 @@ class PlayerService {
       ];
       rows.add(row);
     }
-    String groupName = GroupService.I
-        .activeGroup()
-        .name!
-        .replaceAll("/", "_")
-        .replaceAll(".", "_");
+    groupName = groupName.replaceAll("/", "_").replaceAll(".", "_");
     String csv = const ListToCsvConverter().convert([headers, ...rows]);
     final String directory = (await getApplicationDocumentsDirectory()).path;
     final String path = "$directory/'$groupName'.csv";

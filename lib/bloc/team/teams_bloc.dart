@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/bloc/team/teams_event.dart';
 import 'package:voleizinho/bloc/team/teams_state.dart';
 import 'package:voleizinho/exceptions/team/not_enough_players_exception.dart';
@@ -13,7 +14,7 @@ import 'package:voleizinho/services/teams/team_service.dart';
 
 class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   final TeamService teamsService = TeamService.getInstance();
-  final GroupService groupService = GroupService.getInstance();
+  final GroupService groupService = GetIt.I<GroupService>();
 
   TeamsBloc() : super(const TeamsState()) {
     on<LoadTeams>(_getTeams);

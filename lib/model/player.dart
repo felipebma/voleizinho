@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/services/groups/group_service.dart';
@@ -53,22 +54,22 @@ class Player extends Equatable {
 
   double getAverage() {
     double sum = 0;
-    var weights = GroupService.I.getSkillsWeights();
     int sumWeights = 0;
+    Map<Skill, int> weights = GetIt.I<GroupService>().getSkillsWeights();
     skills.forEach((key, value) {
       sum += value * (weights[key] ?? 1);
-      sumWeights += (weights[key] ?? 1) as int;
+      sumWeights += weights[key] ?? 1;
     });
     return sum / sumWeights;
   }
 
   double similarity(Player player) {
     double sum = 0;
-    var weights = GroupService.I.getSkillsWeights();
     int sumWeights = 0;
+    Map<Skill, int> weights = GetIt.I<GroupService>().getSkillsWeights();
     skills.forEach((key, value) {
       sum += ((value - player.skills[key]!).abs()) * (weights[key] ?? 1);
-      sumWeights += ((weights[key] ?? 1) * 5) as int;
+      sumWeights += (weights[key] ?? 1) * 5;
     });
     return 1 - sum / sumWeights;
   }

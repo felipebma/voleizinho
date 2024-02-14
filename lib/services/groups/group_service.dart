@@ -1,24 +1,14 @@
-import 'package:get_it/get_it.dart';
 import 'package:voleizinho/exceptions/group/group_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
-import 'package:voleizinho/services/players/player_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class GroupService {
-  final GroupRepository groupRepository = GetIt.I<GroupRepository>();
-  final PlayerService playerService = GetIt.I<PlayerService>();
+  final GroupRepository groupRepository;
 
-  static GroupService? _instance;
-
-  static GroupService getInstance() {
-    _instance ??= GroupService();
-    return _instance!;
-  }
-
-  static get I => getInstance();
+  GroupService(this.groupRepository);
 
   List<Group> getGroups() {
     return groupRepository.getGroups();
@@ -39,7 +29,6 @@ class GroupService {
   }
 
   void removeGroup(Group group) {
-    playerService.removePlayersFromGroup(group.id);
     groupRepository.removeGroup(group);
   }
 

@@ -1,13 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/bloc/group/groups_event.dart';
 import 'package:voleizinho/bloc/group/groups_state.dart';
 import 'package:voleizinho/exceptions/group/group_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
 import 'package:voleizinho/services/groups/group_service.dart';
+import 'package:voleizinho/services/players/player_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
-  final GroupService groupService = GroupService.getInstance();
+  final GroupService groupService = GetIt.I<GroupService>();
+  final PlayerService playerService = GetIt.I<PlayerService>();
 
   GroupsBloc() : super(GroupsState.initial()) {
     on<LoadGroups>(_loadGroups);
@@ -79,6 +82,7 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
 
   void _deleteGroup(DeleteGroupEvent event, Emitter<GroupsState> emit) async {
     try {
+      playerService.removePlayersFromGroup(event.group.id);
       groupService.removeGroup(event.group);
       emit(state.copyWith(
           status: GroupsStatus.deleted, groups: groupService.getGroups()));
