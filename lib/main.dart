@@ -5,9 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/player/players_bloc.dart';
 import 'package:voleizinho/bloc/team/teams_bloc.dart';
-import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/object_box.dart';
-import 'package:voleizinho/objectbox.g.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
@@ -28,8 +26,6 @@ Future<void> main() async {
   getIt.registerSingleton<ObjectBox>(objectBox);
 
   getIt.registerSingleton<GroupRepository>(GroupRepository());
-  Box<Player> playerBox = objectBox.store.box<Player>();
-  PlayerRepository.init(playerBox);
   getIt.registerSingleton<PlayerService>(PlayerService(PlayerRepository()));
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
