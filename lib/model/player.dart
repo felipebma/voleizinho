@@ -74,8 +74,9 @@ class Player extends Equatable {
     return 1 - sum / sumWeights;
   }
 
-  copyWith({String? name, Map<Skill, int>? skills, int? groupId}) {
+  copyWith({int? id, String? name, Map<Skill, int>? skills, int? groupId}) {
     return Player.withArgs(
+      id: id ?? this.id,
       name: name ?? this.name,
       skills: skills ?? {...this.skills},
       groupId: groupId ?? this.groupId,
