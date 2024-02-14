@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/exceptions/group/group_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
 import 'package:voleizinho/model/group.dart';
@@ -7,8 +8,8 @@ import 'package:voleizinho/services/players/player_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class GroupService {
-  final GroupRepository groupRepository = GroupRepository();
-  final PlayerService playerService = PlayerService.getInstance();
+  final GroupRepository groupRepository = GetIt.I<GroupRepository>();
+  final PlayerService playerService = GetIt.I<PlayerService>();
 
   static GroupService? _instance;
 
@@ -24,7 +25,7 @@ class GroupService {
   }
 
   Group getGroupById(int id) {
-    return groupRepository.getGroupById(id);
+    return groupRepository.getGroupById(id)!;
   }
 
   int createGroup(Group group) {
@@ -43,7 +44,7 @@ class GroupService {
   }
 
   Group activeGroup() {
-    return groupRepository.getGroupById(UserPreferences.getGroup()!);
+    return groupRepository.getGroupById(UserPreferences.getGroup()!)!;
   }
 
   Map<Skill, int> getSkillsWeights() {

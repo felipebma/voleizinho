@@ -2,33 +2,31 @@ import "package:voleizinho/model/group.dart";
 import "package:voleizinho/objectbox.g.dart";
 
 class GroupRepository {
-  static Box<Group>? groupBox;
+  final Box<Group> groupBox;
 
-  static void init(Box<Group> box) {
-    groupBox = box;
-  }
+  GroupRepository(this.groupBox);
 
   int addGroup(Group group) {
-    return groupBox!.put(group);
+    return groupBox.put(group);
   }
 
   void updateGroup(Group newGroup) {
-    groupBox!.put(newGroup);
+    groupBox.put(newGroup);
   }
 
   void removeGroup(Group group) {
-    groupBox!.remove(group.id);
+    groupBox.remove(group.id);
   }
 
   void removeGroupByName(String name) {
-    groupBox!.query(Group_.name.equals(name)).build().remove();
+    groupBox.query(Group_.name.equals(name)).build().remove();
   }
 
-  Group getGroupById(int id) {
-    return groupBox!.get(id)!;
+  Group? getGroupById(int id) {
+    return groupBox.get(id);
   }
 
   List<Group> getGroups() {
-    return groupBox!.getAll();
+    return groupBox.getAll();
   }
 }

@@ -13,16 +13,9 @@ import 'package:voleizinho/services/groups/group_service.dart';
 import 'package:voleizinho/services/share_service/share_service.dart';
 
 class PlayerService {
-  final PlayerRepository _playerRepository = PlayerRepository();
+  final PlayerRepository _playerRepository;
 
-  static PlayerService? _instance;
-
-  static PlayerService getInstance() {
-    _instance ??= PlayerService();
-    return _instance!;
-  }
-
-  static get I => getInstance();
+  PlayerService(this._playerRepository);
 
   void addPlayer(Player player) {
     _validatePlayer(player);
