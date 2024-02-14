@@ -3,7 +3,7 @@ import 'package:voleizinho/model/skills.dart';
 
 Player kDefaultPlayer = Player.withArgs(
   name: "Jogador",
-  skills: {
+  skills: const {
     Skill.spike: 3,
     Skill.agility: 3,
     Skill.block: 3,

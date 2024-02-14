@@ -1,13 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/bloc/player/players_event.dart';
 import 'package:voleizinho/bloc/player/players_state.dart';
 import 'package:voleizinho/exceptions/player/player_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/player/player_name_is_empty_exception.dart';
 import 'package:voleizinho/model/player.dart';
+import 'package:voleizinho/services/groups/group_service.dart';
 import 'package:voleizinho/services/players/player_service.dart';
 
 class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
-  final PlayerService playerService = PlayerService.getInstance();
+  final PlayerService playerService = GetIt.I<PlayerService>();
+  final GroupService groupService = GetIt.I<GroupService>();
 
   PlayersBloc() : super(PlayersState.initial()) {
     on<PlayersLoadEvent>(_onPlayersLoadEvent);
@@ -147,7 +150,8 @@ class PlayersBloc extends Bloc<PlayersEvent, PlayersState> {
   void _onExportPlayersEvent(
       ExportPlayersEvent event, Emitter<PlayersState> emit) async {
     try {
-      playerService.exportPlayersList(event.groupId);
+      playerService.exportPlayersList(
+          event.groupId, groupService.activeGroup().name!);
       List<Player> players = playerService.getPlayersFromGroup(event.groupId);
       emit(state.copyWith(
           status: PlayersStatus.loaded, players: players, errorMessage: null));

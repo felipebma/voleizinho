@@ -1,12 +1,10 @@
+import "package:get_it/get_it.dart";
 import "package:voleizinho/model/player.dart";
+import "package:voleizinho/object_box.dart";
 import "package:voleizinho/objectbox.g.dart";
 
 class PlayerRepository {
-  static Box<Player>? playerBox;
-
-  static void init(Box<Player> box) {
-    playerBox = box;
-  }
+  Box<Player>? playerBox = GetIt.I<ObjectBox>().store.box<Player>();
 
   void addPlayer(Player player) {
     playerBox!.put(player);

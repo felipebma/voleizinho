@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/services/groups/group_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
@@ -23,7 +24,7 @@ class CustomDrawer extends StatelessWidget {
                     Text(
                       UserPreferences.getGroup() == null
                           ? "Voleizinho"
-                          : GroupService.I.activeGroup().name!,
+                          : GetIt.I<GroupService>().activeGroup().name!,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 24,

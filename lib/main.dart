@@ -1,32 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/bloc/group/groups_bloc.dart';
 import 'package:voleizinho/bloc/player/players_bloc.dart';
 import 'package:voleizinho/bloc/team/teams_bloc.dart';
-import 'package:voleizinho/model/group.dart';
-import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/object_box.dart';
-import 'package:voleizinho/objectbox.g.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/repositories/player_repository.dart';
 import 'package:voleizinho/repositories/store_repository.dart';
 import 'package:voleizinho/routes.dart';
+import 'package:voleizinho/services/groups/group_service.dart';
+import 'package:voleizinho/services/players/player_service.dart';
+import 'package:voleizinho/services/teams/team_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
-late ObjectBox objectBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await UserPreferences.initUserPreferences();
 
+  GetIt getIt = GetIt.I;
+
   StoreRepository storeRepository = StoreRepository();
   await storeRepository.initStore();
-  objectBox = await ObjectBox.create();
-  Box<Player> playerBox = objectBox.store.box<Player>();
-  Box<Group> groupBox = objectBox.store.box<Group>();
-  GroupRepository.init(groupBox);
-  PlayerRepository.init(playerBox);
+  ObjectBox objectBox = await ObjectBox.create();
+  getIt.registerSingleton<ObjectBox>(objectBox);
+
+  getIt.registerSingleton<GroupService>(GroupService(GroupRepository()));
+  getIt.registerSingleton<PlayerService>(PlayerService(PlayerRepository()));
+  getIt.registerSingleton<TeamService>(TeamService());
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     MultiBlocProvider(

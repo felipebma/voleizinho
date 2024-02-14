@@ -5,15 +5,7 @@ import 'package:voleizinho/services/teams/team_match/team_match_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class TeamService {
-  static TeamService? _instance;
   final int minPlayersPerTeam = 2;
-
-  static TeamService getInstance() {
-    _instance ??= TeamService();
-    return _instance!;
-  }
-
-  static get I => getInstance();
 
   _saveTeams(List<Team> teams, int groupId) async {
     await UserPreferences.setTeams(groupId, teams);

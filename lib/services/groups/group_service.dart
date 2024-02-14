@@ -3,28 +3,19 @@ import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
 import 'package:voleizinho/model/group.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
-import 'package:voleizinho/services/players/player_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 class GroupService {
-  final GroupRepository groupRepository = GroupRepository();
-  final PlayerService playerService = PlayerService.getInstance();
+  final GroupRepository groupRepository;
 
-  static GroupService? _instance;
-
-  static GroupService getInstance() {
-    _instance ??= GroupService();
-    return _instance!;
-  }
-
-  static get I => getInstance();
+  GroupService(this.groupRepository);
 
   List<Group> getGroups() {
     return groupRepository.getGroups();
   }
 
   Group getGroupById(int id) {
-    return groupRepository.getGroupById(id);
+    return groupRepository.getGroupById(id)!;
   }
 
   int createGroup(Group group) {
@@ -38,12 +29,11 @@ class GroupService {
   }
 
   void removeGroup(Group group) {
-    playerService.removePlayersFromGroup(group.id);
     groupRepository.removeGroup(group);
   }
 
   Group activeGroup() {
-    return groupRepository.getGroupById(UserPreferences.getGroup()!);
+    return groupRepository.getGroupById(UserPreferences.getGroup()!)!;
   }
 
   Map<Skill, int> getSkillsWeights() {
