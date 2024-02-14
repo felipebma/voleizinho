@@ -12,6 +12,7 @@ import 'package:voleizinho/repositories/store_repository.dart';
 import 'package:voleizinho/routes.dart';
 import 'package:voleizinho/services/groups/group_service.dart';
 import 'package:voleizinho/services/players/player_service.dart';
+import 'package:voleizinho/services/teams/team_service.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
 
 Future<void> main() async {
@@ -28,6 +29,7 @@ Future<void> main() async {
 
   getIt.registerSingleton<GroupService>(GroupService(GroupRepository()));
   getIt.registerSingleton<PlayerService>(PlayerService(PlayerRepository()));
+  getIt.registerSingleton<TeamService>(TeamService());
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     MultiBlocProvider(

@@ -13,7 +13,7 @@ import 'package:voleizinho/services/groups/group_service.dart';
 import 'package:voleizinho/services/teams/team_service.dart';
 
 class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
-  final TeamService teamsService = TeamService.getInstance();
+  final TeamService teamsService = GetIt.I<TeamService>();
   final GroupService groupService = GetIt.I<GroupService>();
 
   TeamsBloc() : super(const TeamsState()) {
