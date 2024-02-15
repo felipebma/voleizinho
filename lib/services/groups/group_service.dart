@@ -1,6 +1,7 @@
 import 'package:voleizinho/exceptions/group/group_name_already_existis_exception.dart';
 import 'package:voleizinho/exceptions/group/group_name_is_empty_exception.dart';
 import 'package:voleizinho/model/group.dart';
+import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/skills.dart';
 import 'package:voleizinho/repositories/group_repository.dart';
 import 'package:voleizinho/services/user_preferences/user_preferences.dart';
@@ -56,5 +57,47 @@ class GroupService {
         throw GroupNameAlreadyExistsException("Group name already exists");
       }
     }
+  }
+
+  double getPlayerAverage(Player player) {
+    double sum = 0;
+    int sumWeights = 0;
+    Map<Skill, int> weights = getSkillsWeights();
+    player.skills.forEach((key, value) {
+      sum += value * (weights[key] ?? 1);
+      sumWeights += weights[key] ?? 1;
+    });
+    return sum / sumWeights;
+  }
+
+  double getPlayerAtk(Player player) {
+    Map<Skill, int> weights = getSkillsWeights();
+    double atk = player.getSkill(Skill.spike) * weights[Skill.spike]! +
+        player.getSkill(Skill.set) * weights[Skill.set]! +
+        player.getSkill(Skill.block) * weights[Skill.block]!;
+    return atk /
+        (weights[Skill.spike]! + weights[Skill.set]! + weights[Skill.block]!);
+  }
+
+  double getPlayerDef(Player player) {
+    Map<Skill, int> weights = getSkillsWeights();
+    double atk = player.getSkill(Skill.serve) * weights[Skill.serve]! +
+        player.getSkill(Skill.receive) * weights[Skill.receive]! +
+        player.getSkill(Skill.agility) * weights[Skill.agility]!;
+    return atk /
+        (weights[Skill.serve]! +
+            weights[Skill.receive]! +
+            weights[Skill.agility]!);
+  }
+
+  double calculateSimilarity(Player p1, Player p2) {
+    double sum = 0;
+    int sumWeights = 0;
+    Map<Skill, int> weights = getSkillsWeights();
+    p1.skills.forEach((key, value) {
+      sum += ((value - p2.skills[key]!).abs()) * (weights[key] ?? 1);
+      sumWeights += (weights[key] ?? 1) * 5;
+    });
+    return 1 - sum / sumWeights;
   }
 }

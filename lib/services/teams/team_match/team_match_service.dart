@@ -1,5 +1,7 @@
+import 'package:get_it/get_it.dart';
 import 'package:voleizinho/model/player.dart';
 import 'package:voleizinho/model/team.dart';
+import 'package:voleizinho/services/groups/group_service.dart';
 
 class TeamMatchService {
   static List<Team> createTeams(
@@ -87,7 +89,7 @@ class TeamMatchService {
 
   static void _balanceTeamsPositional(Team team1, Team team2) {
     List<Player> bestPair = [];
-    double bestDiff = team1.getDifference(team2);
+    double bestDiff = computeTeamsDifference(team1, team2);
     for (Player p1 in [...team1.players]) {
       for (Player p2 in [...team2.players]) {
         Team t1 = Team();
@@ -104,7 +106,7 @@ class TeamMatchService {
             t2.addPlayer(p.copyWith());
           }
         }
-        double diff = t1.getDifference(t2);
+        double diff = computeTeamsDifference(t1, t2);
         if (diff < bestDiff) {
           bestDiff = diff;
           bestPair = [p1, p2];
@@ -129,5 +131,27 @@ class TeamMatchService {
     for (var team in teams) {
       team.players.shuffle();
     }
+  }
+
+  static double computePlayerAtk(Player player) {
+    return GetIt.I<GroupService>().getPlayerAtk(player);
+  }
+
+  static double computePlayerDef(Player player) {
+    return GetIt.I<GroupService>().getPlayerDef(player);
+  }
+
+  static double computeTeamsDifference(Team team1, Team team2) {
+    double atk = 0, def = 0;
+    for (Player p in team1.getPlayers()) {
+      atk += computePlayerAtk(p) / team1.getPlayers().length;
+      def += computePlayerDef(p) / team1.getPlayers().length;
+    }
+    double atk2 = 0, def2 = 0;
+    for (Player p in team2.getPlayers()) {
+      atk2 += computePlayerAtk(p) / team2.getPlayers().length;
+      def2 += computePlayerDef(p) / team2.getPlayers().length;
+    }
+    return (atk - atk2).abs() + (def - def2).abs();
   }
 }
