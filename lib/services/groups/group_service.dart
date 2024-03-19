@@ -37,7 +37,7 @@ class GroupService {
     return groupRepository.getGroupById(UserPreferences.getGroup()!)!;
   }
 
-  Map<Skill, int> getSkillsWeights() {
+  Map<Skill, num> getSkillsWeights() {
     return activeGroup().skillsWeights;
   }
 
@@ -61,8 +61,8 @@ class GroupService {
 
   double getPlayerAverage(Player player) {
     double sum = 0;
-    int sumWeights = 0;
-    Map<Skill, int> weights = getSkillsWeights();
+    num sumWeights = 0;
+    Map<Skill, num> weights = getSkillsWeights();
     player.skills.forEach((key, value) {
       sum += value * (weights[key] ?? 1);
       sumWeights += weights[key] ?? 1;
@@ -71,7 +71,7 @@ class GroupService {
   }
 
   double getPlayerAtk(Player player) {
-    Map<Skill, int> weights = getSkillsWeights();
+    Map<Skill, num> weights = getSkillsWeights();
     double atk = player.getSkill(Skill.spike) * weights[Skill.spike]! +
         player.getSkill(Skill.set) * weights[Skill.set]! +
         player.getSkill(Skill.block) * weights[Skill.block]!;
@@ -80,7 +80,7 @@ class GroupService {
   }
 
   double getPlayerDef(Player player) {
-    Map<Skill, int> weights = getSkillsWeights();
+    Map<Skill, num> weights = getSkillsWeights();
     double atk = player.getSkill(Skill.serve) * weights[Skill.serve]! +
         player.getSkill(Skill.receive) * weights[Skill.receive]! +
         player.getSkill(Skill.agility) * weights[Skill.agility]!;
@@ -92,8 +92,8 @@ class GroupService {
 
   double calculateSimilarity(Player p1, Player p2) {
     double sum = 0;
-    int sumWeights = 0;
-    Map<Skill, int> weights = getSkillsWeights();
+    num sumWeights = 0;
+    Map<Skill, num> weights = getSkillsWeights();
     p1.skills.forEach((key, value) {
       sum += ((value - p2.skills[key]!).abs()) * (weights[key] ?? 1);
       sumWeights += (weights[key] ?? 1) * 5;

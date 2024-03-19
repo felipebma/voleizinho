@@ -7,8 +7,8 @@ class SkillGauge extends StatelessWidget {
       required this.onChanged,
       required this.label});
 
-  final int value;
-  final int maxValue = 10;
+  final num value;
+  final num maxValue = 10;
   final String label;
   final void Function(double) onChanged;
 

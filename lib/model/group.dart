@@ -36,7 +36,7 @@ class Group {
   });
 
   @Transient()
-  Map<Skill, int> skillsWeights = {};
+  Map<Skill, num> skillsWeights = {};
 
   String? get dbSkillsWeights {
     return json.encode({

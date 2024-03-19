@@ -25,7 +25,7 @@ class Player extends Equatable {
   int groupId = 0;
 
   @Transient()
-  Map<Skill, int> skills = {};
+  Map<Skill, num> skills = {};
 
   String? get dbSkills {
     return json.encode({
@@ -60,7 +60,7 @@ class Player extends Equatable {
     return GetIt.I<GroupService>().calculateSimilarity(this, player);
   }
 
-  copyWith({int? id, String? name, Map<Skill, int>? skills, int? groupId}) {
+  copyWith({int? id, String? name, Map<Skill, num>? skills, int? groupId}) {
     return Player.withArgs(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -82,7 +82,7 @@ class Player extends Equatable {
 
   factory Player.fromJson(Map<String, dynamic> jsonObject) {
     Map<String, dynamic> decoded = json.decode(jsonObject['skills']);
-    Map<Skill, int> skills = {};
+    Map<Skill, num> skills = {};
     for (var entry in decoded.entries) {
       Skill skill =
           Skill.values.firstWhere((e) => e.toString() == "Skill.${entry.key}");

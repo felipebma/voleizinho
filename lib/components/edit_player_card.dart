@@ -50,6 +50,7 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
                 itemSize: 30,
                 glowColor: Colors.amber,
                 initialRating: player.skills[skill]!.toDouble(),
+                allowHalfRating: true,
                 ratingWidget: RatingWidget(
                   full: const Icon(
                     Icons.star,
@@ -66,7 +67,7 @@ class _EditPlayerCardState extends State<EditPlayerCard> {
                 ),
                 onRatingUpdate: (rating) {
                   setState(() {
-                    player.skills[skill] = rating.toInt();
+                    player.skills[skill] = rating.toDouble();
                   });
                 },
               )
