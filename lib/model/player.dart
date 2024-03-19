@@ -53,25 +53,11 @@ class Player extends Equatable {
   }
 
   double getAverage() {
-    double sum = 0;
-    int sumWeights = 0;
-    Map<Skill, int> weights = GetIt.I<GroupService>().getSkillsWeights();
-    skills.forEach((key, value) {
-      sum += value * (weights[key] ?? 1);
-      sumWeights += weights[key] ?? 1;
-    });
-    return sum / sumWeights;
+    return GetIt.I<GroupService>().getPlayerAverage(this);
   }
 
   double similarity(Player player) {
-    double sum = 0;
-    int sumWeights = 0;
-    Map<Skill, int> weights = GetIt.I<GroupService>().getSkillsWeights();
-    skills.forEach((key, value) {
-      sum += ((value - player.skills[key]!).abs()) * (weights[key] ?? 1);
-      sumWeights += (weights[key] ?? 1) * 5;
-    });
-    return 1 - sum / sumWeights;
+    return GetIt.I<GroupService>().calculateSimilarity(this, player);
   }
 
   copyWith({int? id, String? name, Map<Skill, int>? skills, int? groupId}) {

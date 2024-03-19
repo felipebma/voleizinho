@@ -4,29 +4,29 @@ import "package:voleizinho/object_box.dart";
 import "package:voleizinho/objectbox.g.dart";
 
 class PlayerRepository {
-  Box<Player>? playerBox = GetIt.I<ObjectBox>().store.box<Player>();
+  final Box<Player> playerBox = GetIt.I<ObjectBox>().store.box<Player>();
 
   void addPlayer(Player player) {
-    playerBox!.put(player);
+    playerBox.put(player);
   }
 
   void updatePlayer(Player newPlayer) {
-    playerBox!.put(newPlayer);
+    playerBox.put(newPlayer);
   }
 
   void removePlayer(Player player) {
-    playerBox!.remove(player.id);
+    playerBox.remove(player.id);
   }
 
   void removeAllPlayerByGroup(int groupId) {
-    playerBox!.query(Player_.groupId.equals(groupId)).build().remove();
+    playerBox.query(Player_.groupId.equals(groupId)).build().remove();
   }
 
   List<Player> getPlayers() {
-    return playerBox!.getAll();
+    return playerBox.getAll();
   }
 
   List<Player> getPlayersFromGroup(int groupId) {
-    return playerBox!.query(Player_.groupId.equals(groupId)).build().find();
+    return playerBox.query(Player_.groupId.equals(groupId)).build().find();
   }
 }
